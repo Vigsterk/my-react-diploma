@@ -4,7 +4,7 @@
 
 Для взаимодействии с серверной частью приложения вам доступно REST API по адресу:
 
-https://neto-api.herokuapp.com
+https://neto-api.herokuapp.com/bosa-noga
 
 ### Получение списка категория
 
