@@ -236,7 +236,8 @@ https://neto-api.herokuapp.com/bosa-noga
     "title": "Босоножки женские",
     "image": "https://picsum.photos/200",
     "manufacturer": "Damlax",
-    "price": 5950
+    "price": 5950,
+    "oldPrice": 6200
   },
   {
     "id": 2,
@@ -253,7 +254,9 @@ https://neto-api.herokuapp.com/bosa-noga
 - `title` — название товара, _строка_;
 - `image` — URL-адрес главного изображения товара, по которому оно доступно в сети, _строка_;
 - `manufacturer` — производитель, _строка_;
-- `price` — цена товара в рублях, _число_.
+- `price` — цена товара в рублях, _число_;
+- `oldPrice` — цена товара в рублях без скидки, _число_, необязательное поле (есть только у товаров, которые продаются по скидке);
+
 
 Данный метод поддерживает сортировку и фильтрацию, формат данных при отправке — `GET-параметры`. Необязательные поля для фильтрации и сортировки:
 
@@ -281,7 +284,8 @@ https://neto-api.herokuapp.com/bosa-noga
     "title": "Босоножки женские",
     "image": "https://picsum.photos/200",
     "manufacturer": "Damlax",
-    "price": 5950
+    "price": 5950,
+    "oldPrice": 6200
   },
   {
     "id": 2,
@@ -315,6 +319,8 @@ https://neto-api.herokuapp.com/bosa-noga
   "reason": "Офис",
   "season": "Лето",
   "heelSize": "12 см.",
+  "price": 1200,
+  "oldPrice": 1400,
   "sizes": [
     {
       "size": "12 US",
