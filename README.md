@@ -236,6 +236,7 @@ https://neto-api.herokuapp.com/bosa-noga
     "title": "Босоножки женские",
     "image": "https://picsum.photos/200",
     "manufacturer": "Damlax",
+    "category": 12,
     "price": 5950,
     "oldPrice": 6200
   },
@@ -244,6 +245,7 @@ https://neto-api.herokuapp.com/bosa-noga
     "title": "Туфли-кроссовки",
     "image": "https://picsum.photos/300",
     "manufacturer": "Reebok",
+    "category": 13,
     "price": 12850
   }
 ]
@@ -253,6 +255,7 @@ https://neto-api.herokuapp.com/bosa-noga
 - `id` — идентификатор товара на сервере, _число_;
 - `title` — название товара, _строка_;
 - `image` — URL-адрес главного изображения товара, по которому оно доступно в сети, _строка_;
+- `category` — идентификатор категории, которой принедлежит товар, _число_;
 - `manufacturer` — производитель, _строка_;
 - `price` — цена товара в рублях, _число_;
 - `oldPrice` — цена товара в рублях без скидки, _число_, необязательное поле (есть только у товаров, которые продаются по скидке);
@@ -284,6 +287,7 @@ https://neto-api.herokuapp.com/bosa-noga
     "title": "Босоножки женские",
     "image": "https://picsum.photos/200",
     "manufacturer": "Damlax",
+    "category": 12,
     "price": 5950,
     "oldPrice": 6200
   },
@@ -292,6 +296,7 @@ https://neto-api.herokuapp.com/bosa-noga
     "title": "Туфли-кроссовки",
     "image": "https://picsum.photos/300",
     "manufacturer": "Reebok",
+    "category": 13,
     "price": 12850
   }
 ]
@@ -319,6 +324,7 @@ https://neto-api.herokuapp.com/bosa-noga
   "reason": "Офис",
   "season": "Лето",
   "heelSize": "12 см.",
+  "category": 12,
   "price": 1200,
   "oldPrice": 1400,
   "sizes": [
