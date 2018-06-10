@@ -1,6 +1,7 @@
 [
     {
         "id": 20,
+        "category": 13,
         "title": "Кроссовки как у Pharrell Williams",
         "images": [
             "https://cdn.shopify.com/s/files/1/1117/1018/products/Chanel-x-Adidas-Originals-NMD-Hu_480x480.jpg?v=1512941013",
@@ -13,6 +14,8 @@
         "reason": "Прогулка",
         "season": "Лето",
         "heelSize": "3 см.",
+        "price": 12000,
+        "oldPrice": 14000,
         "sizes": [
             {
                 "size": "10 US",
@@ -26,6 +29,7 @@
     },
     {
         "id": 21,
+        "category": 13,
         "title": "Туфли принцессы",
         "images": [
             "https://s09.radikal.ru/i182/1408/8c/c5e4699d3c9c.jpg",
@@ -38,6 +42,7 @@
         "reason": "Высока мода",
         "season": "Лето",
         "heelSize": "7 см.",
+        "price": 3000,
         "sizes": [
             {
                 "size": "12 US",
@@ -51,6 +56,7 @@
     },
     {
         "id": 22,
+        "category": 13,
         "title": "Туфли с окошечками",
         "images": [
             "http://www.shoes-report.ru/upload/iblock/0df/v_moskve_otkrylsya_samyy_bolshoy_v_evrope_butik_dolce_gabbana.jpg",
@@ -63,6 +69,7 @@
         "reason": "Высока мода",
         "season": "Лето",
         "heelSize": "8 см.",
+        "price": 4000,
         "sizes": [
             {
                 "size": "14 US",
@@ -76,6 +83,7 @@
     },
     {
         "id": 23,
+        "category": 13,
         "title": "Кеды с насекомым",
         "images": [
             "https://cdn.raffaello-network.com/item_images/d&gmsho-cs1475ab731-large-1.jpg",
@@ -88,6 +96,7 @@
         "reason": "Спорт",
         "season": "Лето",
         "heelSize": "2 см.",
+        "price": 3500,
         "sizes": [
             {
                 "size": "14 US",
@@ -101,6 +110,7 @@
     },
     {
         "id": 24,
+        "category": 13,
         "title": "Туфли на выход",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/32/11/36/12321136_10891335_322.jpg",
@@ -113,6 +123,7 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "8 см.",
+        "price": 2500,
         "sizes": [
             {
                 "size": "14 US",
@@ -126,6 +137,7 @@
     },
     {
         "id": 25,
+        "category": 13,
         "title": "Туфли императрицы",
         "images": [
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsBTuq3WPYIAAV_R6sZkW2DQEAGF4hRw7hXAxns5vYhsmuJL9t",
@@ -138,6 +150,7 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "8 см.",
+        "price": 15000,
         "sizes": [
             {
                 "size": "15 US",
@@ -151,6 +164,7 @@
     },
     {
         "id": 26,
+        "category": 14,
         "title": "Кроссовки с рынка",
         "images": [
             "http://vbabylone.ru/3083-thickbox_default/krossovki-dolche-gabbana-kupit-dolce-gabbana.jpg",
@@ -163,6 +177,7 @@
         "reason": "Спорт",
         "season": "Лето",
         "heelSize": "1 см.",
+        "price": 1500,
         "sizes": [
             {
                 "size": "10 US",
@@ -176,6 +191,7 @@
     },
     {
         "id": 27,
+        "category": 14,
         "title": "Кроссовки пёстрые",
         "images": [
             "http://wlooks.ru/images/article/cropped/337-253/2017/01/krossovki-chanel-45.jpg",
@@ -188,6 +204,8 @@
         "reason": "Спорт",
         "season": "Лето",
         "heelSize": "4 см.",
+        "price": 1750,
+        "oldPrice": 2000,
         "sizes": [
             {
                 "size": "10 US",
@@ -201,6 +219,7 @@
     },
     {
         "id": 28,
+        "category": 13,
         "title": "Туфли-долматинцы",
         "images": [
             "https://i.pinimg.com/originals/72/44/bf/7244bf018c0cadbd10453e5322d8b873.jpg",
@@ -213,6 +232,7 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "2 см.",
+        "price": 4000,
         "sizes": [
             {
                 "size": "10 US",
@@ -226,6 +246,7 @@
     },
     {
         "id": 29,
+        "category": 13,
         "title": "Сапоги на показ",
         "images": [
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAisXeip1GsCNEkxw0RwJwqkG_7RBmACPOsxMayx7UIRjzL62H",
@@ -238,6 +259,7 @@
         "reason": "Высокая мода",
         "season": "Осень",
         "heelSize": "3 см.",
+        "price": 2000,
         "sizes": [
             {
                 "size": "12 US",
@@ -251,6 +273,7 @@
     },
     {
         "id": 30,
+        "category": 13,
         "title": "Сапоги блестящие",
         "images": [
             "https://www.buro247.ru/thumb/1000x700/local/images/buro/Chanel-clp-RF17-2899.jpg",
@@ -263,6 +286,7 @@
         "reason": "Высокая мода",
         "season": "Осень",
         "heelSize": "2 см.",
+        "price": 14000,
         "sizes": [
             {
                 "size": "12 US",
@@ -276,6 +300,7 @@
     },
     {
         "id": 31,
+        "category": 13,
         "title": "Туфли как у Кэрри",
         "images": [
             "https://peterburg2.ru/uploads/17/05/11/d_Manolo-Blahnik-something-blue-satin.jpg",
@@ -288,6 +313,7 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "8 см.",
+        "price": 16500,
         "sizes": [
             {
                 "size": "12 US",
@@ -301,6 +327,7 @@
     },
     {
         "id": 32,
+        "category": 14,
         "title": "Кеды от Оксимирона",
         "images": [
             "https://sneakerhead.ru/image/cache/data/simpleupload/d86d0715e05df3af5463587a49e5f14cac529dd6-1410x940.jpg",
@@ -313,6 +340,7 @@
         "reason": "Спорт",
         "season": "Лето",
         "heelSize": "2 см.",
+        "price":23000,
         "sizes": [
             {
                 "size": "12 US",
@@ -326,6 +354,7 @@
     },
     {
         "id": 33,
+        "category": 13,
         "title": "Знаменитые лабутэны",
         "images": [
             "https://womanadvice.ru/sites/default/files/dalia/tufli_labuten_1.jpg",
@@ -338,6 +367,7 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "9 см.",
+        "price": 56000,
         "sizes": [
             {
                 "size": "12 US",
@@ -351,6 +381,7 @@
     },
     {
         "id": 34,
+        "category": 13,
         "title": "Туфли с шипами",
         "images": [
             "https://pp.userapi.com/c627720/v627720954/3480d/Dkf6rx1zHg4.jpg",
@@ -363,6 +394,7 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "9 см.",
+        "price": 1300,
         "sizes": [
             {
                 "size": "12 US",
@@ -376,10 +408,11 @@
     },
     {
         "id": 35,
+        "category": 14,
         "title": "Кеды классические",
         "images": [
-            "https://pp.userapi.com/c627720/v627720954/3480d/Dkf6rx1zHg4.jpg",
-            "https://pp.userapi.com/c627720/v627720954/3480d/Dkf6rx1zHg4.jpg"
+            "https://i2.rozetka.ua/goods/1713203/converse_m9622c_7_images_1713203083.jpg",
+            "https://i1.rozetka.ua/goods/1713204/converse_m9622c_7_images_1713204574.jpg"
         ],
         "sku": "1000015",
         "manufacturer": "Vans",
@@ -388,6 +421,8 @@
         "reason": "Спорт",
         "season": "Лето",
         "heelSize": "1 см.",
+        "price": 700,
+        "oldPrice": 1000,
         "sizes": [
             {
                 "size": "10 US",
@@ -401,6 +436,7 @@
     },
     {
         "id": 36,
+        "category": 14,
         "title": "Кроссовки Новый Баланс ",
         "images": [
             "http://www.4shopping.ru/media/coll/2012/08/4722/new-balance-4722-fall-winter-12-13-0013.jpg",
@@ -413,6 +449,7 @@
         "reason": "Спорт",
         "season": "Лето",
         "heelSize": "2 см.",
+        "price": 14500,
         "sizes": [
             {
                 "size": "12 US",
@@ -426,9 +463,9 @@
     },
     {
         "id": 37,
+        "category": 13,
         "title": "Кроссовки с мехом",
         "images": [
-            "http://www.4shopping.ru/media/coll/2012/08/4722/new-balance-4722-fall-winter-12-13-0013.jpg",
             "http://www.sandrospizza.it/images/dfsdjk/Fashion-New-Balance-ML574TA-Eskimo-Series-Wool-brown-Men-Winter-Suede-shoes-68193050_24247.jpg"
         ],
         "sku": "1000017",
@@ -438,6 +475,7 @@
         "reason": "Спорт",
         "season": "Лето",
         "heelSize": "2 см.",
+        "price": 4000,
         "sizes": [
             {
                 "size": "14 US",
@@ -451,6 +489,7 @@
     },
     {
         "id": 38,
+        "category": 13,
         "title": "Кроссовки для девчонок",
         "images": [
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeY6DgzU5Js_2UPyOUYALyJtf-NX39XQqg5IY46Yz_eWnOYIkLHA",
@@ -463,6 +502,7 @@
         "reason": "Спорт",
         "season": "Лето",
         "heelSize": "2 см.",
+        "price": 5600,
         "sizes": [
             {
                 "size": "16 US",
@@ -476,6 +516,7 @@
     },
     {
         "id": 39,
+        "category": 15,
         "title": "Кроссовки для маленьких девчонок",
         "images": [
             "http://lst63.ru/catalog/zima/3451-New-balance-580-1.jpg",
@@ -488,6 +529,7 @@
         "reason": "Спорт",
         "season": "Лето",
         "heelSize": "2 см.",
+        "price": 5800,
         "sizes": [
             {
                 "size": "8 US",
@@ -501,6 +543,7 @@
     },
     {
         "id": 40,
+        "category": 13,
         "title": "Нюдовые туфли",
         "images": [
             "https://img01-olxua.akamaized.net/img-olxua/641566094_1_644x461_tufli-asos-penalty-pointed-high-heels-novye-s-korobkoy-razmer-375-uzhgorod.jpg",
@@ -513,6 +556,7 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "7 см.",
+        "price": 6000,
         "sizes": [
             {
                 "size": "12 US",
@@ -526,6 +570,7 @@
     },
     {
         "id": 41,
+        "category": 12,
         "title": "Ботинки охотника",
         "images": [
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHBccf05xbGCc8PhiWrCNjyTjpgM7KK3u-d7nBX_IJjv3-_PfT",
@@ -538,6 +583,7 @@
         "reason": "Спорт",
         "season": "Осень",
         "heelSize": "1 см.",
+        "price": 7000,
         "sizes": [
             {
                 "size": "16 US",
@@ -551,6 +597,7 @@
     },
     {
         "id": 42,
+        "category": 13,
         "title": "Сапоги охотницы",
         "images": [
             "http://irecommend.ru/sites/default/files/product-images/136547/OnouXMfqDs6zRR3t9c0WPw.jpg",
@@ -563,6 +610,8 @@
         "reason": "Прогулка",
         "season": "Осень",
         "heelSize": "2 см.",
+        "price": 8000,
+        "oldPrice": 14000,
         "sizes": [
             {
                 "size": "14 US",
@@ -576,6 +625,7 @@
     },
     {
         "id": 43,
+        "category": 13,
         "title": "Лодочки",
         "images": [
             "https://s.estro.ua/static/content/thumbs/fu47kk/1740-1160/0f/39/0f398e5cdd787c1a72a4e23b85876b1b.jpeg",
@@ -588,6 +638,7 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "9 см.",
+        "price": 1200,
         "sizes": [
             {
                 "size": "14 US",
@@ -601,6 +652,7 @@
     },
     {
         "id": 44,
+        "category": 13,
         "title": "Рыжики",
         "images": [
             "https://assets.superbalistcdn.co.za/798x1150/filters:quality(75):format(jpg)/536077/original.jpg",
@@ -613,6 +665,7 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "9 см.",
+        "price": 4800,
         "sizes": [
             {
                 "size": "12 US",
@@ -626,6 +679,7 @@
     },
     {
         "id": 45,
+        "category": 13,
         "title": "Диор в рубчик",
         "images": [
             "http://saint-fashion.ru/image/cache/data/christian-dior-black-zhenskie-tufli-5-500x554.jpg",
@@ -638,6 +692,7 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "4 см.",
+        "price": 6900,
         "sizes": [
             {
                 "size": "12 US",
@@ -651,6 +706,7 @@
     },
     {
         "id": 46,
+        "category": 13,
         "title": "Кружевыне туфли",
         "images": [
             "https://www.studio-fashion.com/image/cache/data/gallery/Kruzhevnye_tufli_Dior-6074-1-2000x2000.jpg",
@@ -663,6 +719,7 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "8 см.",
+        "price": 3000,
         "sizes": [
             {
                 "size": "12 US",
@@ -676,6 +733,7 @@
     },
     {
         "id": 47,
+        "category": 13,
         "title": "Рыбацкая сетка",
         "images": [
             "https://wwws.dior.com/couture/ecommerce/media/catalog/product/cache/1/menu_bas/440x390/17f82f742ffe127f42dca9de82fb58b1/K/C/1519322087_KCP277SUR_S900_E02_G.jpg",
@@ -688,6 +746,7 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "9 см.",
+        "price": 5000,
         "sizes": [
             {
                 "size": "12 US",
@@ -701,6 +760,7 @@
     },
     {
         "id": 48,
+        "category": 13,
         "title": "LOVE",
         "images": [
             "https://hypb.imgix.net/wp-content/blogs.dir/6/files/2017/09/dior-amour-pumps-1.jpg?q=75&w=800&fit=max&auto=compress%2Cformat",
@@ -713,6 +773,7 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "7 см.",
+        "price": 8000,
         "sizes": [
             {
                 "size": "14 US",
@@ -726,6 +787,7 @@
     },
     {
         "id": 49,
+        "category": 13,
         "title": "Туфли Жар-птицы",
         "images": [
             "http://sezonobuvi.ru/images/12-1-1.jpg",
@@ -738,6 +800,7 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "8 см.",
+        "price": 7900,
         "sizes": [
             {
                 "size": "10 US",
@@ -751,6 +814,7 @@
     },
     {
         "id": 50,
+        "category": 13,
         "title": "Туфли c крыьями",
         "images": [
             "https://m.media-amazon.com/images/G/01/Shopbop/p/pcs/products/giusz/giusz4028034594/giusz4028034594_q1_1-0._UX357_QL90_.jpg",
@@ -763,6 +827,8 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "10 см.",
+        "price": 2300,
+        "oldPrice": 3000,
         "sizes": [
             {
                 "size": "12 US",
@@ -776,6 +842,7 @@
     },
     {
         "id": 51,
+        "category": 12,
         "title": "Ботинки для настоящих мужчин",
         "images": [
             "http://img02.taobaocdn.com/bao/uploaded/i2/857785762/T2zcIiXbBXXXXXXXXX_!!857785762.jpg",
@@ -788,6 +855,7 @@
         "reason": "Спорт",
         "season": "Лето",
         "heelSize": "2 см.",
+        "price": 1000,
         "sizes": [
             {
                 "size": "12 US",
@@ -801,6 +869,7 @@
     },
     {
         "id": 52,
+        "category": 13,
         "title": "Больше крыльев",
         "images": [
             "https://stilettomeup.xyz/wp-content/uploads/2013/03/GIUSEPPE-ZANOTTI-300x226.jpg",
@@ -813,6 +882,7 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "10 см.",
+        "price": 4600,
         "sizes": [
             {
                 "size": "12 US",
@@ -826,6 +896,7 @@
     },
     {
         "id": 53,
+        "category": 14,
         "title": "Туфли султана",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/98/97/22/12989722_13690341_1000.jpg",
@@ -838,6 +909,7 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "2 см.",
+        "price": 6000,
         "sizes": [
             {
                 "size": "10 US",
@@ -851,6 +923,7 @@
     },
     {
         "id": 54,
+        "category": 15,
         "title": "Кеды-зебра",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/64/62/84/12646284_12257265_1000.jpg",
@@ -863,6 +936,7 @@
         "reason": "Спорт",
         "season": "Лето",
         "heelSize": "2 см.",
+        "price": 4200,
         "sizes": [
             {
                 "size": "12 US",
@@ -876,6 +950,7 @@
     },
     {
         "id": 55,
+        "category": 14,
         "title": "Кроссовки обычные",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/93/45/97/12934597_13635434_1000.jpg",
@@ -888,6 +963,7 @@
         "reason": "Спорт",
         "season": "Лето",
         "heelSize": "4 см.",
+        "price": 1200,
         "sizes": [
             {
                 "size": "14 US",
@@ -901,6 +977,7 @@
     },
     {
         "id": 56,
+        "category": 12,
         "title": "Шлепанцы с тисненым логотипом",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/16/21/14/12162114_10217935_1000.jpg",
@@ -913,6 +990,7 @@
         "reason": "Спорт",
         "season": "Лето",
         "heelSize": "1 см.",
+        "price": 500,
         "sizes": [
             {
                 "size": "16 US",
@@ -926,6 +1004,7 @@
     },
     {
         "id": 57,
+        "category": 14,
         "title": "Блестящий ковбой",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/80/76/32/12807632_13217331_1000.jpg",
@@ -938,6 +1017,7 @@
         "reason": "Высокая мода",
         "season": "Осень",
         "heelSize": "3 см.",
+        "price": 6500,
         "sizes": [
             {
                 "size": "18 US",
@@ -951,6 +1031,7 @@
     },
     {
         "id": 58,
+        "category": 12,
         "title": "Розовый бунтарь",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/97/35/11/12973511_13654949_1000.jpg",
@@ -963,6 +1044,8 @@
         "reason": "Высокая мода",
         "season": "Осень",
         "heelSize": "3 см.",
+        "price": 6800,
+        "oldPrice": 7200,
         "sizes": [
             {
                 "size": "16 US",
@@ -976,6 +1059,7 @@
     },
     {
         "id": 59,
+        "category": 14,
         "title": "В стиле нюд",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/56/26/83/12562683_11964363_1000.jpg",
@@ -988,6 +1072,7 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "3 см.",
+        "price": 6400,
         "sizes": [
             {
                 "size": "16 US",
@@ -1001,6 +1086,7 @@
     },
     {
         "id": 60,
+        "category": 13,
         "title": "Лоферы мечты",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/49/69/49/12496949_11696830_1000.jpg",
@@ -1013,6 +1099,7 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "1 см.",
+        "price": 6100,
         "sizes": [
             {
                 "size": "12 US",
@@ -1026,6 +1113,7 @@
     },
     {
         "id": 61,
+        "category": 15,
         "title": "Баленсиага",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/98/55/53/12985553_13686373_1000.jpg",
@@ -1038,6 +1126,7 @@
         "reason": "Спорт",
         "season": "Лето",
         "heelSize": "5 см.",
+        "price": 3400,
         "sizes": [
             {
                 "size": "14 US",
@@ -1051,6 +1140,7 @@
     },
     {
         "id": 62,
+        "category": 13,
         "title": "Неодизайн",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/97/02/79/12970279_13722997_1000.jpg",
@@ -1063,6 +1153,7 @@
         "reason": "Высокая мода",
         "season": "Осень",
         "heelSize": "6 см.",
+        "price": 16000,
         "sizes": [
             {
                 "size": "16 US",
@@ -1076,6 +1167,7 @@
     },
     {
         "id": 63,
+        "category": 13,
         "title": "Ботильоны со шнурком",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/98/02/19/12980219_13625328_1000.jpg",
@@ -1088,6 +1180,7 @@
         "reason": "Прогулка",
         "season": "Осень",
         "heelSize": "5 см.",
+        "price": 46000,
         "sizes": [
             {
                 "size": "16 US",
@@ -1101,6 +1194,7 @@
     },
     {
         "id": 64,
+        "category": 13,
         "title": "Без задника",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/87/93/21/12879321_13591443_1000.jpg",
@@ -1113,6 +1207,7 @@
         "reason": "Прогулка",
         "season": "Лето",
         "heelSize": "4 см.",
+        "price": 4000,
         "sizes": [
             {
                 "size": "14 US",
@@ -1126,6 +1221,7 @@
     },
     {
         "id": 65,
+        "category": 15,
         "title": "Босоножки 'Keira'",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/94/66/72/12946672_13518465_1000.jpg",
@@ -1138,6 +1234,8 @@
         "reason": "Прогулка",
         "season": "Лето",
         "heelSize": "3 см.",
+        "price": 7600,
+        "oldPrice": 12000,
         "sizes": [
             {
                 "size": "14 US",
@@ -1151,6 +1249,7 @@
     },
     {
         "id": 66,
+        "category": 13,
         "title": "Босоножки 'Myer' с завязкой на щиколотке",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/93/06/52/12930652_13567910_1000.jpg",
@@ -1163,6 +1262,7 @@
         "reason": "Прогулка",
         "season": "Лето",
         "heelSize": "4 см.",
+        "price": 34000,
         "sizes": [
             {
                 "size": "18 US",
@@ -1176,6 +1276,7 @@
     },
     {
         "id": 67,
+        "category": 13,
         "title": "Босоножки с резинкой",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/96/03/10/12960310_13618379_1000.jpg",
@@ -1188,6 +1289,7 @@
         "reason": "Прогулка",
         "season": "Лето",
         "heelSize": "2 см.",
+        "price": 2300,
         "sizes": [
             {
                 "size": "12 US",
@@ -1201,6 +1303,7 @@
     },
     {
         "id": 68,
+        "category": 14,
         "title": "Космические кроссовки",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/92/70/50/12927050_13398999_1000.jpg",
@@ -1213,6 +1316,7 @@
         "reason": "Спорт",
         "season": "Лето",
         "heelSize": "3 см.",
+        "price": 5700,
         "sizes": [
             {
                 "size": "12 US",
@@ -1226,6 +1330,7 @@
     },
     {
         "id": 69,
+        "category": 13,
         "title": "Волосатые копытца",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/88/24/15/12882415_13367261_1000.jpg",
@@ -1238,6 +1343,7 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "5 см.",
+        "price": 3000,
         "sizes": [
             {
                 "size": "12 US",
@@ -1251,6 +1357,7 @@
     },
     {
         "id": 70,
+        "category": 14,
         "title": "Бабушкины шлёпки",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/90/33/38/12903338_13288929_1000.jpg",
@@ -1263,6 +1370,7 @@
         "reason": "Прогулка",
         "season": "Лето",
         "heelSize": "1 см.",
+        "price": 1000,
         "sizes": [
             {
                 "size": "12 US",
@@ -1276,6 +1384,7 @@
     },
     {
         "id": 71,
+        "category": 14,
         "title": "Вьетнамки с ремешками",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/95/67/59/12956759_13511358_1000.jpg",
@@ -1288,6 +1397,8 @@
         "reason": "Прогулка",
         "season": "Лето",
         "heelSize": "1 см.",
+        "price": 900,
+        "oldPrice": 1200,
         "sizes": [
             {
                 "size": "12 US",
@@ -1301,6 +1412,7 @@
     },
     {
         "id": 72,
+        "category": 12,
         "title": "Слипоны",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/94/93/03/12949303_13449411_1000.jpg",
@@ -1313,6 +1425,7 @@
         "reason": "Прогулка",
         "season": "Лето",
         "heelSize": "1 см.",
+        "price": 1200,
         "sizes": [
             {
                 "size": "14 US",
@@ -1326,6 +1439,7 @@
     },
     {
         "id": 73,
+        "category": 15,
         "title": "Супергеройские кеды",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/99/04/32/12990432_13705715_1000.jpg",
@@ -1338,6 +1452,7 @@
         "reason": "Спорт",
         "season": "Лето",
         "heelSize": "2 см.",
+        "price": 1400,
         "sizes": [
             {
                 "size": "16 US",
@@ -1351,6 +1466,7 @@
     },
     {
         "id": 74,
+        "category": 12,
         "title": "Футуристичные кроссовки",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/99/03/98/12990398_13705660_1000.jpg",
@@ -1363,6 +1479,7 @@
         "reason": "Спорт",
         "season": "Лето",
         "heelSize": "2 см.",
+        "price": 4300,
         "sizes": [
             {
                 "size": "16 US",
@@ -1376,6 +1493,7 @@
     },
     {
         "id": 75,
+        "category": 13,
         "title": "Сложная геометрия",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/99/03/83/12990383_13712175_1000.jpg",
@@ -1388,6 +1506,7 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "6 см.",
+        "price": 6500,
         "sizes": [
             {
                 "size": "12 US",
@@ -1401,9 +1520,9 @@
     },
     {
         "id": 76,
+        "category": 13,
         "title": "Утро кондуктора",
         "images": [
-            "https://www.farfetch.com/ru/shopping/women/marc-ellis---item-12988327.aspx?storeid=9026",
             "https://cdn-images.farfetch-contents.com/12/98/83/31/12988331_13707361_1000.jpg"
         ],
         "sku": "1000056",
@@ -1413,6 +1532,8 @@
         "reason": "Высокая мода",
         "season": "Осень",
         "heelSize": "3 см.",
+        "price": 2100,
+        "oldPrice": 2300,
         "sizes": [
             {
                 "size": "12 US",
@@ -1426,6 +1547,7 @@
     },
     {
         "id": 77,
+        "category": 13,
         "title": "Сапожки-трубы",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/98/83/27/12988327_13707346_1000.jpg",
@@ -1438,6 +1560,7 @@
         "reason": "Высокая мода",
         "season": "Осень",
         "heelSize": "5 см.",
+        "price": 3400,
         "sizes": [
             {
                 "size": "12 US",
@@ -1451,6 +1574,7 @@
     },
     {
         "id": 78,
+        "category": 13,
         "title": "Ботильоны",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/98/75/90/12987590_13703562_1000.jpg",
@@ -1463,6 +1587,7 @@
         "reason": "Высокая мода",
         "season": "Осень",
         "heelSize": "6 см.",
+        "price": 6200,
         "sizes": [
             {
                 "size": "12 US",
@@ -1476,6 +1601,7 @@
     },
     {
         "id": 79,
+        "category": 13,
         "title": "Сетчатая душа",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/97/03/70/12970370_13710657_1000.jpg",
@@ -1488,6 +1614,7 @@
         "reason": "Высокая мода",
         "season": "Осень",
         "heelSize": "5 см.",
+        "price": 2110,
         "sizes": [
             {
                 "size": "12 US",
@@ -1501,6 +1628,7 @@
     },
     {
         "id": 80,
+        "category": 13,
         "title": "Розовая тигрица",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/89/23/80/12892380_13635995_1000.jpg",
@@ -1513,6 +1641,8 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "4 см.",
+        "price": 4500,
+        "oldPrice": 5500,
         "sizes": [
             {
                 "size": "16 US",
@@ -1526,6 +1656,7 @@
     },
     {
         "id": 81,
+        "category": 13,
         "title": "Канатные туфли",
         "images": [
             "https://cdn-images.farfetch-contents.com/12/98/88/55/12988855_13680288_1000.jpg",
@@ -1538,6 +1669,7 @@
         "reason": "Высокая мода",
         "season": "Лето",
         "heelSize": "7 см.",
+        "price": 1200,
         "sizes": [
             {
                 "size": "12 US",
