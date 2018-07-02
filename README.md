@@ -264,24 +264,30 @@ https://neto-api.herokuapp.com/bosa-noga
 
 `GET /products` — получить информацию о товарах в JSON-формате.
 
-В ответ приходит либо сообщение об ошибке, либо JSON-массив со списком товаров. Например:
+В ответ приходит либо сообщение об ошибке, либо JSON-массив со списком из 10 товаров, согласно переданному параметру `page`. Параметр `count` вернёт информацию о количестве товаров. Например:
 ```json
 [
   {
     "id": 1,
     "title": "Босоножки женские",
-    "image": "https://picsum.photos/200",
-    "manufacturer": "Damlax",
-    "category": 12,
+    "images": [
+      "https://neto-api.herokuapp.com/bosa-noga/200.jpg",
+      "https://neto-api.herokuapp.com/bosa-noga/201.png"
+    ],
+    "brand": "Damlax",
+    "categoryId": 12,
     "price": 5950,
     "oldPrice": 6200
   },
   {
     "id": 2,
     "title": "Туфли-кроссовки",
-    "image": "https://picsum.photos/300",
-    "manufacturer": "Reebok",
-    "category": 13,
+    "images": [
+      "https://neto-api.herokuapp.com/bosa-noga/300.jpg",
+      "https://neto-api.herokuapp.com/bosa-noga/301.png"
+    ],
+    "brand": "Reebok",
+    "categoryId": 13,
     "price": 12850
   }
 ]
@@ -290,9 +296,9 @@ https://neto-api.herokuapp.com/bosa-noga
 Тут:
 - `id` — идентификатор товара на сервере, _число_;
 - `title` — название товара, _строка_;
-- `image` — URL-адрес главного изображения товара, по которому оно доступно в сети, _строка_;
-- `category` — идентификатор категории, которой принедлежит товар, _число_;
-- `manufacturer` — производитель, _строка_;
+- `images` — список URL-адрес главного изображения товара, по которому оно доступно в сети, _строка_;
+- `categoryId` — идентификатор категории, которой принедлежит товар, _число_;
+- `brand` — производитель, _строка_;
 - `price` — цена товара в рублях, _число_;
 - `oldPrice` — цена товара в рублях без скидки, _число_, необязательное поле (есть только у товаров, которые продаются по скидке);
 
@@ -302,14 +308,15 @@ https://neto-api.herokuapp.com/bosa-noga
 - `page` — номер страницы, _число_
 - `type` — тип обуви (балетки, босоножки, ботильоны…), _строка_
 - `color` — цвет обуви, _строка_
-- `size` — размер обуви, _строка_
-- `heelSize` — размер каблука, _строка_
+- `size` — размер обуви, _число_
+- `heelSize` — размер каблука, _число_
 - `reason` — повод (офис, вечеринка, свадьба), _строка_
 - `season` — сезон, _строка_
 - `brand` — бренд, _строка_
 - `discounted` — наличие скидки, _логическое значение_
 - `categoryId` — идентификатор категории, _число_
 - `sortBy` — поле для сортировки, _строка_
+- `count` - поле для получения информации о количестве товаров _число_ `1 == true`
 
 ### Получение новинок
 
@@ -321,18 +328,24 @@ https://neto-api.herokuapp.com/bosa-noga
   {
     "id": 1,
     "title": "Босоножки женские",
-    "image": "https://picsum.photos/200",
-    "manufacturer": "Damlax",
-    "category": 12,
+    "images": [
+      "https://neto-api.herokuapp.com/bosa-noga/200.jpg",
+      "https://neto-api.herokuapp.com/bosa-noga/201.png"
+    ],
+    "brand": "Damlax",
+    "categoryId": 12,
     "price": 5950,
     "oldPrice": 6200
   },
   {
     "id": 2,
     "title": "Туфли-кроссовки",
-    "image": "https://picsum.photos/300",
-    "manufacturer": "Reebok",
-    "category": 13,
+    "images": [
+      "https://neto-api.herokuapp.com/bosa-noga/300.jpg",
+      "https://neto-api.herokuapp.com/bosa-noga/301.png"
+    ],
+    "brand": "Reebok",
+    "categoryId": 13,
     "price": 12850
   }
 ]
@@ -350,26 +363,26 @@ https://neto-api.herokuapp.com/bosa-noga
   "id": 12,
   "title": "Босоножки женские",
   "images": [
-    "https://picsum.photos/200",
-    "https://picsum.photos/300"
+    "https://neto-api.herokuapp.com/bosa-noga/200.jpg",
+    "https://neto-api.herokuapp.com/bosa-noga/201.png"
   ],
   "sku": "1333358811",
-  "manufacturer": "Damlax",
+  "brand": "Damlax",
   "color": "Синий",
   "material": "Натуральная кожа",
   "reason": "Офис",
   "season": "Лето",
-  "heelSize": "12 см.",
-  "category": 12,
+  "heelSize": 12,
+  "categoryId": 12,
   "price": 1200,
   "oldPrice": 1400,
   "sizes": [
     {
-      "size": "12 US",
+      "size": 12,
       "avalible": true
     },
     {
-      "size": "15 US",
+      "size": 15,
       "avalible": false
     }
   ]
@@ -382,11 +395,11 @@ https://neto-api.herokuapp.com/bosa-noga
 - `material` — материал, из которого произведен товар, _строка_;
 - `reason` — повод, по которому предполагается носить товар, _строка_;
 - `season` — сезон, для которого подходит товар, _строка_;
-- `heelSize` — размер каблука,
+- `heelSize` — размер каблука, _число_ сантиметров;
 - `sizes` — информация о размерах и наличии их на складе, _массив объектов_.
 
 Свойство `sizes`, которое хранит массив объетов со следующими свойствами:
-- `size` — размер, _строка_;
+- `size` — размер, _число_;
 - `avalible` — доступность размера на складе, _логическое значение_.
 
 ### Создание корзины
@@ -397,14 +410,14 @@ https://neto-api.herokuapp.com/bosa-noga
 ```json
 {
   "id": 1,
-  "size": "13 US",
+  "size": 13,
   "amount": 1
 }
 ```
 
 Тут:
 - `id` — идентификатор товара на сервере, _число_;
-- `size` — размер товара, _строка_;
+- `size` — размер товара, _число_;
 - `amount` — количество единиц товара, _число_.
 
 Указанный товар будет добавлен в корзину.
@@ -420,12 +433,12 @@ https://neto-api.herokuapp.com/bosa-noga
 [
   {
     "id": 1,
-    "size": "13 US",
+    "size": 13,
     "amount": 1
   },
   {
     "id": 2,
-    "size": "15 US",
+    "size": 15,
     "amount": 2
   },
 ]
@@ -439,14 +452,14 @@ https://neto-api.herokuapp.com/bosa-noga
 ```json
 {
   "id": 1,
-  "size": "13 US",
+  "size": 13,
   "amount": 1
 }
 ```
 
 Тут:
 - `id` — идентификатор товара на сервере, _число_;
-- `size` — размер товара, _строка_;
+- `size` — размер товара, _число_;
 - `amount` — количество единиц товара, _число_.
 
 Указанный товар будет обновлен в корзине. Для удаления необходимо передать количество единиц товара равное нулю.
@@ -464,7 +477,7 @@ https://neto-api.herokuapp.com/bosa-noga
   "phone": "8 999 495 50 33",
   "address": "ул. Гоголя, 92",
   "paymentType": "onlineCard",
-  "cart": "78535906-6300-11e8-adc0-fa7ae01bbebc"
+  "cart": "-LGNXFFElOnuYbvJPuVl"
 }
 ```
 
