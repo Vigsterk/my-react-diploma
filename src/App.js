@@ -1,20 +1,28 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { Catalogue, Favorite, Footer, Header, Order, OrderEnd, MainPage, ProductCard } from './components'
 import './App.css';
+import { BrowserRouter, Route } from 'react-router-dom'
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
+      <BrowserRouter>
+        <div className='container'>
+          <Header />
+          <Route path='/' exact component={MainPage} />
+          <Route path='/Catalogue' exact component={Catalogue} />
+          <Route path='/Favorite' exact component={Favorite} />
+          <Route path='/Order' exact component={Order} />
+          <Route path='/OrderEnd' exact component={OrderEnd} />
+          <Route path='/ProductCard' exact component={ProductCard} />
+          <Footer />
+        </div>
+      </BrowserRouter>
+    )
   }
 }
 

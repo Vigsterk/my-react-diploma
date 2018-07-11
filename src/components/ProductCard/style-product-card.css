@@ -1,0 +1,693 @@
+html,
+body {
+  /* max-width: 1438px; */
+  min-width: 1205px;
+  margin: 0 auto;
+  font-family: 'Roboto', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: #333333;
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+
+/*Breadcrumbs*/
+.site-path {
+  width: 1120px;
+  margin: 0 auto;
+  padding-bottom: 14px;
+}
+
+.site-path__items {
+  display: flex;
+  padding-top: 20px;
+}
+.site-path__item {
+  list-style: none;
+}
+.site-path__item a {
+  font-size: 14px;
+  text-align: center;
+  text-decoration: none;
+  color: #333333;
+}
+.site-path__item:not(:first-child)::before {
+  content: "\2000 \203a \2000";
+}
+
+/*Карточка товара*/
+.product-card {
+  width: 1440px;
+  margin: 0 auto;
+}
+
+.product-card-content {
+  width: 1120px;
+  margin: 0 auto;
+}
+
+h2.section-name {
+  padding-left: 2px;
+  padding-bottom: 5px;
+  font-family: Roboto, sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+
+  color: #000000;
+}
+
+.product-card-content__main-screen {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #F4F4F4;
+  border-bottom: 1px solid #F4F4F4;
+}
+
+/*Картинка товара*/
+.main-screen__favourite-product-pic {
+  position: relative;
+  width: 500px;
+  height: 440px;
+  margin: 45px 0;
+}
+
+.main-screen__favourite-product-pic img {
+  position: relative;
+  top: 23px;
+  left: 14px;
+}
+
+.main-screen__favourite-product-pic img:hover {
+  box-shadow: 2px 2px 2px 2px #cccccc;
+}
+
+a.main-screen__favourite-product-pic__zoom{
+  display: block;
+  position: absolute;
+  top: 9px;
+  right: 11px;
+  height: 29px;
+  width: 29px;
+  background-image: url(../img/product-card-pics/zoom.png);
+  background-repeat: no-repeat;
+}
+
+/*Блок информации о товаре*/
+.main-screen__product-info {
+  width: 449px;
+  height: 440px;
+}
+
+.product-info-title {
+  width: 449px;
+  display: flex;
+}
+
+.product-info-title h2 {
+  display: inline-block;
+  margin-right: auto;
+  padding-left: 2px;
+  font-family: Roboto, sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  text-transform: uppercase;
+  color: #000000;
+}
+
+.in-stock {
+  position: relative;
+  top: -4px;
+  display: inline-block;
+  width: 120px;
+  height: 25px;
+  margin-left: auto;
+  padding: 5px;
+  vertical-align: top;
+  font-family: Roboto;
+  font-weight: 300;
+  font-size: 13px;
+  border: 1px solid #A1B3BF;
+  text-align: center;
+  border-radius: 2px;
+  color: #A1B3BF;
+}
+
+
+/*Таблица особенностей товара*/
+.product-features {
+  width: 449px;
+  height: 181px;
+  margin-top: 32px;
+  overflow: auto;
+  background: #F4F4F4;
+}
+
+.left-col {
+  font-family: Roboto, sans-serif;
+  font-weight: 300;
+  font-size: 18px;
+  color: #333333;
+  padding-left: 15px;
+}
+
+.right-col {
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  color: #333333;
+}
+
+.features-table {
+  width: 420px;
+  height: 200px;
+  padding-top: 10px;
+}
+
+.features-table td {
+  padding-bottom: 23px;
+  vertical-align: bottom;
+}
+
+/*Блок с размерами*/
+.size {
+  position: relative;
+  top: 19px;
+  left: 16px;
+  display: inline-block;
+  font-family: Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  color: #333333;
+}
+
+.sizes {
+  position: relative;
+  top: 19px;
+  left: 130px;
+  display: inline-block;
+}
+
+.sizes li {
+  display: inline-block;
+  list-style: none;
+  padding: 7px;
+}
+
+li.active {
+  background: #A1B3BF;
+  border-radius: 50%;
+}
+
+.size-wrapper {
+  position: relative;
+  top: 45px;
+  right: 42px;
+  display: inline-block;
+}
+
+.size-rule {
+  display: inline-block;
+  width: 22px;
+  height: 14px;
+  vertical-align: middle;
+  background: url(../img/product-card-pics/product-card__size-ruler.png) no-repeat;
+}
+
+.size-table {
+  display: inline-block;
+  padding-left: 5px;
+  text-align: right;
+  vertical-align: middle;
+  text-decoration: underline;
+}
+
+/*Избранное*/
+.in-favourites-wrapper {  
+  position: relative;
+  top: 58px;
+  left: 204px;
+  display: inline-block;
+  width: 200px;
+}
+
+.in-favourites-wrapper:hover {  
+  transform: scale(1.1);
+}
+
+.in-favourites {
+  position: relative;
+  display: inline-block;
+  padding-left: 1px;
+  vertical-align: middle;
+  text-align: center;
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  color: #333333;
+}
+
+.favourite {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  vertical-align: top;
+  background: url(../img/product-card-pics/product-card__favorite.png) no-repeat;
+}
+
+/*Счётчик для корзины*/
+.basket-item__quantity {
+  position: relative;
+  top: 60px;
+  left: 5px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 68px;
+  height: 30px;
+  padding: 0 5px;
+  font-size: 18px;
+  text-align: center;
+  color: #FFFFFF;
+  background: #A1B3BF;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  border-radius: 50px;
+}
+
+.basket-item__quantity-change:hover {
+    cursor: pointer;
+    color: #333333;
+}
+
+/*Цена*/
+.price {
+  position: relative;
+  top: 65px;
+  left: 6px;
+  display: inline-block;
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 28px;
+  color: #333333;
+}
+
+/*Кнопка "В корзину"*/
+.in-basket {
+  position: relative;
+  top: 60px;
+  left: 87px;
+  width: 246px;
+  height: 47px;
+  font-family: Roboto, sans-serif;
+  font-weight: 300;
+  font-size: 18px;
+  text-align: center;
+  color: #FFFFFF;
+  background: linear-gradient(90deg, #FF65A5 0%, #FF8076 100.22%);
+  box-shadow: 0 2px 8px rgba(255, 101, 165, 0.6), inset 0 1px 1px #FF8076;
+  border-radius: 8px;
+  border: none;
+}
+
+.in-basket-click {
+  overflow: hidden;
+  position: relative;
+}
+
+.in-basket-click span {
+  z-index: 20;
+}
+
+.in-basket-click:after {
+  position: absolute;
+  top: -50px;
+  left: -65px;
+  width: 5px;
+  height: 155px;
+  content: "";
+  background: #ffffff;
+  filter: blur(7px);
+  -webkit-filter: blur(7px);
+  border-right: 10px solid #ffffff;
+  -webkit-transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
+          transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
+  -webkit-transform: rotate(-35deg);
+      -ms-transform: rotate(-35deg);
+          transform: rotate(-35deg);
+}
+
+.in-basket-click:active:after {
+  left: 120%;
+  -webkit-transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
+          transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.in-basket:hover {
+  cursor: pointer;
+}
+
+
+/*Слайдеры*/
+
+/*Слайдер выбранного товара*/
+.main-screen__favourite-product-slider {
+  height: 500px;
+}
+
+.favourite-product-slider {
+  position: relative;
+  top: 27px;
+  left: 2px;
+  width: 142px;
+  height: 440px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arrow-up,
+.arrow-down {
+  position: absolute;
+  height: 30px;
+  width: 30px;
+  background-image: url(../img/product-card-pics/drop-down-up-chevron-sprite.png);
+  background-repeat: no-repeat;
+}
+
+.favourite-product-slider__arrow {
+  right: 57px;
+}
+
+.favourite-product-slider__arrow:hover {
+  cursor: pointer;
+  outline: solid 1px #cccccc;
+}
+
+.favourite-product-slider__arrow_up {
+  background-position: -65px 8px;
+  top: -32px;
+}
+
+.favourite-product-slider__arrow_down {
+  background-position: -5px 9px;
+  bottom: -32px;
+}
+
+.favourite-product-slider__item {
+  width: 142px;
+  height: 128px;
+  border: 1px solid #C4C4C4;
+}
+
+.favourite-product-slider__item:hover {
+  opacity: 0.6;
+}
+
+.favourite-product-slider__item a {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+}
+
+.favourite-product-slider__item-1 {
+  background: url(../img/product-card-pics/product-card__favourite-product-slider-item-1.png) no-repeat;
+  background-position: 29px 0;
+}
+
+.favourite-product-slider__item-2 {
+  background: url(../img/product-card-pics/product-card__favourite-product-slider-item-2.png) no-repeat;
+  background-position: 13px 0;
+}
+
+.favourite-product-slider__item-3 {
+  background: url(../img/product-card-pics/product-card__favourite-product-slider-item-3.png) no-repeat;
+  background-position: 30px 0;
+}
+
+
+/*Слайдер "Вы смотрели"*/
+.product-card__overlooked-slider {
+  width: 995px;
+  margin: 55px auto;
+}
+
+.product-card__overlooked-slider h3 {
+  position: relative;
+  top: 21px;
+  font-family: Roboto;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.overlooked-slider {
+  position: relative;
+  top: 22px;
+  right: -1px;
+  width: 995px;
+  height: 180px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.overlooked-slider__arrow_left {
+  background-position: -60px 0;
+  left: -45px;
+}
+
+.overlooked-slider__arrow_right {
+  background-position: -90px 0;
+  right: -45px;
+}
+
+.overlooked-slider__item {
+  width: 186px;
+  height: 133px;
+  border: solid 0.5px rgba(41, 42, 58, 0.25);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  overflow: hidden;
+}
+
+.overlooked-slider__item:hover {
+  opacity: 0.6;
+}
+
+.overlooked-slider__item a {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+}
+
+.overlooked-slider__item-1 {
+  background-image: url(../img/catalogue-pics/product-catalogue__overlooked-slider-item-1.png);
+}
+
+.overlooked-slider__item-2 {
+  background-image: url(../img/catalogue-pics/product-catalogue__overlooked-slider-item-2.png);
+}
+
+.overlooked-slider__item-3 {
+  background-image: url(../img/catalogue-pics/product-catalogue__overlooked-slider-item-3.png);
+}
+
+.overlooked-slider__item-4 {
+  background-image: url(../img/catalogue-pics/product-catalogue__overlooked-slider-item-4.png);
+}
+
+.overlooked-slider__item-5 {
+  background-image: url(../img/catalogue-pics/product-catalogue__overlooked-slider-item-5.png);
+}
+
+
+/*Слайдер "Похожие товары"*/
+.product-card__similar-products-slider {
+  width: 995px;
+  margin: 50px auto 73px;
+}
+
+.product-card__similar-products-slider h3 {
+  position: relative;
+  top: 24px;
+  font-family: Roboto;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.similar-products-slider {
+  position: relative;
+  top: 23px;
+  right: -1px;
+  width: 995px;
+  height: 367px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.arrow {
+  position: absolute;
+  height: 30px;
+  width: 30px;
+  background-image: url(../img/slider_sprite.png);
+  background-repeat: no-repeat;
+}
+
+.arrow:hover {
+  cursor: pointer;
+  outline: solid 1px #cccccc;
+}
+
+.similar-products-slider__arrow {
+  position: absolute;
+  top: 130px;
+}
+
+.similar-products-slider__arrow_left {
+  background-position: -60px 0;
+  left: -45px;
+}
+
+.similar-products-slider__arrow_right {
+  background-position: -90px 0;
+  right: -45px;
+}
+
+.similar-products-slider__item {
+  position: relative;
+  top: -3px;
+  width: 319px;
+  height: 230px;
+  border: solid 0.5px rgba(41, 42, 58, 0.25);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  overflow: hidden;
+}
+
+.similar-products-slider__item:hover {
+  opacity: 0.6;
+}
+
+.similar-products-slider__item a {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+}
+
+.similar-products-slider__item-list__item-card {
+  width: 319px;
+  height: auto;
+}
+
+.similar-products-slider__item-pic-1 {
+  position: relative;
+  top: 6px;
+  left: 40px;
+}
+
+.similar-products-slider__item-pic-2 {
+  position: relative;
+  top: 21px;
+  left: 16px;
+}
+
+.similar-products-slider__item-pic-3 {
+  position: relative;
+  top: 7px;
+  left: 24px;
+}
+
+.similar-products-slider__item-desc {
+  position: relative;
+  top: -4px;
+  left: 3px;
+  width: 317px;
+}
+
+.similar-products-slider__item-name {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  text-align: center;
+  padding: 14px 0 5px;
+}
+
+.similar-products-slider__item-producer {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  padding-bottom: 3px;
+  text-align: center;
+  color: #D4D4D4;
+}
+
+span.producer {
+  text-decoration: underline;
+}
+
+.similar-products-slider__item-price {
+  padding-left: 5px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  text-align: center;
+  color: #333333;
+}
+
+.similar-products-slider__item-price::after {
+  position: relative;
+  left: 8px;
+  content: " ₽";
+  font-weight: 700;
+  font-size: 20px;
+  text-align: center;
+}
+
+/*Кастомизация бегунков*/
+::-webkit-scrollbar-button {
+background-image: url('');
+background-repeat: no-repeat;
+width: 7px;
+height: 7px;
+}
+
+::-webkit-scrollbar-track {
+background-color: rgba(255, 255, 255, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+-webkit-border-radius: 15px;
+border-radius: 15px;
+background-color: #A1B3BF;
+}
+
+::-webkit-scrollbar-thumb:hover {
+background-color: rgba(161, 179, 191, 0.5);
+}
+
+::-webkit-resizer {
+background-image: url('');
+background-repeat: no-repeat;
+width: 7px;
+}
+
+::-webkit-scrollbar{
+width: 7px;
+}
