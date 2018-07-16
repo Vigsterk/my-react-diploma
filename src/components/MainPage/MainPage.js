@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import slider from '../js/slider';
+import { BrowserRouter, Route, NavLink } from 'react-router-dom'
 
 class MainPage extends Component {
   componentDidMount() {
@@ -33,6 +34,7 @@ class MainPage extends Component {
     )
   }
 }
+
 //Перебрать button и slider image
 const Slider = () => {
   return (
@@ -64,6 +66,7 @@ const Slider = () => {
 
   )
 }
+
 //Перебрать menu-item
 const NewDeals = () => {
   return (
@@ -89,26 +92,57 @@ const NewDeals = () => {
   )
 }
 
-const DealsSlider = () => {
-  return (
-    <div className="new-deals__slider">
-      <div className="new-deals__arrow new-deals__arrow_left arrow"></div>
-      <div className="new-deals__product new-deals__product_first">
-        <a href="#"></a>
+class DealsSlider extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      data: []
+    }
+  }
+  componentDidMount() {
+    fetch("https://neto-api.herokuapp.com/bosa-noga/features", {
+      method: "GET"
+    })
+      .then(response => {
+        if (200 <= response.status && response.status < 300) {
+          return response;
+        }
+        throw new Error(response.statusText);
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        this.setState({
+          data: data.data
+        })
+      })
+      .catch(error => {
+        console.log(error)
+      });
+  }
+
+  //Запилить слайдер
+  render() {
+    return (
+      <div className="new-deals__slider">
+        <div className="new-deals__arrow new-deals__arrow_left arrow"></div>
+        <div className="new-deals__product new-deals__product_first">
+          <NavLink to="/productCard"></NavLink>
+        </div>
+        <div className="new-deals__product new-deals__product_active">
+          <NavLink to="/productCard"></NavLink>
+          <div className="new-deals__product_favorite"></div>
+        </div>
+        <div className="new-deals__product new-deals__product_last">
+          <NavLink to="/productCard"></NavLink>
+        </div>
+        <div className="new-deals__arrow new-deals__arrow_right arrow"></div>
       </div>
-      <div className="new-deals__product new-deals__product_active">
-        <a href="catalogue.html"></a>
-        <div className="new-deals__product_favorite"></div>
-      </div>
-      <div className="new-deals__product new-deals__product_last">
-        <a href="#"></a>
-      </div>
-      <div className="new-deals__arrow new-deals__arrow_right arrow"></div>
-    </div>
-  )
+    )
+  }
 }
 
-//Перебрать инфо по списку продуктов
+//Текст должен менять содержимое при переключении на другое изображение. Сейчас блок новинок разбит на 3 части. Всё в один? 
 const ProductInfo = () => {
   return (
     <div className="new-deals__product-info">

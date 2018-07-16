@@ -1,15 +1,40 @@
 import React, { Component } from 'react';
+import SitePath from '../SitePath/SitePath'
 
 class OrderEnd extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      sitepath: [
+        {
+          href: "/",
+          title: "Главная"
+        },
+        {
+          href: "/",
+          title: "Корзина"
+        },
+        {
+          href: "/order",
+          title: "Оформление заказа"
+        },
+        {
+          href: "/orderEnd",
+          title: "Заказ принят"
+        }
+      ]
+    }
+  }
   render() {
     return (
       <div className="wrapper order-wrapper">
+        <SitePath pathprops={this.state.sitepath} />
         <section className="order-done">
           <h2 className="order-done__title order-process__title">Заказ принят, спасибо!</h2>
           <div className="order-done__information order-info">
             <div className="order-info__item order-info__item_summ">
               <h3>Сумма заказа:</h3>
-              <p>12 050&nbsp<i className="fa fa-rub" aria-hidden="true"></i></p>
+              <p>12 050<i className="fa fa-rub" aria-hidden="true"></i></p>
             </div>
             <div className="order-info__item order-info__item_pay-form">
               <h3>Способ оплаты:</h3>

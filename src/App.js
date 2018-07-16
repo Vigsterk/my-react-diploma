@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Catalogue, Favorite, Footer, Header, Order, OrderEnd, MainPage, ProductCard } from './components'
+
 import './App.css';
 import { BrowserRouter, Route } from 'react-router-dom'
 
@@ -14,11 +15,11 @@ class App extends Component {
         <div className='container'>
           <Header />
           <Route path='/' exact component={MainPage} />
-          <Route path='/Catalogue' exact component={Catalogue} />
-          <Route path='/Favorite' exact component={Favorite} />
-          <Route path='/Order' exact component={Order} />
-          <Route path='/OrderEnd' exact component={OrderEnd} />
-          <Route path='/ProductCard' exact component={ProductCard} />
+          <Route path='/catalogue' exact component={Catalogue} />
+          <Route path='/favorite' exact component={Favorite} />
+          <Route path='/order' exact component={Order} />
+          <Route path='/orderEnd' exact component={OrderEnd} />
+          <Route path='/productCard' exact component={ProductCard} />
           <Footer />
         </div>
       </BrowserRouter>

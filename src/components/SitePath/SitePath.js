@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
+import { BrowserRouter, Route, NavLink } from 'react-router-dom'
 
-const SitePath = () => {
+const SitePath = (props) => {
+  const pathArr = props.pathprops
   return (
     <div className="site-path">
       <ul className="site-path__items">
-        <li className="site-path__item"><a href="index.html">Главная</a></li>
-        <li className="site-path__item"><a href="#">Женская обувь</a></li>
+        {pathArr.map(item =>
+          <li className="site-path__item"><NavLink to={item.href}>{item.title}</NavLink></li>
+        )}
       </ul>
     </div>
   )
 }
 export default SitePath
-

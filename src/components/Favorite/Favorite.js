@@ -1,17 +1,26 @@
 import React, { Component } from 'react';
 import './style-favorite.css';
+import SitePath from '../SitePath/SitePath';
 
-const Favorite = (props) => {
-  return (
-    props.items.map((item, idx) =>
+class Favorite extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      sitepath: [
+        {
+          href: "/",
+          title: "Главная"
+        },
+        {
+          href: "/catalogue",
+          title: "Избранное"
+        }]
+    }
+  }
+  render() {
+    return (
       <div className="wrapper wrapper_favorite">
-        <div className="site-path">
-          <ul className="site-path__items">
-            <li className="site-path__item"><a href="index.html">Главная</a></li>
-            <li className="site-path__item"><a href="favorite.html">Избранное</a></li>
-          </ul>
-        </div>
-
+        <SitePath pathprops={this.state.sitepath} />
         <main className="product-catalogue product-catalogue_favorite">
 
           <section className="product-catalogue__head product-catalogue__head_favorite">
@@ -33,9 +42,9 @@ const Favorite = (props) => {
 
           <section className="product-catalogue__item-list product-catalogue__item-list_favorite">
 
-            <a className="item-list__item-card item" href="product-card-desktop.html">
+            {favoriteData.map(item => <a className="item-list__item-card item" href="product-card-desktop.html">
               <div className="item-pic">
-                <img className='item-pic-12' src='../img/catalogue-pics/product-catalogue__item-12.png' alt="" />
+                <img className={item.item_pic_class} src={item.src} alt="" />
                 <div className="product-catalogue__product_favorite">
                   <p></p>
                 </div>
@@ -43,35 +52,31 @@ const Favorite = (props) => {
                 <div className="arrow arrow_right"></div>
               </div>
               <div className="item-desc">
-                <h4 className="item-name">Туфли женские</h4>
-                <p className="item-producer">Производитель: <span className="producer">Vittorio Virgili</span></p>
-                <p className="item-price">17750</p>
+                <h4 className="item-name">{item.item_name}</h4>
+                <p className="item-producer">Производитель: <span className="producer">{item.producer}</span></p>
+                <p className="item-price">{item.price}</p>
                 <div className="sizes">
                   <p className="sizes__title">Размеры в наличии:</p>
-                  <p className="sizes__avalible">36, 37, 38, 39, 40, 41, 42</p>
+                  <p className="sizes__avalible">{item.sizes}</p>
                 </div>
               </div>
-            </a>
+            </a>)}
           </section>
         </main>
       </div>
     )
-  )
+  }
 }
 
-/*
-const Data = () => {
-  let items = [{
-    item_pic_class: 'item-pic-12',
-    sizes: '36, 37, 38, 39, 40, 41, 42',
-    producer: 'Vittorio Virgili',
-    item_name: 'Туфли женские',
-    price: 17750,
-    src: '../img/catalogue-pics/product-catalogue__item-12.png'
-  }]
-  return (
-    <Favorite items={items} />
-  )
-}
-*/
+
+const favoriteData = [{
+  item_pic_class: 'item-pic-12',
+  sizes: '36, 37, 38, 39, 40, 41, 42',
+  producer: 'Vittorio Virgili',
+  item_name: 'Туфли женские',
+  price: 17750,
+  src: '../img/catalogue-pics/product-catalogue__item-12.png'
+}]
+
+
 export default Favorite
