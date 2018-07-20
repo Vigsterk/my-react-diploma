@@ -8,11 +8,11 @@ class Favorite extends Component {
     this.state = {
       sitepath: [
         {
-          href: "/",
+          to: "/",
           title: "Главная"
         },
         {
-          href: "/catalogue",
+          to: "/",
           title: "Избранное"
         }]
     }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import slider from '../js/slider';
-import { BrowserRouter, Route, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 class MainPage extends Component {
   componentDidMount() {
@@ -17,12 +17,7 @@ class MainPage extends Component {
         <section className="slider">
           <Slider />
         </section>
-        <section className="new-deals wave-bottom">
-          <h2 className="h2">Новинки</h2>
-          <NewDeals />
-          <DealsSlider />
-          <ProductInfo />
-        </section>
+        <NewDeals />
         <section className="sales-and-news wave-bottom">
           <h2 className="h2">акции и новости</h2>
           <Sales />
@@ -40,18 +35,18 @@ const Slider = () => {
   return (
     <div className="wrapper">
       <div className="slider__pictures">
-        <a className="slider__image" href="#">
-          <img src="img/slider.jpg" alt="slide picture" />
-        </a>
-        <a className="slider__image" href="#">
-          <img src="img/slider180deg.jpeg" alt="slide picture" />
-        </a>
-        <a className="slider__image" href="#">
-          <img src="img/slider.jpg" alt="slide picture" />
-        </a>
-        <a className="slider__image" href="#">
-          <img src="img/slider180deg.jpeg" alt="slide picture" />
-        </a>
+        <NavLink className="slider__image" to="/">
+          <img src="img/slider.jpg" alt="slide img" />
+        </NavLink>
+        <NavLink className="slider__image" to="/">
+          <img src="img/slider180deg.jpeg" alt="slide img" />
+        </NavLink>
+        <NavLink className="slider__image" to="/">
+          <img src="img/slider.jpg" alt="slide img" />
+        </NavLink>
+        <NavLink className="slider__image" to="/">
+          <img src="img/slider180deg.jpeg" alt="slide img" />
+        </NavLink>
         <div className="arrow slider__arrow slider__arrow_left"></div>
         <div className="arrow slider__arrow slider__arrow_right"></div>
         <div className="slider__circles">
@@ -67,40 +62,17 @@ const Slider = () => {
   )
 }
 
-//Перебрать menu-item
-const NewDeals = () => {
-  return (
-    <div className="new-deals__menu">
-      <ul className="new-deals__menu-items">
-        <li className="new-deals__menu-item new-deals__menu-item_active">
-          <a href="#">Женская обувь</a>
-        </li>
-        <li className="new-deals__menu-item">
-          <a href="#">Мужская обувь</a>
-        </li>
-        <li className="new-deals__menu-item">
-          <a href="#">Детская обувь</a>
-        </li>
-        <li className="new-deals__menu-item">
-          <a href="#">аксессуары</a>
-        </li>
-        <li className="new-deals__menu-item">
-          <a href="#">для дома</a>
-        </li>
-      </ul>
-    </div>
-  )
-}
-
-class DealsSlider extends Component {
+class NewDeals extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: []
+      data: [],
+      productInfo: "",
+      check: false
     }
   }
   componentDidMount() {
-    fetch("https://neto-api.herokuapp.com/bosa-noga/features", {
+    fetch("https://neto-api.herokuapp.com/bosa-noga/featured", {
       method: "GET"
     })
       .then(response => {
@@ -113,7 +85,9 @@ class DealsSlider extends Component {
       .then(data => {
         console.log(data)
         this.setState({
-          data: data.data
+          data: data.data,
+          productInfo: data.data[1],
+          check: true
         })
       })
       .catch(error => {
@@ -121,94 +95,272 @@ class DealsSlider extends Component {
       });
   }
 
-  //Запилить слайдер
+  loadProductInfo = (param) => {
+    console.log(param)
+    this.setState({
+      productInfo: param
+    })
+  }
+
   render() {
     return (
-      <div className="new-deals__slider">
-        <div className="new-deals__arrow new-deals__arrow_left arrow"></div>
-        <div className="new-deals__product new-deals__product_first">
-          <NavLink to="/productCard"></NavLink>
-        </div>
-        <div className="new-deals__product new-deals__product_active">
-          <NavLink to="/productCard"></NavLink>
-          <div className="new-deals__product_favorite"></div>
-        </div>
-        <div className="new-deals__product new-deals__product_last">
-          <NavLink to="/productCard"></NavLink>
-        </div>
-        <div className="new-deals__arrow new-deals__arrow_right arrow"></div>
+      <section className="new-deals wave-bottom">
+        <h2 className="h2">Новинки</h2>
+        <NewDealsMenu />
+        {this.state.check && <DealsSlider img={this.state.data} infoFunc={this.loadProductInfo} />}
+        {this.state.check && <ProductInfo info={this.state.productInfo} />}
+      </section>
+    )
+  }
+}
+
+class NewDealsMenu extends NewDeals {
+  constructor(props) {
+    super(props)
+    this.handleClick = this.handleClick.bind(this)
+  }
+  handleClick(event) {
+    let link = event.target
+    let listItem = link.closest("li")
+    if (link.className === 'new-deals__item-link new-deals__item-link_active') {
+      link.classList.remove('new-deals__item-link_active');
+      listItem.classList.remove('new-deals__menu-item_active');
+    } else {
+      if (document.querySelector('.new-deals__item-link_active')) {
+        document.querySelector('.new-deals__item-link_active').classList.toggle('new-deals__item-link_active');
+        document.querySelector('.new-deals__menu-item_active').classList.toggle('new-deals__menu-item_active');
+      }
+      link.classList.toggle('new-deals__item-link_active');
+      listItem.classList.toggle('new-deals__menu-item_active')
+    }
+
+  }
+  render() {
+    return (
+      <div className="new-deals__menu">
+        <ul className="new-deals__menu-items">
+          {newDealsData.map(item =>
+            <li key={item.id} className="new-deals__menu-item">
+              <NavLink className="new-deals__item-link" to={item.url} onClick={this.handleClick}>{item.title}</NavLink>
+            </li>)}
+        </ul>
       </div>
     )
   }
 }
 
-//Текст должен менять содержимое при переключении на другое изображение. Сейчас блок новинок разбит на 3 части. Всё в один? 
-const ProductInfo = () => {
+const newDealsData = [
+  {
+    title: "Женская обувь",
+    url: "/",
+    id: 1
+  },
+  {
+    title: "Мужская обувь",
+    url: "/",
+    id: 2
+  },
+  {
+    title: "Детская обувь",
+    url: "/",
+    id: 3
+  },
+  {
+    title: "аксессуары",
+    url: "/",
+    id: 4
+  },
+  {
+    title: "для дома",
+    url: "/",
+    id: 5
+  }
+]
+
+class DealsSlider extends Component {
+  constructor(props) {
+    super(props)
+    console.log(props)
+    this.state = {
+      data: this.props.img,
+      first: this.props.img[0],
+      active: this.props.img[1],
+      last: this.props.img[2],
+      func: this.props.infoFunc
+    }
+    this.moveLeft = this.moveLeft.bind(this)
+    this.moveRight = this.moveRight.bind(this)
+  }
+
+  moveLeft() {
+    const tempDataArr = [...this.state.data]
+    let tempDataIndex = tempDataArr.indexOf(this.state.active)
+    let tempDataIndexFirst = tempDataArr.indexOf(this.state.first)
+    let tempDataIndexLast = tempDataArr.indexOf(this.state.last)
+    tempDataIndex > 0 ? tempDataIndex-- : tempDataIndex = tempDataArr.length - 1
+    tempDataIndexFirst > 0 ? tempDataIndexFirst-- : tempDataIndexFirst = tempDataArr.length - 1
+    tempDataIndexLast > 0 ? tempDataIndexLast-- : tempDataIndexLast = tempDataArr.length - 1
+    let tempDataActive = tempDataArr[tempDataIndex]
+    let tempDataFirst = tempDataArr[tempDataIndexFirst]
+    let tempDataLast = tempDataArr[tempDataIndexLast]
+    this.setState({
+      first: tempDataFirst,
+      active: tempDataActive,
+      last: tempDataLast
+    })
+    this.state.func(tempDataActive)
+  }
+
+  moveRight() {
+    const tempDataArr = [...this.state.data]
+    let tempDataIndex = tempDataArr.indexOf(this.state.active)
+    let tempDataIndexFirst = tempDataArr.indexOf(this.state.first)
+    let tempDataIndexLast = tempDataArr.indexOf(this.state.last)
+    tempDataIndex < (tempDataArr.length - 1) ? tempDataIndex++ : tempDataIndex = 0
+    tempDataIndexFirst < (tempDataArr.length - 1) ? tempDataIndexFirst++ : tempDataIndexFirst = 0
+    tempDataIndexLast < (tempDataArr.length - 1) ? tempDataIndexLast++ : tempDataIndexLast = 0
+    let tempDataActive = tempDataArr[tempDataIndex]
+    let tempDataFirst = tempDataArr[tempDataIndexFirst]
+    let tempDataLast = tempDataArr[tempDataIndexLast]
+    this.setState({
+      first: tempDataFirst,
+      active: tempDataActive,
+      last: tempDataLast
+    })
+    this.state.func(tempDataActive)
+  }
+
+  render() {
+    return (
+      <div className="new-deals__slider">
+        <div className="new-deals__arrow new-deals__arrow_left arrow" onClick={this.moveLeft}></div>
+        <ProductFirst images={this.state.first.images[0]} />
+        <ProductActive images={this.state.active.images[0]} />
+        <ProductLast images={this.state.last.images[0]} />
+        <div className="new-deals__arrow new-deals__arrow_right arrow" onClick={this.moveRight}></div>
+      </div>
+    )
+  }
+}
+
+const ProductFirst = (props) => {
   return (
-    <div className="new-deals__product-info">
-      <a href="product-card-desktop.html" className="h3">Босоножки женские</a>
-      <p>Производитель:
-          <span>Damlax</span>
-      </p>
-      <h3 className="h3">5 950 ₽</h3>
+    <div className="new-deals__product new-deals__product_first">
+      <NavLink className="new-deals__product_link" to="/productCard">
+        <img className="new-deals__product_first_img" src={props.images} alt={"lastProduct"} />
+      </NavLink>
+    </div>)
+}
+
+const ProductActive = (props) => {
+  return (
+    <div>
+      <div className="new-deals__product new-deals__product_active">
+        <NavLink className="new-deals__product_link" to="/productCard">
+          <img className="new-deals__product_active_img" src={props.images} alt={"ActiveProduct"} />
+        </NavLink>
+        <div className="new-deals__product_favorite"></div>
+      </div>
     </div>
   )
 }
 
-//Перебрать новостной блок и блок айтемс
+const ProductLast = (props) => {
+  return (
+    <div className="new-deals__product new-deals__product_last">
+      <NavLink className="new-deals__product_link" to="/productCard">
+        <img className="new-deals__product_last_img" src={props.images} alt={"LastProduct"} />
+      </NavLink>
+    </div>)
+}
+
+const ProductInfo = (props) => {
+  return (
+    <div className="new-deals__product-info">
+      <NavLink to="productCard" className="h3">{props.info.title}</NavLink>
+      <p>Производитель:
+          <span>{props.info.brand}</span>
+      </p>
+      <h3 className="h3">{props.info.price}₽</h3>
+    </div>
+  )
+}
+
 const Sales = () => {
   return (
     <div className="sales-and-news__items">
-      <div className="sales-and-news__item sales-and-news__item_1">
-        <a href="#">
-          <h3 className="h3">обувь к свадьбе</h3>
-        </a>
-      </div>
-      <div className="sales-and-news__item sales-and-news__item_2">
-        <a href="#">
-          <h3 className="h3">20% скидка
-              <br />
-            <span>На летнюю обувь</span>
-          </h3>
-        </a>
-      </div>
-      <div className="sales-and-news__item sales-and-news__item_3">
-        <a href="#">
-          <h3 className="h3">готовимся к лету!</h3>
-        </a>
-      </div>
-      <div className="sales-and-news__item sales-and-news__item_4">
-        <a href="#">
-          <h3 className="h3">Больше покупок –
-              <br />больше скидка!</h3>
-        </a>
-      </div>
+      {salesItemsData.map(item => <div key={item.id} className={`sales-and-news__item sales-and-news__item_${item.id}`}>
+        <NavLink to={item.to} className="sales-and-news__item-link">
+          <h3 className="h3">{item.title[0]}<br /><span>{item.title[1]}</span></h3>
+        </NavLink>
+      </div>)}
       <div className="sales-and-news__news">
         <div className="sales-and-news__arrow sales-and-news__arrow_up arrow"></div>
-        <div className="sales-and-news__new">
-          <time dateTime="2017-01-18 00:00">18 января 2017</time>
-          <a href="#">Американские резиновые сапоги Bogs идеально подходят для русской зимы!</a>
-        </div>
-        <div className="sales-and-news__new">
-          <time dateTime="2017-05-18 00:00">18 мая 2017</time>
-          <a href="#">Магазины Bosa Noga</a>
-        </div>
-        <div className="sales-and-news__new">
-          <time dateTime="2017-03-10 00:00">10 марта 2017</time>
-          <a href="#">Тенденция весны 2018: розовый и фуксия. 10 пар обуви для яркого образа</a>
-        </div>
+        {salesNewsData.map(item =>
+          <div key={item.id} className="sales-and-news__new">
+            <time dateTime={item.time}>{item.pubdate}</time>
+            <NavLink className="sales-and-news__item-link" to={item.to}>{item.title}</NavLink>
+          </div>)}
         <div className="sales-and-news__arrow sales-and-news__arrow_down arrow"></div>
       </div>
-
     </div>
   )
 }
+
+const salesItemsData = [
+  {
+    id: 1,
+    to: "/",
+    title: ["обувь к свадьбе"]
+  },
+  {
+    id: 2,
+    to: "/",
+    title: ["20% скидка", "На летнюю обувь"]
+  },
+  {
+    id: 3,
+    to: "/",
+    title: ["готовимся к лету!"]
+  },
+  {
+    id: 4,
+    to: "/",
+    title: ["Больше покупок – ", "больше скидка!"]
+  }
+
+]
+
+const salesNewsData = [
+  {
+    id: 1,
+    to: "/",
+    time: "2017-01-18 00:00",
+    pubdate: "18 января 2017",
+    title: "Американские резиновые сапоги Bogs идеально подходят для русской зимы!"
+  },
+  {
+    id: 2,
+    to: "/",
+    time: "2017-05-18 00:00",
+    pubdate: "18 мая 2017",
+    title: "Магазины Bosa Noga"
+  },
+  {
+    id: 3,
+    to: "/",
+    time: "2017-03-10 00:00",
+    pubdate: "10 марта 2017",
+    title: "Тенденция весны 2018: розовый и фуксия. 10 пар обуви для яркого образа"
+  }
+]
 
 const AboutUs = () => {
   return (
     <div>
       <h2 className="about-us__title">Клиенты делают заказ
         <br /> в интернет-магазине BosaNoga!</h2>
+
       <p className="about-us__text">
         В Интернете можно встретить немало магазинов, предлагающих аксессуары. Но именно к нам хочется возвращаться снова и снова.
       </p>
@@ -232,6 +384,7 @@ const AboutUs = () => {
         вы сможете быть модным и стильным как осенью-зимой, так и весной-летом. Просто наберите номер нашего телефона, и мы
         поможем вам определиться с покупкой.
       </p>
+
       <span className="about-us__text_overlay"></span>
       <button className="about-us__text_button">читать</button>
     </div>

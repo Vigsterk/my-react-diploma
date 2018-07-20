@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import './style-catalogue.css';
 import SitePath from '../SitePath/SitePath'
 import Pagination from '../Pagination/Pagination';
-
-
-import { BrowserRouter, Route, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 class Catalogue extends Component {
   constructor(props) {
@@ -12,19 +10,22 @@ class Catalogue extends Component {
     this.state = {
       sitepath: [
         {
-          href: "/",
+          to: "/",
           title: "Главная"
         },
         {
-          href: "/catalogue",
+          to: "/",
           title: "Каталог"
         }],
-      data: []
+      data: [],
+      page: 1,
+      pages: ""
     }
+
   }
 
   componentDidMount() {
-    fetch("https://neto-api.herokuapp.com/bosa-noga/products", {
+    fetch(`https://neto-api.herokuapp.com/bosa-noga/products?page=${this.state.page}`, {
       method: "GET"
     })
       .then(response => {
@@ -37,7 +38,8 @@ class Catalogue extends Component {
       .then(data => {
         console.log(data)
         this.setState({
-          data: data.data
+          data: data.data,
+          pages: data.pages,
         })
       })
       .catch(error => {
@@ -45,6 +47,11 @@ class Catalogue extends Component {
       });
   }
 
+  changePage = (page) => {
+    this.setState({
+      page: page
+    })
+  }
 
   render() {
     return (
@@ -69,7 +76,7 @@ class Catalogue extends Component {
             </section>
 
             <section className="product-catalogue__item-list">
-              {this.state.data.map(items => <a key={items.id} className="item-list__item-card item" href={`productCard/${items.id}`}>
+              {this.state.data.map(items => <NavLink key={items.id} className="item-list__item-card item" to={`productCard/${items.id}`}>
                 <div className="item-pic">
                   {items.images.map(item =>
                     <img className="item-pic"
@@ -91,9 +98,9 @@ class Catalogue extends Component {
                     <p className="sizes__avalible">36, 37, 38, 39, 40, 41, 42</p>
                   </div>
                 </div>
-              </a>)}
+              </NavLink>)}
             </section>
-            <Pagination />
+            {this.state.pages && <Pagination page={this.state.page} pages={this.state.pages} func={this.changePage} />}
           </section>
         </main>
 
@@ -102,19 +109,19 @@ class Catalogue extends Component {
           <div className="overlooked-slider">
             <div className="overlooked-slider__arrow overlooked-slider__arrow_left arrow"></div>
             <div className="overlooked-slider__item overlooked-slider__item-1">
-              <a href="product-card-desktop.html"></a>
+              <NavLink to="/productCard"></NavLink>
             </div>
             <div className="overlooked-slider__item overlooked-slider__item-2">
-              <a href="product-card-desktop.html"></a>
+              <NavLink to="/productCard"></NavLink>
             </div>
             <div className="overlooked-slider__item overlooked-slider__item-3">
-              <a href="product-card-desktop.html"></a>
+              <NavLink to="/productCard"></NavLink>
             </div>
             <div className="overlooked-slider__item overlooked-slider__item-4">
-              <a href="product-card-desktop.html"></a>
+              <NavLink to="/productCard"></NavLink>
             </div>
             <div className="overlooked-slider__item overlooked-slider__item-5">
-              <a href="product-card-desktop.html"></a>
+              <NavLink to="/productCard"></NavLink>
             </div>
             <div className="overlooked-slider__arrow overlooked-slider__arrow_right arrow"></div>
           </div>
@@ -135,15 +142,15 @@ class SideBar extends Component {
               <div className="opener-down"></div>
             </div>
             <ul>
-              <li><a href="#">Балетки</a></li>
-              <li><a href="#">Босоножки и сандалии</a></li>
-              <li><a href="#">Ботильоны</a></li>
-              <li><a href="#">Ботинки</a></li>
-              <li><a href="#">Ботфорты</a></li>
-              <li><a href="#">Галоши</a></li>
-              <li><a href="#">Тапочки</a></li>
-              <li><a href="#">Туфли</a></li>
-              <li><a href="#">Сапоги</a></li>
+              <li><NavLink to="/">Балетки</NavLink></li>
+              <li><NavLink to="/">Босоножки и сандалии</NavLink></li>
+              <li><NavLink to="/">Ботильоны</NavLink></li>
+              <li><NavLink to="/">Ботинки</NavLink></li>
+              <li><NavLink to="/">Ботфорты</NavLink></li>
+              <li><NavLink to="/">Галоши</NavLink></li>
+              <li><NavLink to="/">Тапочки</NavLink></li>
+              <li><NavLink to="/">Туфли</NavLink></li>
+              <li><NavLink to="/">Сапоги</NavLink></li>
             </ul>
           </div>
         </section>
@@ -152,7 +159,6 @@ class SideBar extends Component {
           <div className="sidebar__price">
             <div className="sidebar__division-title">
               <h3>Цена</h3>
-
               <div className="opener-down"></div>
             </div>
             <div className="price-slider">
@@ -164,7 +170,6 @@ class SideBar extends Component {
               </div>
               <div className="counter">
                 <input type="text" className="input-1" value="1000" />
-
                 <div className="input-separator"></div>
                 <input type="text" className="input-2" value="30 000" />
               </div>
@@ -176,31 +181,51 @@ class SideBar extends Component {
           <div className="sidebar__color">
             <div className="sidebar__division-title">
               <h3>Цвет</h3>
-
               <div className="opener-down"></div>
             </div>
             <ul>
-              <li><a href="#">
-                <div className="color beige"></div>
-                <span className="color-name">Бежевый</span></a></li>
-              <li><a href="#">
-                <div className="color whitesnake"></div>
-                <span className="color-name">Белый</span></a></li>
-              <li><a href="#">
-                <div className="color shocking-blue"></div>
-                <span className="color-name">Голубой</span></a></li>
-              <li><a href="#">
-                <div className="color yellow"></div>
-                <span className="color-name">Жёлтый</span></a></li>
-              <li><a href="#">
-                <div className="color king-crimson"></div>
-                <span className="color-name">Алый</span></a></li>
-              <li><a href="#">
-                <div className="color deep-purple"></div>
-                <span className="color-name">Фиолетовый</span></a></li>
-              <li><a href="#">
-                <div className="color black-sabbath"></div>
-                <span className="color-name">Чёрный</span></a></li>
+              <li>
+                <NavLink to="/">
+                  <div className="color beige"></div>
+                  <span className="color-name">Бежевый</span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/">
+                  <div className="color whitesnake"></div>
+                  <span className="color-name">Белый</span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/">
+                  <div className="color shocking-blue"></div>
+                  <span className="color-name">Голубой</span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/">
+                  <div className="color yellow"></div>
+                  <span className="color-name">Жёлтый</span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/">
+                  <div className="color king-crimson"></div>
+                  <span className="color-name">Алый</span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/">
+                  <div className="color deep-purple"></div>
+                  <span className="color-name">Фиолетовый</span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/">
+                  <div className="color black-sabbath"></div>
+                  <span className="color-name">Чёрный</span>
+                </NavLink>
+              </li>
             </ul>
           </div>
         </section>
@@ -300,14 +325,14 @@ class SideBar extends Component {
               <div className="opener-down"></div>
             </div>
             <ul>
-              <li><a href="#">Офис</a></li>
-              <li><a href="#">Вечеринка</a></li>
-              <li><a href="#">Свадьба</a></li>
-              <li><a href="#">Спорт</a></li>
-              <li><a href="#">Путешествие</a></li>
-              <li><a href="#">Свидание</a></li>
-              <li><a href="#">Дома</a></li>
-              <li><a href="#">Произвести впечатление</a></li>
+              <li><NavLink to="/">Офис</NavLink></li>
+              <li><NavLink to="/">Вечеринка</NavLink></li>
+              <li><NavLink to="/">Свадьба</NavLink></li>
+              <li><NavLink to="/">Спорт</NavLink></li>
+              <li><NavLink to="/">Путешествие</NavLink></li>
+              <li><NavLink to="/">Свидание</NavLink></li>
+              <li><NavLink to="/">Дома</NavLink></li>
+              <li><NavLink to="/">Произвести впечатление</NavLink></li>
             </ul>
           </div>
         </section>
@@ -347,7 +372,7 @@ class SideBar extends Component {
 
         <section className="sidebar__division">
           <div className="drop-down">
-            <a href="#"><span className="drop-down-icon"></span>Сбросить</a>
+            <NavLink to="/"><span className="drop-down-icon"></span>Сбросить</NavLink>
           </div>
         </section>
       </section>

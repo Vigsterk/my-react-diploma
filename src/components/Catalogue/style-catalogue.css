@@ -291,7 +291,7 @@ span.producer {
 }
 
 .product-catalogue .sizes {
-  position: absolute;
+  
   display: none;
   width: 100%;
   text-align: center;
@@ -306,6 +306,12 @@ span.producer {
 .product-catalogue .sizes__avalible {
   font-size: 15px;
   font-weight: normal;
+}
+
+#size{
+  position: absolute;
+  top: 92px;
+  left: 0px;
 }
 
 /*Пагинация в каталоге*/
@@ -349,8 +355,8 @@ li.active {
   color: #000000;
 }
 
-.angle-back a,
-.angle-forward a {
+.angle-back_button,
+.angle-forward_button {
   position: relative;
   display: inline-block;
   top: 0;
@@ -360,9 +366,15 @@ li.active {
   vertical-align: middle;
   background: url(../img/catalogue-pics/product-catalogue-sprite-min.png);
   background-position: 80px -107px;
+  border: none;
 }
 
-.angle-forward a {
+.angle-back_button:hover,
+.angle-forward_button:hover{
+ outline: 1px solid lightgrey;
+}
+
+.angle-forward_button {
   left: -7px;
   background-position: 36px -107px;
 }

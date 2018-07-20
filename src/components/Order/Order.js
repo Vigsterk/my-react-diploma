@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './style-order.css';
-import { BrowserRouter, Route, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import SitePath from '../SitePath/SitePath';
 import OrderEnd from '../OrderEnd/OrderEnd';
 
@@ -10,15 +10,15 @@ class Order extends Component {
     this.state = {
       sitepath: [
         {
-          href: "/",
+          to: "/",
           title: "Главная"
         },
         {
-          href: "/",
+          to: "/",
           title: "Корзина"
         },
         {
-          href: "/order",
+          to: "/order",
           title: "Оформление заказа"
         }],
       orderDetails: {
@@ -103,7 +103,7 @@ class BasketItem extends Component {
       <div className="basket-item">
         <div className="basket-item__pic"><img src="img/catalogue-pics/product-catalogue__item-1.png" alt="product_1" /></div>
         <div className="basket-item__product">
-          <div className="basket-item__product-name"><a href="#">Босоножки женские</a></div>
+          <div className="basket-item__product-name"><NavLink to="/productCard">Босоножки женские</NavLink></div>
           <div className="basket-item__product-features">
             <div className="basket-item__size">Размер: <span>37</span></div>
             <div className="basket-item__producer">Производитель: <span>Albano</span></div>

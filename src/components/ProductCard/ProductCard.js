@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import './style-product-card.css';
-import { BrowserRouter, Route, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 class ProductCard extends Component {
-  constructor(props) {
-    super(props)
-  }
   render() {
     return (
       <div>
@@ -14,10 +11,10 @@ class ProductCard extends Component {
           <section className="product-card-content__main-screen">
             <FavoriteSlider />
             <div className="main-screen__favourite-product-pic">
-              <a href="#">
+              <NavLink to="/">
                 <img src="img/product-card-pics/product-card__favourite-product-pic.png" alt="" />
-              </a>
-              <a href="#" className="main-screen__favourite-product-pic__zoom" />
+              </NavLink>
+              <NavLink to="/" className="main-screen__favourite-product-pic__zoom" />
             </div>
 
             <div className="main-screen__product-info">
@@ -34,7 +31,7 @@ class ProductCard extends Component {
                   </tr>
                   <tr>
                     <td className="left-col">Производитель:</td>
-                    <td className="right-col"><a href="#"><span className="producer">Fabi</span></a></td>
+                    <td className="right-col"><NavLink to="/"><span className="producer">Fabi</span></NavLink></td>
                   </tr>
                   <tr>
                     <td className="left-col">Цвет:</td>
@@ -57,18 +54,18 @@ class ProductCard extends Component {
               </div>
               <p className="size">Размер</p>
               <ul className="sizes">
-                <li><a href="#">36</a></li>
-                <li className="active"><a href="#">37</a></li>
-                <li><a href="#">38</a></li>
-                <li><a href="#">38</a></li>
-                <li><a href="#">39</a></li>
+                <li><NavLink to="/">36</NavLink></li>
+                <li className="active"><NavLink to="/">37</NavLink></li>
+                <li><NavLink to="/">38</NavLink></li>
+                <li><NavLink to="/">38</NavLink></li>
+                <li><NavLink to="/">39</NavLink></li>
               </ul>
               <div className="size-wrapper">
-                <a href="#"><span className="size-rule"></span><p className="size-table">Таблица размеров</p></a>
+                <NavLink to="/"><span className="size-rule"></span><p className="size-table">Таблица размеров</p></NavLink>
               </div>
-              <a href="#" className="in-favourites-wrapper">
-                <div className="favourite" href="#"></div><p className="in-favourites">В избранное</p>
-              </a>
+              <NavLink to="/" className="in-favourites-wrapper">
+                <div className="favourite" to="/"></div><p className="in-favourites">В избранное</p>
+              </NavLink>
               <div className="basket-item__quantity">
                 <div className="basket-item__quantity-change basket-item-list__quantity-change_minus">-</div>1
 									  <div className="basket-item__quantity-change basket-item-list__quantity-change_plus">+</div>

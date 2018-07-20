@@ -12,12 +12,12 @@ body {
   box-sizing: border-box;
 }
 
-a {
+NavLink {
   text-decoration: none;
   color: #333333;
 }
 
-a:hover {
+NavLink:hover {
   cursor: pointer;
 }
 

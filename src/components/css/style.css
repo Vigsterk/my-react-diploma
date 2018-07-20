@@ -443,12 +443,12 @@ li a:hover {
   text-align: center;
   text-transform: uppercase;
 }
-.new-deals__menu-item a {
+ .new-deals__item-link {
   text-decoration: none;
   font-size: 18px;
   color: #D4D4D4;
 }
-.new-deals__menu-item a:hover {
+ .new-deals__item-link:hover {
   color: #333333;
   cursor: pointer;
   text-decoration: underline;
@@ -459,7 +459,7 @@ li a:hover {
   background-position: center bottom;
   background-size: 100% 4px;
 }
-.new-deals__menu-item_active a {
+.new-deals__item-link_active  {
   font-weight: bold;
   color: #333333;
 }
@@ -490,19 +490,21 @@ li a:hover {
   height: 100%;
   width: 100%;
 }
-.new-deals__product_active {
+.new-deals__product_active,.new-deals__product_active_img {
   position: relative;
   width: 383px;
   height: 252px;
-  background-image: url(../img/new-deals__product_active.jpg);
+  ;
 }
-.new-deals__product_first {
-  background-image: url(../img/new-deals__product_1.jpg);
+.new-deals__product_first, .new-deals__product_first_img {
   opacity: 0.6;
+  width: 283px;
+  height: 185px;
 }
-.new-deals__product_last {
-  background-image: url(../img/new-deals__product_2.jpg);
+.new-deals__product_last, .new-deals__product_last_img {
   opacity: 0.6;
+  width: 283px;
+  height: 185px;
 }
 .new-deals__product_favorite {
   position: absolute;
@@ -554,7 +556,8 @@ li a:hover {
 .sales-and-news__item:hover {
   box-shadow: 3px 3px 4px 1px rgba(255, 101, 165, 0.25);
 }
-.sales-and-news__item a {
+.sales-and-news__item a,
+.sales-and-news__item .sales-and-news__item-link {
   display: flex;
   justify-content: center;
   align-items: flex-end;
