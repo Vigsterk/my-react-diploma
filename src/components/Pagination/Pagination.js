@@ -19,18 +19,24 @@ class Pagination extends Component {
 
   BackButton = event => {
     console.log("b")
+    console.log("Текущая страница на момент клика", this.state.page)
     let item = this.state.page
-    let change = item > 0 ? item-- : 1
-    console.log(change)
+    item--
+    //item > 0 ? item-- : item = 1
+    let change = item
+    console.log("Страница--",change)
     this.state.changePage(change)
   }
 
 
   ForwardButton = event => {
     console.log("f")
+    console.log("Текущая страница на момент клика", this.state.page)
     let item = this.state.page
-    let change = (item < this.state.pagesArr.length) ? item++ : this.state.pagesArr.length
-    console.log(change)
+    item++
+    //item < this.state.pagesArr.length ? item++ : item = this.state.pagesArr.length
+    let change = item
+    console.log("Страница++",change)
     this.state.changePage(change)
   }
 
