@@ -18,6 +18,7 @@ class Catalogue extends Component {
           title: "Каталог"
         }],
       data: [],
+      dataVault: [],
       page: 1,
       pages: ""
     }
@@ -40,7 +41,9 @@ class Catalogue extends Component {
         this.setState({
           data: data.data,
           pages: data.pages,
+          dataVault: this.state.dataVault.concat(data)
         })
+        console.log(this.state.dataVault)
       })
       .catch(error => {
         console.log(error)
@@ -48,12 +51,50 @@ class Catalogue extends Component {
   }
 
   changePage = (page) => {
-    console.log("page",page)
+    console.log(this.state.dataVault)
     let loadPage = page
     this.setState({
       page: loadPage
     })
     console.log("После перезаписи",this.state.page)
+    let dataVaultFilter = [...this.state.dataVault].filter(item=>item = loadPage)
+    console.log("Найден",dataVaultFilter)
+/*
+    if(dataVaultFilter){
+      this.setState({
+        data: this.state.dataVault[loadPage-1]
+      })
+    }
+      */
+    this.ReloadCatalogue(loadPage)
+  }
+  
+
+  ReloadCatalogue = (loadPage) => {
+    console.log("ReloadCatalogue")
+    fetch(`https://neto-api.herokuapp.com/bosa-noga/products?page=${loadPage}`, {
+      method: "GET"
+    })
+      .then(response => {
+        if (200 <= response.status && response.status < 300) {
+          return response;
+        }
+        throw new Error(response.statusText);
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        this.setState({
+          data: data.data,
+          pages: data.pages,
+          dataVault: this.state.dataVault.concat(data)
+        })
+        console.log(this.state.dataVault)
+      })
+      .catch(error => {
+        console.log(error)
+      });
+      
   }
 
   render() {
