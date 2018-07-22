@@ -48,9 +48,12 @@ class Catalogue extends Component {
   }
 
   changePage = (page) => {
+    console.log("page",page)
+    let loadPage = page
     this.setState({
-      page: page
+      page: loadPage
     })
+    console.log("После перезаписи",this.state.page)
   }
 
   render() {
