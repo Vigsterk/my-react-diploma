@@ -12,12 +12,12 @@ body {
   box-sizing: border-box;
 }
 
-a {
+a, .pagination-link {
   text-decoration: none;
   color: #333333;
 }
 
-a:hover {
+a:hover, .pagination-link:hover {
   cursor: pointer;
 }
 
@@ -328,14 +328,14 @@ span.producer {
   align-items: center;
 }
 
-.product-catalogue__pagination ul {
+.pagination-ul {
   width: 310px;
   margin: 0 auto;
   display: flex;
   justify-content: space-around;
 }
 
-.product-catalogue__pagination ul li {
+.pagination-li {
   display: inline-block;
   width: 19px;
   height: 26px;
@@ -347,7 +347,7 @@ span.producer {
   color: #000000;
 }
 
-li.active {
+.pagination-li-active {
   display: inline-block;
   padding: 5px;
   background: #D4D4D4;

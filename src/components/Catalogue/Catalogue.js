@@ -20,9 +20,9 @@ class Catalogue extends Component {
       data: [],
       dataVault: [],
       page: 1,
-      pages: ""
+      pages: "",
+      test: ""
     }
-
   }
 
   componentDidMount() {
@@ -43,7 +43,6 @@ class Catalogue extends Component {
           pages: data.pages,
           dataVault: this.state.dataVault.concat(data)
         })
-        console.log(this.state.dataVault)
       })
       .catch(error => {
         console.log(error)
@@ -51,27 +50,25 @@ class Catalogue extends Component {
   }
 
   changePage = (page) => {
-    console.log(this.state.dataVault)
-    let loadPage = page
+    let loadPage = page;
     this.setState({
       page: loadPage
     })
-    console.log("После перезаписи",this.state.page)
-    let dataVaultFilter = [...this.state.dataVault].filter(item=>item = loadPage)
-    console.log("Найден",dataVaultFilter)
-/*
-    if(dataVaultFilter){
+    let dataVaultFilter = [...this.state.dataVault].filter((el) => loadPage === el.page);
+    console.log("Найден", dataVaultFilter)
+    console.log("Сейчас в тесте", this.state.test)
+    if (dataVaultFilter.length > 0) {
       this.setState({
-        data: this.state.dataVault[loadPage-1]
+
       })
+      console.log("В тест записалось", this.state.test)
+    } else {
+      this.ReloadCatalogue(loadPage)
     }
-      */
-    this.ReloadCatalogue(loadPage)
   }
-  
+
 
   ReloadCatalogue = (loadPage) => {
-    console.log("ReloadCatalogue")
     fetch(`https://neto-api.herokuapp.com/bosa-noga/products?page=${loadPage}`, {
       method: "GET"
     })
@@ -83,18 +80,16 @@ class Catalogue extends Component {
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data)
         this.setState({
           data: data.data,
           pages: data.pages,
           dataVault: this.state.dataVault.concat(data)
         })
-        console.log(this.state.dataVault)
       })
       .catch(error => {
         console.log(error)
       });
-      
+
   }
 
   render() {
