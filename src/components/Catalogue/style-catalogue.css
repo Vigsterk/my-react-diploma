@@ -12,13 +12,18 @@ body {
   box-sizing: border-box;
 }
 
-a, .pagination-link {
+a, .pagination-page {
   text-decoration: none;
   color: #333333;
+  border: none;
+  background: none;
 }
 
-a:hover, .pagination-link:hover {
+a:hover, .pagination-page:hover {
   cursor: pointer;
+}
+ .pagination-page:hover {
+  text-decoration: underline
 }
 
 /* Основной контент */
@@ -195,10 +200,10 @@ select {
 
 
 /* Карточка товара в каталоге с ховером*/
-a.item-list__item-card {
+.item-list__item-card {
   display: inline-block;
   width: 283px;
-  height: auto;
+  height: 20%;
   margin-top: 27px;
   margin-bottom: -17px;
   padding-bottom: 53px;
@@ -207,18 +212,22 @@ a.item-list__item-card {
 
 .product-catalogue .item-list__item-card:hover {
   box-shadow: 2px 2px 2px 2px #cccccc;
+  text-decoration: none;
 }
 
 .product-catalogue .item-list__item-card:hover .sizes {
   display: block;
+  text-decoration: none;
 }
 
 .product-catalogue .item-list__item-card:hover .item-pic {
   outline: none;
+  text-decoration: none;
 }
 
 .product-catalogue .item-list__item-card:hover .arrow {
   display: block;
+  text-decoration: none;
 }
 
 .product-catalogue .item-pic .arrow {
@@ -291,14 +300,12 @@ span.producer {
 }
 
 .product-catalogue .sizes {
-  
   display: none;
   width: 100%;
   text-align: center;
 }
 
 .product-catalogue .sizes__title {
-  margin-top: 10px;
   font-size: 14px;
   font-weight: bold;
 }
@@ -310,7 +317,7 @@ span.producer {
 
 #size{
   position: absolute;
-  top: 92px;
+  top: 100px;
   left: 0px;
 }
 

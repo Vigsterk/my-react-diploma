@@ -89,9 +89,7 @@ class Catalogue extends Component {
       .catch(error => {
         console.log(error)
       });
-
   }
-
   render() {
     return (
       <div>
@@ -113,36 +111,36 @@ class Catalogue extends Component {
                 </select>
               </div>
             </section>
-
             <section className="product-catalogue__item-list">
-              {this.state.data.map(items => <NavLink key={items.id} className="item-list__item-card item" to={`productCard/${items.id}`}>
-                <div className="item-pic">
-                  {items.images.map(item =>
-                    <img className="item-pic"
-                      src={item}
-                      alt={items.title} />
-                  )}
-                  <div className="product-catalogue__product_favorite">
+              {this.state.data.map(items =>
+                <NavLink key={items.id} className="item-list__item-card item" to={`productCard/${items.id}`}>
+                  <div className="item-pic">
+                    {items.images.map(item =>
+                      <img className="item-pic"
+                        src={item}
+                        alt={items.title} />
+                    )}
+                    <div className="product-catalogue__product_favorite">
+                      <p></p>
+                    </div>
+                    <div className="arrow arrow_left" ></div>
+                    <div className="arrow arrow_right" ></div>
                   </div>
-                  <div data-action="left" className="arrow arrow_left" ></div>
-                  <div data-action="right" className="arrow arrow_right" ></div>
-                </div>
-                <div className="item-desc">
-                  <h4 className="item-name">{items.title}</h4>
-                  <p className="item-producer">Производитель: <span className="producer">{items.brand}</span></p>
-                  <p className="item-price">{items.price}</p>
-                  {items.oldPrice && <p className="item-price"><s>{items.oldPrice}</s></p>}
-                  <div className="sizes " id="size">
-                    <p className="sizes__title">Размеры в наличии:</p>
-                    <p className="sizes__avalible">36, 37, 38, 39, 40, 41, 42</p>
+                  <div className="item-desc">
+                    <h4 className="item-name">{items.title}</h4>
+                    <p className="item-producer">Производитель: <span className="producer">{items.brand}</span></p>
+                    <p className="item-price">{items.price}</p>
+                    {items.oldPrice && <p className="item-price old-price"><s>{items.oldPrice}</s></p>}
+                    <div className="sizes" id="size">
+                      <p className="sizes__title">Размеры в наличии:</p>
+                      <p className="sizes__avalible">36, 37, 38, 39, 40, 41, 42</p>
+                    </div>
                   </div>
-                </div>
-              </NavLink>)}
+                </NavLink>)}
             </section>
             {this.state.pages && <Pagination page={this.state.page} pages={this.state.pages} func={this.changePage} />}
           </section>
         </main>
-
         <section className="product-catalogue__overlooked-slider">
           <h3>Вы смотрели:</h3>
           <div className="overlooked-slider">

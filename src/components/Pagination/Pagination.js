@@ -35,7 +35,7 @@ class Pagination extends Component {
   ChangeEvent = event => {
     console.log(event.target)
     let link
-    if (link.className === 'pagination-li ') {
+    if (link.className === 'pagination-li pagination-li-active') {
       link.classList.remove('pagination-li-active');
     } else {
       if (document.querySelector('.pagination-li-active')) {
@@ -54,7 +54,7 @@ class Pagination extends Component {
         <div className="page-nav-wrapper">
           <div className="angle-back"><button className="angle-back_button" onClick={this.BackButton} /></div>
           <ul className="pagination-ul">
-            {this.state.pagesArr && this.state.pagesArr.map((item, index) => <li key={index} className="pagination-li pagination-li-active"><a className="pagination-link" href="" onClick={this.ChangeEvent}>{item}</a></li>)}
+            {this.state.pagesArr && this.state.pagesArr.map((item, index) => <li key={index} className="pagination-li "><button className="pagination-page" onClick={this.ChangeEvent}>{item}</button></li>)}
           </ul>
           <div className="angle-forward"><button className="angle-forward_button" onClick={this.ForwardButton} /></div>
         </div>
