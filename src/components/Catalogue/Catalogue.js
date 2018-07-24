@@ -20,8 +20,7 @@ class Catalogue extends Component {
       data: [],
       dataVault: [],
       page: 1,
-      pages: "",
-      test: ""
+      pages: ""
     }
   }
 
@@ -82,7 +81,6 @@ class Catalogue extends Component {
       .then(data => {
         this.setState({
           data: data.data,
-          pages: data.pages,
           dataVault: this.state.dataVault.concat(data)
         })
       })

@@ -352,14 +352,20 @@ span.producer {
   font-weight: 900;
   font-size: 14px;
   color: #000000;
+  border: none;
 }
 
 .pagination-li-active {
   display: inline-block;
-  padding: 5px;
   background: #D4D4D4;
   border-radius: 7px;
   color: #000000;
+  border: none;
+  text-decoration: none;
+  outline: none;
+}
+.pagination-page{
+  padding: 1px 2px 1px 2px;
 }
 
 .angle-back_button,
