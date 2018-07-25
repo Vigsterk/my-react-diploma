@@ -17,6 +17,7 @@ a, .pagination-page {
   color: #333333;
   border: none;
   background: none;
+  outline: none;
 }
 
 a:hover, .pagination-page:hover {
@@ -363,9 +364,6 @@ span.producer {
   border: none;
   text-decoration: none;
   outline: none;
-}
-.pagination-page{
-  padding: 1px 2px 1px 2px;
 }
 
 .angle-back_button,

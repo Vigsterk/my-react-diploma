@@ -15,38 +15,41 @@ class Pagination extends Component {
     }
   }
 
+  componentDidMount() {
+    let link = document.querySelector('.pagination-li')
+    link.classList.toggle('pagination-li-active');
+  }
+
   BackButton = event => {
     let item = this.props.page
-    let link = document.querySelectorAll('.pagination-li')[item]
-    link.classList.toggle('pagination-li-active');
+    document.querySelectorAll('.pagination-li')[item - 1].classList.remove('pagination-li-active')
+    let link = document.querySelectorAll('.pagination-li')[item - 2]
+    link.classList.add('pagination-li-active');
     item > 0 ? item-- : item = 1
     let change = item
-    console.log("Страница--", change)
     this.state.changePage(change)
-    console.log(link)
   }
 
   ForwardButton = event => {
     let item = this.props.page
+    document.querySelectorAll('.pagination-li')[item - 1].classList.remove('pagination-li-active')
     let link = document.querySelectorAll('.pagination-li')[item]
-    link.classList.toggle('pagination-li-active');
+    link.classList.add('pagination-li-active');
     item < this.state.pagesArr.length ? item++ : item = this.state.pagesArr.length
     let change = item
-    console.log("Страница++", change)
     this.state.changePage(change)
-    console.log(link)
   }
 
   ChangeEvent = event => {
-    console.log(event.target.textContent)
     let link = event.target
-    if (link.className === 'pagination-li pagination-li-active') {
-      link.classList.remove('pagination-li-active');
+    let listItem = link.closest("li")
+    if (listItem.className === 'pagination-li pagination-li-active') {
+      listItem.classList.remove('pagination-li-active')
     } else {
       if (document.querySelector('.pagination-li-active')) {
         document.querySelector('.pagination-li-active').classList.toggle('pagination-li-active');
       }
-      link.classList.toggle('pagination-li-active');
+      listItem.classList.toggle('pagination-li-active');
     }
     this.state.changePage(event.target.textContent)
   }

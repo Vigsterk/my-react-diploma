@@ -1,78 +1,126 @@
 import React, { Component } from 'react';
 import './style-product-card.css';
 import { NavLink } from 'react-router-dom'
+import SitePath from '../SitePath/SitePath'
 
 class ProductCard extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      sitepath: [
+        {
+          to: "/",
+          title: "Главная"
+        },
+        {
+          to: "/",
+          title: "Женская обувь" //Из props
+        },
+        {
+          to: "/",
+          title: "Ботинки" //Из props
+        },
+        {
+          to: "/",
+          title: "" //Из props
+        },
+      ],
+      data: [],
+      id: 33 //Из props
+    }
+  }
+
+  componentDidMount() {
+    fetch(`https://neto-api.herokuapp.com/bosa-noga/products/${this.state.id}`, {
+      method: "GET"
+    })
+      .then(response => {
+        if (200 <= response.status && response.status < 300) {
+          return response;
+        }
+        throw new Error(response.statusText);
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        this.setState({
+          data: data.data
+        })
+      })
+      .catch(error => {
+        console.log(error)
+      });
+  }
+
   render() {
     return (
       <div>
-        <main>
-          <h2 className="section-name">Ботинки женские</h2>
-          <section className="product-card-content__main-screen">
-            <FavoriteSlider />
-            <div className="main-screen__favourite-product-pic">
-              <NavLink to="/">
-                <img src="img/product-card-pics/product-card__favourite-product-pic.png" alt="" />
-              </NavLink>
-              <NavLink to="/" className="main-screen__favourite-product-pic__zoom" />
-            </div>
-
-            <div className="main-screen__product-info">
-              <div className="product-info-title">
-                <h2>Ботинки женские</h2>
-                <div className="in-stock">В наличии</div>
+        <SitePath pathprops={this.state.sitepath} />
+        <main className="product-card">
+          <section class="product-card-content">
+            <h2 className="section-name">{this.state.data.title}</h2>
+            <section className="product-card-content__main-screen">
+              <FavoriteSlider />
+              <div className="main-screen__favourite-product-pic">
+                <NavLink to="/">
+                  {this.state.data.images && <img src={this.state.data.images[0]} alt={this.state.data.title} />}
+                </NavLink>
+                <NavLink to="/" className="main-screen__favourite-product-pic__zoom" />
               </div>
-              <div className="product-features">
 
-                <table className="features-table">
-                  <tr>
-                    <td className="left-col">Артикул:</td>
-                    <td className="right-col">BD0677C</td>
-                  </tr>
-                  <tr>
-                    <td className="left-col">Производитель:</td>
-                    <td className="right-col"><NavLink to="/"><span className="producer">Fabi</span></NavLink></td>
-                  </tr>
-                  <tr>
-                    <td className="left-col">Цвет:</td>
-                    <td className="right-col">чёрный</td>
-                  </tr>
-                  <tr>
-                    <td className="left-col">Материалы:</td>
-                    <td className="right-col">натуральная кожа</td>
-                  </tr>
-                  <tr>
-                    <td className="left-col">Сезон:</td>
-                    <td className="right-col">Осень-зима</td>
-                  </tr>
-                  <tr>
-                    <td className="left-col">Повод:</td>
-                    <td className="right-col">Любой</td>
-                  </tr>
-                </table>
+              <div className="main-screen__product-info">
+                <div className="product-info-title">
+                  <h2>{this.state.data.title}</h2>
+                  <div className="in-stock">В наличии</div>
+                </div>
+                <div className="product-features">
+                  <table className="features-table">
+                    <tr>
+                      <td className="left-col">Артикул:</td>
+                      <td className="right-col">{this.state.data.sku}</td>
+                    </tr>
+                    <tr>
+                      <td className="left-col">Производитель:</td>
+                      <td className="right-col"><NavLink to="/"><span className="producer">{this.state.data.brand}</span></NavLink></td>
+                    </tr>
+                    <tr>
+                      <td className="left-col">Цвет:</td>
+                      <td className="right-col">{this.state.data.color}</td>
+                    </tr>
+                    <tr>
+                      <td className="left-col">Материалы:</td>
+                      <td className="right-col">{this.state.data.material}</td>
+                    </tr>
+                    <tr>
+                      <td className="left-col">Сезон:</td>
+                      <td className="right-col">{this.state.data.season}</td>
+                    </tr>
+                    <tr>
+                      <td className="left-col">Повод:</td>
+                      <td className="right-col">{this.state.data.reason}</td>
+                    </tr>
+                  </table>
+                </div>
 
-              </div>
-              <p className="size">Размер</p>
-              <ul className="sizes">
-                <li><NavLink to="/">36</NavLink></li>
-                <li className="active"><NavLink to="/">37</NavLink></li>
-                <li><NavLink to="/">38</NavLink></li>
-                <li><NavLink to="/">38</NavLink></li>
-                <li><NavLink to="/">39</NavLink></li>
-              </ul>
-              <div className="size-wrapper">
-                <NavLink to="/"><span className="size-rule"></span><p className="size-table">Таблица размеров</p></NavLink>
-              </div>
-              <NavLink to="/" className="in-favourites-wrapper">
-                <div className="favourite" to="/"></div><p className="in-favourites">В избранное</p>
-              </NavLink>
-              <div className="basket-item__quantity">
-                <div className="basket-item__quantity-change basket-item-list__quantity-change_minus">-</div>1
+                <p className="size">Размер</p>
+                <ul className="sizes">
+                  {this.state.data.sizes && this.state.data.sizes.map(item => <li className="active">{item.size}</li>)}
+                </ul>
+
+                <div className="size-wrapper">
+                  <NavLink to="/"><span className="size-rule"></span><p className="size-table">Таблица размеров</p></NavLink>
+                </div>
+                <NavLink to="/" className="in-favourites-wrapper">
+                  <div className="favourite" to="/"></div><p className="in-favourites">В избранное</p>
+                </NavLink>
+                <div className="basket-item__quantity">
+                  <div className="basket-item__quantity-change basket-item-list__quantity-change_minus">-</div>1
 									  <div className="basket-item__quantity-change basket-item-list__quantity-change_plus">+</div>
+                </div>
+                <div className="price">{this.state.data.price}₽</div>
+                <button className="in-basket in-basket-click">В корзину</button>
               </div>
-              <div className="price">26 120 ₽</div>
-              <button className="in-basket in-basket-click">В корзину</button>
-            </div>
+            </section>
           </section>
         </main>
         <OverlookedSlider />
@@ -112,8 +160,6 @@ const favoriteData = [
     href: '/productCard'
   }
 ];
-
-
 
 class OverlookedSlider extends Component {
   render() {

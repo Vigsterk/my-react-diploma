@@ -53,19 +53,15 @@ class Catalogue extends Component {
     this.setState({
       page: loadPage
     })
-    let dataVaultFilter = [...this.state.dataVault].filter((el) => loadPage === el.page);
-    console.log("Найден", dataVaultFilter)
-    console.log("Сейчас в тесте", this.state.test)
+    let dataVaultFilter = this.state.dataVault.filter((el) => loadPage === el.page);
     if (dataVaultFilter.length > 0) {
       this.setState({
-
+        data: dataVaultFilter[0].data
       })
-      console.log("В тест записалось", this.state.test)
     } else {
       this.ReloadCatalogue(loadPage)
     }
   }
-
 
   ReloadCatalogue = (loadPage) => {
     fetch(`https://neto-api.herokuapp.com/bosa-noga/products?page=${loadPage}`, {
@@ -88,6 +84,7 @@ class Catalogue extends Component {
         console.log(error)
       });
   }
+
   render() {
     return (
       <div>
@@ -110,10 +107,10 @@ class Catalogue extends Component {
               </div>
             </section>
             <section className="product-catalogue__item-list">
-              {this.state.data.map(items =>
+              {this.state.data && this.state.data.map(items =>
                 <NavLink key={items.id} className="item-list__item-card item" to={`productCard/${items.id}`}>
                   <div className="item-pic">
-                    {items.images.map(item =>
+                    {items.images && items.images.map(item =>
                       <img className="item-pic"
                         src={item}
                         alt={items.title} />
