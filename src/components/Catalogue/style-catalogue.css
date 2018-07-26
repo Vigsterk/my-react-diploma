@@ -343,7 +343,7 @@ span.producer {
   justify-content: space-around;
 }
 
-.pagination-li {
+.pagination-li,.disable-pagination-li {
   display: inline-block;
   width: 19px;
   height: 26px;

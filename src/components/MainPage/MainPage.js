@@ -119,6 +119,7 @@ class NewDealsMenu extends NewDeals {
     super(props)
     this.handleClick = this.handleClick.bind(this)
   }
+  ///Сергей намекнул что использовать querrySelector нельзя, на переработку.
   handleClick(event) {
     let link = event.target
     let listItem = link.closest("li")
