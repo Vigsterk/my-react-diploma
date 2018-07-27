@@ -5,6 +5,10 @@ import './App.css';
 import { BrowserRouter, Route } from 'react-router-dom'
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+    console.log(props)
+  }
   render() {
     return (
       <BrowserRouter>
@@ -15,7 +19,7 @@ class App extends Component {
           <Route path='/favorite' exact component={Favorite} />
           <Route path='/order' exact component={Order} />
           <Route path='/orderEnd' exact component={OrderEnd} />
-          <Route path='/productCard' exact component={ProductCard} />
+          <Route path='/productCard/:id' exact component={ProductCard} />
           <Footer />
         </div>
       </BrowserRouter>

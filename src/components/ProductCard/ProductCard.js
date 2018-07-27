@@ -14,20 +14,21 @@ class ProductCard extends Component {
         },
         {
           to: "/",
-          title: "Женская обувь" //Из props
+          title: ""
         },
         {
           to: "/",
-          title: "Ботинки" //Из props
+          title: ""
         },
         {
           to: "/",
-          title: "" //Из props
-        },
+          title: ""
+        }
       ],
       data: [],
-      id: 33 //Из props
+      id: props.match.params.id
     }
+
   }
 
   componentDidMount() {
@@ -46,6 +47,7 @@ class ProductCard extends Component {
         this.setState({
           data: data.data
         })
+        console.log(this.state.data)
       })
       .catch(error => {
         console.log(error)
@@ -58,13 +60,11 @@ class ProductCard extends Component {
         <SitePath pathprops={this.state.sitepath} />
         <main className="product-card">
           <section class="product-card-content">
-            <h2 className="section-name">{this.state.data.title}</h2>
+            {this.state.data.title && <h2 className="section-name">{this.state.data.title}</h2>}
             <section className="product-card-content__main-screen">
-              <FavoriteSlider />
+              {this.state.data.images && <FavoriteSlider data={this.state.data} />}
               <div className="main-screen__favourite-product-pic">
-                <NavLink to="/">
-                  {this.state.data.images && <img src={this.state.data.images[0]} alt={this.state.data.title} />}
-                </NavLink>
+                {this.state.data.images && <img src={this.state.data.images[0]} alt={this.state.data.title} />}
                 <NavLink to="/" className="main-screen__favourite-product-pic__zoom" />
               </div>
 
@@ -113,11 +113,14 @@ class ProductCard extends Component {
                 <NavLink to="/" className="in-favourites-wrapper">
                   <div className="favourite" to="/"></div><p className="in-favourites">В избранное</p>
                 </NavLink>
+
                 <div className="basket-item__quantity">
                   <div className="basket-item__quantity-change basket-item-list__quantity-change_minus">-</div>1
 									  <div className="basket-item__quantity-change basket-item-list__quantity-change_plus">+</div>
                 </div>
+
                 <div className="price">{this.state.data.price}₽</div>
+
                 <button className="in-basket in-basket-click">В корзину</button>
               </div>
             </section>
@@ -131,14 +134,30 @@ class ProductCard extends Component {
 }
 
 class FavoriteSlider extends Component {
+  constructor(props) {
+    super(props)
+    console.log(props)
+    this.state = {
+      data: this.props.data
+    }
+    console.log(this.state.data)
+  }
   render() {
     return (
-      <section className="main-screen__favourite-product-slider">
+      <section className="main-screen__favourite-product-slider" >
         <div className="favourite-product-slider">
           <div className="favourite-product-slider__arrow favourite-product-slider__arrow_up arrow-up"></div>
-          {favoriteData.map(item => <div className={`favourite-product-slider__item favourite-product-slider__item-${item.classNum}`}>
-            <NavLink to={item.href}></NavLink>
-          </div>)}
+
+          <div className="favourite-product-slider__item">
+            <img className="favorite-slider-img favourite-product-slider__item-1" src={this.state.data.images[0]} />
+          </div>
+          {this.state.data.images[1] && <div className="favourite-product-slider__item">
+            <img className="favorite-slider-img favourite-product-slider__item-2" src={this.state.data.images[1]} />
+          </div>}
+          {this.state.data.images[2] && <div className="favourite-product-slider__item">
+            <img className="favorite-slider-img favourite-product-slider__item-3" src={this.state.data.images[2]} />
+          </div>}
+
           <div className="favourite-product-slider__arrow favourite-product-slider__arrow_down arrow-down"></div>
         </div>
       </section>
@@ -146,20 +165,6 @@ class FavoriteSlider extends Component {
   }
 }
 
-const favoriteData = [
-  {
-    classNum: 1,
-    href: '/productCard'
-  },
-  {
-    classNum: 2,
-    href: '/productCard'
-  },
-  {
-    classNum: 3,
-    href: '/productCard'
-  }
-];
 
 class OverlookedSlider extends Component {
   render() {

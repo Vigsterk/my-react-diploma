@@ -16,33 +16,37 @@ class Pagination extends Component {
     }
   }
 
-  BackButton = event => {
+  backButton = event => {
     let item = this.props.page
     item > 1 ? item-- : item = 1
+    this.state.changePage(item)
     if (this.state.pagesArr.length > 5 && item === this.state.pagesArr.length - 2) {
       let tempArr = [...this.state.pagesArr].splice(-1)
       this.setState({
         pagesArr: tempArr,
-        activeIndex: item
       })
     }
-    this.state.changePage(item)
+    this.setState({
+      activeIndex: item - 1
+    })
   }
 
-  ForwardButton = event => {
+  forwardButton = event => {
     let item = this.props.page
     item++
+    this.state.changePage(item)
     if (this.state.pages > 4 && item === this.state.pagesArr.length) {
       let pageAdd = this.state.pagesArr.length + 1
       this.setState({
         pagesArr: this.state.pagesArr.concat(pageAdd),
-        activeIndex: item
       })
     }
-    this.state.changePage(item)
+    this.setState({
+      activeIndex: item - 1
+    })
   }
 
-  ChangeEvent(index) {
+  changeEvent = index => {
     console.log(index)
     this.setState({
       activeIndex: index
@@ -54,17 +58,18 @@ class Pagination extends Component {
     return (
       <div className="product-catalogue__pagination">
         <div className="page-nav-wrapper">
-          <div className="angle-back"><button className="angle-back_button" onClick={this.BackButton} /></div>
+          <div className="angle-back"><button className="angle-back_button" onClick={this.backButton} /></div>
           <ul className="pagination-ul">
             {this.state.pagesArr.map((item, index) => <ListItem key={index}
               isActive={this.state.activeIndex === index}
-              onClick={() => this.ChangeEvent(index)}
+              idx={index}
+              func={this.changeEvent}
               item={item}
             />)}
             <li className="disable-pagination-li">...</li>
-            <li className="disable-pagination-li"><button className="pagination-page" onClick={this.ChangeEvent}>{this.state.pagesArr.length}</button></li>
+            <li className="disable-pagination-li"><button className="pagination-page" onClick={this.changeEvent}>{this.state.pagesArr.length}</button></li>
           </ul>
-          <div className="angle-forward"><button className="angle-forward_button" onClick={this.ForwardButton} /></div>
+          <div className="angle-forward"><button className="angle-forward_button" onClick={this.forwardButton} /></div>
         </div>
       </div>
     )
@@ -72,7 +77,7 @@ class Pagination extends Component {
 }
 
 class ListItem extends Component {
-  handleClick = () => this.props.onClick(this.props.index)
+  handleClick = () => this.props.func(this.props.idx)
   render() {
     return (
       <li className={this.props.isActive ? 'pagination-li pagination-li-active' : 'pagination-li'}>

@@ -117,63 +117,62 @@ class NewDeals extends Component {
 class NewDealsMenu extends NewDeals {
   constructor(props) {
     super(props)
-    this.handleClick = this.handleClick.bind(this)
-  }
-  ///Сергей намекнул что использовать querrySelector нельзя, на переработку.
-  handleClick(event) {
-    let link = event.target
-    let listItem = link.closest("li")
-    if (link.className === 'new-deals__item-link new-deals__item-link_active') {
-      link.classList.remove('new-deals__item-link_active');
-      listItem.classList.remove('new-deals__menu-item_active');
-    } else {
-      if (document.querySelector('.new-deals__item-link_active')) {
-        document.querySelector('.new-deals__item-link_active').classList.toggle('new-deals__item-link_active');
-        document.querySelector('.new-deals__menu-item_active').classList.toggle('new-deals__menu-item_active');
-      }
-      link.classList.toggle('new-deals__item-link_active');
-      listItem.classList.toggle('new-deals__menu-item_active')
+    this.state = {
+      activeIndex: ""
     }
+  }
 
+  handleClick = index => {
+    this.setState({
+      activeIndex: index
+    })
   }
   render() {
     return (
       <div className="new-deals__menu">
         <ul className="new-deals__menu-items">
-          {newDealsData.map(item =>
-            <li key={item.id} className="new-deals__menu-item">
-              <NavLink className="new-deals__item-link" to={item.url} onClick={this.handleClick}>{item.title}</NavLink>
-            </li>)}
+          {newDealsData.map((item, index) => <ListItem key={item.id}
+            url={item.url}
+            func={this.handleClick}
+            title={item.title}
+            isActive={this.state.activeIndex === index}
+            idx={index} />)}
         </ul>
       </div>
     )
   }
 }
 
+class ListItem extends Component {
+  handleClick = () => this.props.func(this.props.idx)
+  render() {
+    return (
+      <li className={this.props.isActive ? 'new-deals__menu-item new-deals__menu-item_active' : 'new-deals__menu-item'}>
+        <button className={this.props.isActive ? 'new-deals__item-button new-deals__item-button_active' : 'new-deals__item-button'} onClick={this.handleClick}>{this.props.title}</button>
+      </li>)
+  }
+
+}
+
 const newDealsData = [
   {
     title: "Женская обувь",
-    url: "/",
     id: 1
   },
   {
     title: "Мужская обувь",
-    url: "/",
     id: 2
   },
   {
     title: "Детская обувь",
-    url: "/",
     id: 3
   },
   {
     title: "аксессуары",
-    url: "/",
     id: 4
   },
   {
     title: "для дома",
-    url: "/",
     id: 5
   }
 ]

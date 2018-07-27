@@ -443,12 +443,16 @@ li a:hover {
   text-align: center;
   text-transform: uppercase;
 }
- .new-deals__item-link {
+ .new-deals__item-button {
   text-decoration: none;
+  text-transform: uppercase;
+  background: none;
   font-size: 18px;
   color: #D4D4D4;
+  outline: none;
+  border: none;
 }
- .new-deals__item-link:hover {
+ .new-deals__item-button:hover {
   color: #333333;
   cursor: pointer;
   text-decoration: underline;
@@ -459,7 +463,7 @@ li a:hover {
   background-position: center bottom;
   background-size: 100% 4px;
 }
-.new-deals__item-link_active  {
+.new-deals__item-button_active  {
   font-weight: bold;
   color: #333333;
 }
