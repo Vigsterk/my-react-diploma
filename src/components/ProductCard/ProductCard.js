@@ -138,31 +138,63 @@ class FavoriteSlider extends Component {
     super(props)
     console.log(props)
     this.state = {
-      data: this.props.data
+      data: this.props.data,
+      firstPic: this.props.data.images[0],
+      secondPic:this.props.data.images[1],
+      lastPic:this.props.data.images[2]
     }
     console.log(this.state.data)
+    console.log(this.state.firstPic)
+    console.log(this.state.secondPic)
+    console.log(this.state.lastPic)
   }
+
+  arrowDown = event =>{
+    console.log(event.target)
+  }
+
+  arrowUp = event =>{
+    console.log(event.target)
+  }
+
   render() {
     return (
       <section className="main-screen__favourite-product-slider" >
         <div className="favourite-product-slider">
-          <div className="favourite-product-slider__arrow favourite-product-slider__arrow_up arrow-up"></div>
-
-          <div className="favourite-product-slider__item">
-            <img className="favorite-slider-img favourite-product-slider__item-1" src={this.state.data.images[0]} />
-          </div>
-          {this.state.data.images[1] && <div className="favourite-product-slider__item">
-            <img className="favorite-slider-img favourite-product-slider__item-2" src={this.state.data.images[1]} />
-          </div>}
-          {this.state.data.images[2] && <div className="favourite-product-slider__item">
-            <img className="favorite-slider-img favourite-product-slider__item-3" src={this.state.data.images[2]} />
-          </div>}
-
-          <div className="favourite-product-slider__arrow favourite-product-slider__arrow_down arrow-down"></div>
+          <div className="favourite-product-slider__arrow favourite-product-slider__arrow_up arrow-up" onClick={this.arrowUp}></div>
+          <FirstImg img={this.state.firstPic}/>
+          {this.state.secondPic && <SecondImg img={this.state.secondPic}/>}
+          {this.state.lastPic && <LastImg img={this.state.lastPic}/>}
+          <div className="favourite-product-slider__arrow favourite-product-slider__arrow_down arrow-down"onClick={this.arrowDown}></div>
         </div>
       </section>
     )
   }
+}
+
+const FirstImg = (props) => {
+  console.log(props)
+  return(
+    <div className="favourite-product-slider__item">
+      <img className="favorite-slider-img favourite-product-slider__item-1" src={props.img} />
+    </div>
+)
+}
+const SecondImg = (props) => {
+  console.log(props)
+  return(
+    <div className="favourite-product-slider__item">
+      <img className="favorite-slider-img favourite-product-slider__item-2" src={props.img} />
+    </div>
+  )
+}
+const LastImg = (props) => {
+  console.log(props)
+  return(
+    <div className="favourite-product-slider__item">
+      <img className="favorite-slider-img favourite-product-slider__item-3" src={props.img} />
+    </div>
+  )
 }
 
 
