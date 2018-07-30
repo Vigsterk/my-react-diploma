@@ -1,49 +1,41 @@
 const mainMenuItems = [
   {
     title: "Акции",
-    url: "/",
     className: "sales",
     id: 1
   },
   {
     title: "Женская обувь",
-    url: "/",
     className: "women",
     id: 2
   },
   {
     title: "Мужская обувь",
-    url: "/",
     className: "men",
     id: 3
   },
   {
     title: "Детская обувь",
-    url: "/",
     className: "kids",
     id: 4
   },
   {
     title: "Аксессуары",
-    url: "/",
     className: "accessories",
     id: 5
   },
   {
     title: "Для дома",
-    url: "/",
     className: "home",
     id: 6
   },
   {
     title: "Бренды",
-    url: "/",
     className: "brands",
     id: 7
   },
   {
     title: "Новинки",
-    url: "/",
     className: "new",
     id: 8
   },

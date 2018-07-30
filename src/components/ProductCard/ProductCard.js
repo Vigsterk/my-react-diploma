@@ -26,6 +26,7 @@ class ProductCard extends Component {
         }
       ],
       data: [],
+      selectedImage: [],
       id: props.match.params.id
     }
 
@@ -45,7 +46,8 @@ class ProductCard extends Component {
       .then(data => {
         console.log(data)
         this.setState({
-          data: data.data
+          data: data.data,
+          selectedImage: data.data.images[0]
         })
         console.log(this.state.data)
       })
@@ -54,6 +56,14 @@ class ProductCard extends Component {
       });
   }
 
+  changeImage = index => {
+    console.log(index)
+    let selectedImage = this.state.data.images[index]
+    this.setState({
+      selectedImage: selectedImage
+    })
+    console.log(this.state.selectedImage)
+  }
   render() {
     return (
       <div>
@@ -62,9 +72,9 @@ class ProductCard extends Component {
           <section class="product-card-content">
             {this.state.data.title && <h2 className="section-name">{this.state.data.title}</h2>}
             <section className="product-card-content__main-screen">
-              {this.state.data.images && <FavoriteSlider data={this.state.data} />}
+              {this.state.data.images && <FavoriteSlider data={this.state.data} func={this.changeImage} />}
               <div className="main-screen__favourite-product-pic">
-                {this.state.data.images && <img src={this.state.data.images[0]} alt={this.state.data.title} />}
+                {this.state.data.images && <img src={this.state.selectedImage} alt={this.state.data.title} />}
                 <NavLink to="/" className="main-screen__favourite-product-pic__zoom" />
               </div>
 
@@ -140,21 +150,23 @@ class FavoriteSlider extends Component {
     this.state = {
       data: this.props.data,
       firstPic: this.props.data.images[0],
-      secondPic:this.props.data.images[1],
-      lastPic:this.props.data.images[2]
+      secondPic: this.props.data.images[1],
+      lastPic: this.props.data.images[2],
+      func: this.props.func
     }
-    console.log(this.state.data)
-    console.log(this.state.firstPic)
-    console.log(this.state.secondPic)
-    console.log(this.state.lastPic)
+
   }
 
-  arrowDown = event =>{
-    console.log(event.target)
+  arrowUp = () => {
+    let imgIndex = this.state.data.images.indexOf(this.state.firstPic) + 1
+    imgIndex < this.state.data.images.length - 1 ? imgIndex + 1 : imgIndex = 0
+    this.state.func(imgIndex)
   }
 
-  arrowUp = event =>{
-    console.log(event.target)
+  arrowDown = () => {
+    let imgIndex = this.state.data.images.indexOf(this.state.firstPic)
+    imgIndex > 0 ? imgIndex - 1 : imgIndex = this.state.data.images.length - 1
+    this.state.func(imgIndex)
   }
 
   render() {
@@ -162,10 +174,10 @@ class FavoriteSlider extends Component {
       <section className="main-screen__favourite-product-slider" >
         <div className="favourite-product-slider">
           <div className="favourite-product-slider__arrow favourite-product-slider__arrow_up arrow-up" onClick={this.arrowUp}></div>
-          <FirstImg img={this.state.firstPic}/>
-          {this.state.secondPic && <SecondImg img={this.state.secondPic}/>}
-          {this.state.lastPic && <LastImg img={this.state.lastPic}/>}
-          <div className="favourite-product-slider__arrow favourite-product-slider__arrow_down arrow-down"onClick={this.arrowDown}></div>
+          <FirstImg img={this.state.firstPic} />
+          {this.state.secondPic && <SecondImg img={this.state.secondPic} />}
+          {this.state.lastPic && <LastImg img={this.state.lastPic} />}
+          <div className="favourite-product-slider__arrow favourite-product-slider__arrow_down arrow-down" onClick={this.arrowDown}></div>
         </div>
       </section>
     )
@@ -174,15 +186,15 @@ class FavoriteSlider extends Component {
 
 const FirstImg = (props) => {
   console.log(props)
-  return(
+  return (
     <div className="favourite-product-slider__item">
       <img className="favorite-slider-img favourite-product-slider__item-1" src={props.img} />
     </div>
-)
+  )
 }
 const SecondImg = (props) => {
   console.log(props)
-  return(
+  return (
     <div className="favourite-product-slider__item">
       <img className="favorite-slider-img favourite-product-slider__item-2" src={props.img} />
     </div>
@@ -190,7 +202,7 @@ const SecondImg = (props) => {
 }
 const LastImg = (props) => {
   console.log(props)
-  return(
+  return (
     <div className="favourite-product-slider__item">
       <img className="favorite-slider-img favourite-product-slider__item-3" src={props.img} />
     </div>

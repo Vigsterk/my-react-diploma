@@ -3,6 +3,7 @@ import './style-catalogue.css';
 import SitePath from '../SitePath/SitePath'
 import Pagination from '../Pagination/Pagination';
 import { NavLink } from 'react-router-dom'
+import { sidebarColorData, sidebarOccasionData, sidebarDivisionData } from "./CatalogueItemsData"
 
 class Catalogue extends Component {
   constructor(props) {
@@ -14,8 +15,12 @@ class Catalogue extends Component {
           title: "Главная"
         },
         {
-          to: "/",
+          to: "/catalogue",
           title: "Каталог"
+        },
+        {
+          to: "/",
+          title: "Мужская обувь"
         }],
       data: [],
       dataVault: [],
@@ -112,10 +117,7 @@ class Catalogue extends Component {
                 <NavLink key={items.id} className="item-list__item-card item" to={`productCard/${items.id}`}>
                   <div className="item-pic">
                     {items.images && items.images.map(item =>
-                      <img className="item-pic"
-                        src={item}
-                        alt={items.title} />
-                    )}
+                      <img className="item-pic" src={item} alt={items.title} />)}
                     <div className="product-catalogue__product_favorite">
                       <p></p>
                     </div>
@@ -133,33 +135,41 @@ class Catalogue extends Component {
                     </div>
                   </div>
                 </NavLink>)}
+              <OverlookedSlider />
             </section>
             {this.state.pages && <Pagination page={this.state.page} pages={this.state.pages} func={this.changePage} />}
           </section>
         </main>
-        <section className="product-catalogue__overlooked-slider">
-          <h3>Вы смотрели:</h3>
-          <div className="overlooked-slider">
-            <div className="overlooked-slider__arrow overlooked-slider__arrow_left arrow"></div>
-            <div className="overlooked-slider__item overlooked-slider__item-1">
-              <NavLink to="/productCard"></NavLink>
-            </div>
-            <div className="overlooked-slider__item overlooked-slider__item-2">
-              <NavLink to="/productCard"></NavLink>
-            </div>
-            <div className="overlooked-slider__item overlooked-slider__item-3">
-              <NavLink to="/productCard"></NavLink>
-            </div>
-            <div className="overlooked-slider__item overlooked-slider__item-4">
-              <NavLink to="/productCard"></NavLink>
-            </div>
-            <div className="overlooked-slider__item overlooked-slider__item-5">
-              <NavLink to="/productCard"></NavLink>
-            </div>
-            <div className="overlooked-slider__arrow overlooked-slider__arrow_right arrow"></div>
-          </div>
-        </section>
       </div>
+    )
+  }
+}
+
+class OverlookedSlider extends Component {
+  render() {
+    return (
+      <section className="product-catalogue__overlooked-slider">
+        <h3>Вы смотрели:</h3>
+        <div className="overlooked-slider">
+          <div className="overlooked-slider__arrow overlooked-slider__arrow_left arrow"></div>
+          <div className="overlooked-slider__item overlooked-slider__item-1">
+            <NavLink to="/productCard"></NavLink>
+          </div>
+          <div className="overlooked-slider__item overlooked-slider__item-2">
+            <NavLink to="/productCard"></NavLink>
+          </div>
+          <div className="overlooked-slider__item overlooked-slider__item-3">
+            <NavLink to="/productCard"></NavLink>
+          </div>
+          <div className="overlooked-slider__item overlooked-slider__item-4">
+            <NavLink to="/productCard"></NavLink>
+          </div>
+          <div className="overlooked-slider__item overlooked-slider__item-5">
+            <NavLink to="/productCard"></NavLink>
+          </div>
+          <div className="overlooked-slider__arrow overlooked-slider__arrow_right arrow"></div>
+        </div>
+      </section>
     )
   }
 }
@@ -175,15 +185,7 @@ class SideBar extends Component {
               <div className="opener-down"></div>
             </div>
             <ul>
-              <li><NavLink to="/">Балетки</NavLink></li>
-              <li><NavLink to="/">Босоножки и сандалии</NavLink></li>
-              <li><NavLink to="/">Ботильоны</NavLink></li>
-              <li><NavLink to="/">Ботинки</NavLink></li>
-              <li><NavLink to="/">Ботфорты</NavLink></li>
-              <li><NavLink to="/">Галоши</NavLink></li>
-              <li><NavLink to="/">Тапочки</NavLink></li>
-              <li><NavLink to="/">Туфли</NavLink></li>
-              <li><NavLink to="/">Сапоги</NavLink></li>
+              {sidebarDivisionData.map((item, index) => <li key={index}><NavLink to="/">{item}</NavLink></li>)}
             </ul>
           </div>
         </section>
@@ -217,48 +219,12 @@ class SideBar extends Component {
               <div className="opener-down"></div>
             </div>
             <ul>
-              <li>
+              {sidebarColorData.map(item => <li key={item.colorId}>
                 <NavLink to="/">
-                  <div className="color beige"></div>
-                  <span className="color-name">Бежевый</span>
+                  <div className={`color ${item.color}`}></div>
+                  <span className="color-name">{item.colorName}</span>
                 </NavLink>
-              </li>
-              <li>
-                <NavLink to="/">
-                  <div className="color whitesnake"></div>
-                  <span className="color-name">Белый</span>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/">
-                  <div className="color shocking-blue"></div>
-                  <span className="color-name">Голубой</span>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/">
-                  <div className="color yellow"></div>
-                  <span className="color-name">Жёлтый</span>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/">
-                  <div className="color king-crimson"></div>
-                  <span className="color-name">Алый</span>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/">
-                  <div className="color deep-purple"></div>
-                  <span className="color-name">Фиолетовый</span>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/">
-                  <div className="color black-sabbath"></div>
-                  <span className="color-name">Чёрный</span>
-                </NavLink>
-              </li>
+              </li>)}
             </ul>
           </div>
         </section>
@@ -267,10 +233,10 @@ class SideBar extends Component {
           <div className="sidebar__size">
             <div className="sidebar__division-title">
               <h3>Размер</h3>
-
               <div className="opener-down"></div>
             </div>
             <ul>
+
               <div className="list-1">
                 <li><label><input type="checkbox" className="checkbox"
                   name="checkbox-31" />
@@ -299,6 +265,7 @@ class SideBar extends Component {
                 </label>
                 </li>
               </div>
+
               <div className="list-2">
                 <li><label><input type="checkbox" className="checkbox"
                   name="checkbox-32" />
@@ -336,6 +303,7 @@ class SideBar extends Component {
                 </label>
                 </li>
               </div>
+
             </ul>
           </div>
         </section>
@@ -354,18 +322,10 @@ class SideBar extends Component {
           <div className="sidebar__occasion">
             <div className="sidebar__division-title">
               <h3>Повод</h3>
-
               <div className="opener-down"></div>
             </div>
             <ul>
-              <li><NavLink to="/">Офис</NavLink></li>
-              <li><NavLink to="/">Вечеринка</NavLink></li>
-              <li><NavLink to="/">Свадьба</NavLink></li>
-              <li><NavLink to="/">Спорт</NavLink></li>
-              <li><NavLink to="/">Путешествие</NavLink></li>
-              <li><NavLink to="/">Свидание</NavLink></li>
-              <li><NavLink to="/">Дома</NavLink></li>
-              <li><NavLink to="/">Произвести впечатление</NavLink></li>
+              {sidebarOccasionData.map((item, index) => <li key={index}><NavLink to="/">{item}</NavLink></li>)}
             </ul>
           </div>
         </section>
@@ -413,8 +373,4 @@ class SideBar extends Component {
   }
 }
 
-
 export default Catalogue;
-
-
-

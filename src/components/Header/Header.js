@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "./Header.css";
 import {
   headerHiddenPanelProfileVisibility,
   headerHiddenPanelBasketVisibility,
@@ -7,7 +6,7 @@ import {
   mainSubmenuVisibility
 } from "../js/script";
 import { mainMenuItems, droppedMenuItems } from "./HeaderData"
-
+import header_logo from '../img/header-logo.png';
 import { NavLink } from "react-router-dom"
 
 class Header extends Component {
@@ -58,7 +57,7 @@ class TopMenu extends Component {
           <ul className="top-menu__items">
             {this.state.data.map(item =>
               <li key={item.id} className="top-menu__item">
-                <NavLink to="/">{item.title}</NavLink>
+                <NavLink to="/catalogue">{item.title}</NavLink>
               </li>)}
           </ul>
         </div>
@@ -79,7 +78,7 @@ class HeaderMain extends Component {
           <div className="header-main__logo">
             <NavLink to="/">
               <h1>
-                <img src="img/header-logo.png" alt="logotype" />
+                <img src={header_logo} alt="logotype" />
               </h1>
             </NavLink>
             <p>Обувь и аксессуары для всей семьи</p>
@@ -133,7 +132,7 @@ class MainMenu extends Component {
           <ul className="main-menu__items">
             {mainMenuItems.map(item =>
               <li key={item.id} className={`main-menu__item main-menu__item_${item.className}`} >
-                {<NavLink to={item.url}>{item.title}</NavLink>}
+                {<button className="main-menu__item_button">{item.title}</button>}
               </li>)}
           </ul>
         </div>
@@ -169,7 +168,7 @@ class DroppedMenu extends Component {
   }
 }
 
-//Только для рендера
+//Только для рендера. Корзина
 
 class ProductList extends Component {
   constructor(props) {

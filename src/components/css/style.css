@@ -275,14 +275,19 @@ li a:hover {
   list-style: none;
   text-align: center;
 }
-.header .main-menu__item a {
+.main-menu__item_button{
+  border: none;
+  outline: none;
+  background: none;
+}
+.header .main-menu__item_button {
   text-decoration: none;
   text-transform: uppercase;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: bold;
   color: #A1B3BF;
 }
-.header .main-menu__item a:hover {
+.header .main-menu__item a:hover, .main-menu__item_button:hover {
   color: #000000;
   text-decoration: underline;
 }
@@ -292,7 +297,7 @@ li a:hover {
   background-position: center bottom;
   background-size: 100% 4px;
 }
-.header .main-menu__item_active a {
+.header .main-menu__item_active a,.main-menu__item_button {
   font-weight: bold;
   color: #333333;
 }

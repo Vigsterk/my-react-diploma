@@ -83,7 +83,6 @@ class NewDeals extends Component {
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data)
         this.setState({
           data: data.data,
           productInfo: data.data[1],
@@ -96,7 +95,6 @@ class NewDeals extends Component {
   }
 
   loadProductInfo = (param) => {
-    console.log(param)
     this.setState({
       productInfo: param
     })
@@ -180,7 +178,6 @@ const newDealsData = [
 class DealsSlider extends Component {
   constructor(props) {
     super(props)
-    console.log(props)
     this.state = {
       data: this.props.img,
       first: this.props.img[0],
