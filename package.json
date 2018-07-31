@@ -2,13 +2,17 @@
   "name": "ra-bosa-noga",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://netology-code.github.io/ra-1-Vigsterk/",
   "dependencies": {
+    "gh-pages": "^1.2.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build"
   }
