@@ -7,29 +7,11 @@ class ProductCard extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      sitepath: [
-        {
-          to: "/",
-          title: "Главная"
-        },
-        {
-          to: "/",
-          title: ""
-        },
-        {
-          to: "/",
-          title: ""
-        },
-        {
-          to: "/",
-          title: ""
-        }
-      ],
+      sitepath: [],
       data: [],
       selectedImage: [],
       id: props.match.params.id
     }
-
   }
 
   componentDidMount() {
@@ -44,10 +26,23 @@ class ProductCard extends Component {
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data)
         this.setState({
           data: data.data,
-          selectedImage: data.data.images[0]
+          selectedImage: data.data.images[0],
+          sitepath: [
+            {
+              to: "/",
+              title: "Главная"
+            },
+            {
+              to: "/catalogue",
+              title: data.data.type
+            },
+            {
+              to: `/productCard/${this.state.id}`,
+              title: data.data.title
+            }
+          ],
         })
         console.log(this.state.data)
       })
@@ -57,12 +52,10 @@ class ProductCard extends Component {
   }
 
   changeImage = index => {
-    console.log(index)
     let selectedImage = this.state.data.images[index]
     this.setState({
       selectedImage: selectedImage
     })
-    console.log(this.state.selectedImage)
   }
   render() {
     return (
@@ -146,7 +139,6 @@ class ProductCard extends Component {
 class FavoriteSlider extends Component {
   constructor(props) {
     super(props)
-    console.log(props)
     this.state = {
       data: this.props.data,
       firstPic: this.props.data.images[0],
@@ -185,7 +177,6 @@ class FavoriteSlider extends Component {
 }
 
 const FirstImg = (props) => {
-  console.log(props)
   return (
     <div className="favourite-product-slider__item">
       <img className="favorite-slider-img favourite-product-slider__item-1" src={props.img} />
@@ -193,7 +184,6 @@ const FirstImg = (props) => {
   )
 }
 const SecondImg = (props) => {
-  console.log(props)
   return (
     <div className="favourite-product-slider__item">
       <img className="favorite-slider-img favourite-product-slider__item-2" src={props.img} />
@@ -201,14 +191,12 @@ const SecondImg = (props) => {
   )
 }
 const LastImg = (props) => {
-  console.log(props)
   return (
     <div className="favourite-product-slider__item">
       <img className="favorite-slider-img favourite-product-slider__item-3" src={props.img} />
     </div>
   )
 }
-
 
 class OverlookedSlider extends Component {
   render() {

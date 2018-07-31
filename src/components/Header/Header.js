@@ -5,15 +5,20 @@ import {
   headerMainSearchVisibility,
   mainSubmenuVisibility
 } from "../js/script";
-import { mainMenuItems, droppedMenuItems } from "./HeaderData"
+import { mainMenuItems, droppedMenuItems, topMenuData } from "./HeaderData"
 import header_logo from '../img/header-logo.png';
 import { NavLink } from "react-router-dom"
 
 class Header extends Component {
+  constructor(props) {
+    super(props)
+    console.log(props)
+  }
   render() {
+    console.log("Получен флаг", this.props.status)
     return (
       <header className="header">
-        <TopMenu />
+        <TopMenu bool={this.props.status} />
         <HeaderMain />
         <MainMenu />
         <DroppedMenu />
@@ -26,9 +31,15 @@ class TopMenu extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: []
+      data: [],
+      dataVault: topMenuData,
+      isActive: true
     }
   }
+  /* В других разделах сайта содержимое верхнего меню другое,
+  но ответ с сервера по запросу категорий не имеет настройки,
+  можно создать условный рендеринг и перекидывать содержимое с других
+  страниц которые будут созданы по аналогии с серверным ответом. */
   componentDidMount() {
     fetch("https://neto-api.herokuapp.com/bosa-noga/categories", {
       method: "GET"
@@ -42,7 +53,8 @@ class TopMenu extends Component {
       .then(response => response.json())
       .then(data => {
         this.setState({
-          data: data.data
+          data: data.data,
+          isActive: this.props.bool
         })
       })
       .catch(error => {
@@ -51,11 +63,12 @@ class TopMenu extends Component {
   }
 
   render() {
+    console.log("Текущий статус Хидера", this.state.isActive)
     return (
       <div className="top-menu">
         <div className="wrapper">
           <ul className="top-menu__items">
-            {this.state.data.map(item =>
+            {(this.state.isActive ? this.state.data : this.state.dataVault).map(item =>
               <li key={item.id} className="top-menu__item">
                 <NavLink to="/catalogue">{item.title}</NavLink>
               </li>)}
@@ -108,13 +121,13 @@ class HeaderMain extends Component {
             <NavLink to="/">Личный кабинет</NavLink>
             <NavLink to="/favorite">
               <i className="fa fa-heart-o" aria-hidden="true"></i>Избранное
-            </NavLink>
+</NavLink>
             <NavLink to="/">Выйти</NavLink>
           </div>
           <div className="hidden-panel__basket basket-dropped">
             <div className="basket-dropped__title">
               В вашей корзине:
-            </div>
+</div>
             <ProductList />
             <NavLink className="basket-dropped__order-button" to="/order">Оформить заказ</NavLink>
           </div>

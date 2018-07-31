@@ -8,6 +8,7 @@ import { sidebarColorData, sidebarOccasionData, sidebarDivisionData } from "./Ca
 class Catalogue extends Component {
   constructor(props) {
     super(props)
+    console.log(props)
     this.state = {
       sitepath: [
         {
@@ -20,12 +21,12 @@ class Catalogue extends Component {
         },
         {
           to: "/",
-          title: "Мужская обувь"
+          title: "Мужская обувь" //Какие категории отвечают за выборку мужская/женская и прочие?
         }],
       data: [],
       dataVault: [],
       page: 1,
-      pages: ""
+      pages: "",
     }
   }
 
@@ -45,8 +46,9 @@ class Catalogue extends Component {
         this.setState({
           data: data.data,
           pages: data.pages,
-          dataVault: this.state.dataVault.concat(data)
+          dataVault: this.state.dataVault.concat(data),
         })
+        this.props.func(false)
       })
       .catch(error => {
         console.log(error)

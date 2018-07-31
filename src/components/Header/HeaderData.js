@@ -1,3 +1,26 @@
+const topMenuData = [
+  {
+    id: 1,
+    title: "Возврат"
+  },
+  {
+    id: 2,
+    title: "Доставка и оплата"
+  },
+  {
+    id: 3,
+    title: "О Магазине"
+  },
+  {
+    id: 4,
+    title: "Контакты"
+  },
+  {
+    id: 5,
+    title: "Новости"
+  },
+]
+
 const mainMenuItems = [
   {
     title: "Акции",
@@ -244,4 +267,4 @@ const droppedMenuItems = [
   }
 ]
 
-export { mainMenuItems, droppedMenuItems }
+export { mainMenuItems, droppedMenuItems, topMenuData }
