@@ -148,7 +148,7 @@ select {
 
 /*Сердечки для избранного товара с эффектами*/
 .product-catalogue .product-catalogue__product_favorite a,
-.product-catalogue .product-catalogue__product_favorite p {
+.product-catalogue .product-catalogue__product_favorite-icon {
   position: relative;
   top: 1px;
   width: 33px;
@@ -157,8 +157,12 @@ select {
   background-repeat: no-repeat;
 }
 
+.product-catalogue__product_favorite-icon{
+  z-index: 100;
+}
+
 .product-catalogue .product-catalogue__product_favorite a:hover,
-.product-catalogue .product-catalogue__product_favorite p:hover {
+.product-catalogue .product-catalogue__product_favorite-icon:hover {
   cursor: pointer;
   transform: scale(1.1);
   z-index: 5;
@@ -292,6 +296,12 @@ span.producer {
   text-align: center;
   color: #333333;
 }
+.old-price {
+  position: relative;
+  top: -6px;
+  color: #d41d1d9c;
+  font-size: 15px;
+}
 
 .item-price::after {
   content: " ₽";
@@ -318,7 +328,7 @@ span.producer {
 
 #size{
   position: absolute;
-  top: 100px;
+  top: 94px;
   left: 0px;
 }
 

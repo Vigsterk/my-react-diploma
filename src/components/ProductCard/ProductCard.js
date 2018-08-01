@@ -6,6 +6,7 @@ import SitePath from '../SitePath/SitePath'
 class ProductCard extends Component {
   constructor(props) {
     super(props)
+    console.log(props)
     this.state = {
       sitepath: [],
       data: [],
@@ -15,6 +16,7 @@ class ProductCard extends Component {
   }
 
   componentDidMount() {
+    this.props.func(false)
     fetch(`https://neto-api.herokuapp.com/bosa-noga/products/${this.state.id}`, {
       method: "GET"
     })

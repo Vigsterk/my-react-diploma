@@ -25,6 +25,9 @@ class OrderEnd extends Component {
       ]
     }
   }
+  componentDidMount() {
+    this.props.func(false)
+  }
   render() {
     return (
       <div className="wrapper order-wrapper">

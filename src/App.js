@@ -6,7 +6,6 @@ import { BrowserRouter, Route } from 'react-router-dom'
 class App extends Component {
   constructor(props) {
     super(props)
-    console.log(props)
     this.state = {
       activeStatus: true
     }
@@ -18,19 +17,15 @@ class App extends Component {
     this.CarryedProductCard = this.bindProps(ProductCard, { func: this.reloadCategories });
   }
   reloadCategories = (response) => {
-    console.log("Статус сейчас", this.state.activeStatus)
-    console.log("response", response)
-    this.setState({
+    this.state.activeStatus === true && this.setState({
       activeStatus: response
     })
-    console.log("Статус перезаписан", this.state.activeStatus)
   }
 
-  bindProps = (Component, props) => () => <Component {...props} />;
+  bindProps = (Component, bindingProps) => (selfProps) => <Component {...bindingProps}{...selfProps} />;
 
   render() {
     const { CarryedMainPage, CarryedCatalogue, CarryedFavorite, CarryedOrder, CarryedOrderEnd, CarryedProductCard } = this;
-    console.log("Я нарисовался")
     return (
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <div className='container'>

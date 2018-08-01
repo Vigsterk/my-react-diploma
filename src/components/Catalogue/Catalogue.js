@@ -27,10 +27,12 @@ class Catalogue extends Component {
       dataVault: [],
       page: 1,
       pages: "",
+      favoriteData: []
     }
   }
 
   componentDidMount() {
+    this.props.func(false)
     fetch(`https://neto-api.herokuapp.com/bosa-noga/products?page=${this.state.page}`, {
       method: "GET"
     })
@@ -48,7 +50,6 @@ class Catalogue extends Component {
           pages: data.pages,
           dataVault: this.state.dataVault.concat(data),
         })
-        this.props.func(false)
       })
       .catch(error => {
         console.log(error)
@@ -93,6 +94,15 @@ class Catalogue extends Component {
       });
   }
 
+  favoriteAdd = (event, index) => {
+    event.preventDefault()
+    this.setState({
+      favoriteData: this.state.favoriteData.concat(this.state.data.filter((el) => index === el.id))
+    })
+    let serialfavoriteData = JSON.stringify(this.state.favoriteData);
+    localStorage.setItem("favoriteKey", serialfavoriteData);
+  }
+
   render() {
     return (
       <div>
@@ -115,28 +125,17 @@ class Catalogue extends Component {
               </div>
             </section>
             <section className="product-catalogue__item-list">
-              {this.state.data && this.state.data.map(items =>
-                <NavLink key={items.id} className="item-list__item-card item" to={`productCard/${items.id}`}>
-                  <div className="item-pic">
-                    {items.images && items.images.map(item =>
-                      <img className="item-pic" src={item} alt={items.title} />)}
-                    <div className="product-catalogue__product_favorite">
-                      <p></p>
-                    </div>
-                    <div className="arrow arrow_left" ></div>
-                    <div className="arrow arrow_right" ></div>
-                  </div>
-                  <div className="item-desc">
-                    <h4 className="item-name">{items.title}</h4>
-                    <p className="item-producer">Производитель: <span className="producer">{items.brand}</span></p>
-                    <p className="item-price">{items.price}</p>
-                    {items.oldPrice && <p className="item-price old-price"><s>{items.oldPrice}</s></p>}
-                    <div className="sizes" id="size">
-                      <p className="sizes__title">Размеры в наличии:</p>
-                      <p className="sizes__avalible">36, 37, 38, 39, 40, 41, 42</p>
-                    </div>
-                  </div>
-                </NavLink>)}
+              {this.state.data.length > 0 && this.state.data.map(items =>
+                <ListItem key={items.id}
+                  id={items.id}
+                  title={items.title}
+                  images={items.images}
+                  brand={items.brand}
+                  price={items.price}
+                  oldPrice={items.oldPrice}
+                  func={this.favoriteAdd}
+                />
+              )}
               <OverlookedSlider />
             </section>
             {this.state.pages && <Pagination page={this.state.page} pages={this.state.pages} func={this.changePage} />}
@@ -146,6 +145,37 @@ class Catalogue extends Component {
     )
   }
 }
+
+
+class ListItem extends Component {
+  handleClick = (event) => this.props.func(event, this.props.id)
+  render() {
+    return (
+      <NavLink key={this.props.id} className="item-list__item-card item" to={`productCard/${this.props.id}`}>
+        <div className="item-pic">
+          {this.props.images && this.props.images.map((item, index) =>
+            <img key={index} className="item-pic" src={item} alt={this.props.title} />)}
+          <div className="product-catalogue__product_favorite" onClick={this.handleClick}>
+            <p className="product-catalogue__product_favorite-icon"></p>
+          </div>
+          <div className="arrow arrow_left" ></div>
+          <div className="arrow arrow_right" ></div>
+        </div>
+        <div className="item-desc">
+          <h4 className="item-name">{this.props.title}</h4>
+          <p className="item-producer">Производитель: <span className="producer">{this.props.brand}</span></p>
+          <p className="item-price">{this.props.price}</p>
+          {this.props.oldPrice && <p className="item-price old-price"><s>{this.props.oldPrice}</s></p>}
+          <div className="sizes" id="size">
+            <p className="sizes__title">Размеры в наличии:</p>
+            <p className="sizes__avalible">36, 37, 38, 39, 40, 41, 42</p>
+          </div>
+        </div>
+      </NavLink>
+    )
+  }
+}
+
 
 class OverlookedSlider extends Component {
   render() {

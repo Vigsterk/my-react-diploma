@@ -6,8 +6,8 @@ const SitePath = (props) => {
   return (
     <div className="site-path">
       <ul className="site-path__items">
-        {pathArr.map(item =>
-          <li className="site-path__item"><NavLink to={item.to}>{item.title}</NavLink></li>
+        {pathArr.map((item, index) =>
+          <li key={index} className="site-path__item"><NavLink to={item.to}>{item.title}</NavLink></li>
         )}
       </ul>
     </div>

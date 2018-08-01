@@ -29,6 +29,9 @@ class Order extends Component {
     }
     this.handleChange = this.handleChange.bind(this);
   }
+  componentDidMount() {
+    this.props.func(false)
+  }
 
   handleChange(value) {
     this.setState({ name: value });

@@ -12,10 +12,8 @@ import { NavLink } from "react-router-dom"
 class Header extends Component {
   constructor(props) {
     super(props)
-    console.log(props)
   }
   render() {
-    console.log("Получен флаг", this.props.status)
     return (
       <header className="header">
         <TopMenu bool={this.props.status} />
@@ -36,10 +34,6 @@ class TopMenu extends Component {
       isActive: true
     }
   }
-  /* В других разделах сайта содержимое верхнего меню другое,
-  но ответ с сервера по запросу категорий не имеет настройки,
-  можно создать условный рендеринг и перекидывать содержимое с других
-  страниц которые будут созданы по аналогии с серверным ответом. */
   componentDidMount() {
     fetch("https://neto-api.herokuapp.com/bosa-noga/categories", {
       method: "GET"
@@ -53,8 +47,8 @@ class TopMenu extends Component {
       .then(response => response.json())
       .then(data => {
         this.setState({
+          isActive: this.props.bool,
           data: data.data,
-          isActive: this.props.bool
         })
       })
       .catch(error => {
@@ -63,7 +57,6 @@ class TopMenu extends Component {
   }
 
   render() {
-    console.log("Текущий статус Хидера", this.state.isActive)
     return (
       <div className="top-menu">
         <div className="wrapper">
@@ -120,14 +113,13 @@ class HeaderMain extends Component {
           <div className="hidden-panel__profile">
             <NavLink to="/">Личный кабинет</NavLink>
             <NavLink to="/favorite">
-              <i className="fa fa-heart-o" aria-hidden="true"></i>Избранное
-</NavLink>
+              <i className="fa fa-heart-o" aria-hidden="true"></i>Избранное</NavLink>
             <NavLink to="/">Выйти</NavLink>
           </div>
           <div className="hidden-panel__basket basket-dropped">
             <div className="basket-dropped__title">
               В вашей корзине:
-</div>
+            </div>
             <ProductList />
             <NavLink className="basket-dropped__order-button" to="/order">Оформить заказ</NavLink>
           </div>
