@@ -29,6 +29,7 @@ class Catalogue extends Component {
       pages: "",
       favoriteData: []
     }
+
   }
 
   componentDidMount() {
@@ -94,13 +95,17 @@ class Catalogue extends Component {
       });
   }
 
-  favoriteAdd = (event, index) => {
+  favoriteAdd = (event, itemID) => {
+    console.log("localStorage now", localStorage)
+    console.log("Товар добавлен в избранное", itemID)
     event.preventDefault()
+    let tempData = this.state.favoriteData.concat(this.state.data.filter((el) => itemID === el.id))
     this.setState({
-      favoriteData: this.state.favoriteData.concat(this.state.data.filter((el) => index === el.id))
+      favoriteData: tempData
     })
-    let serialfavoriteData = JSON.stringify(this.state.favoriteData);
+    let serialfavoriteData = JSON.stringify(tempData);
     localStorage.setItem("favoriteKey", serialfavoriteData);
+    console.log("localStorage now", localStorage)
   }
 
   render() {
@@ -145,7 +150,6 @@ class Catalogue extends Component {
     )
   }
 }
-
 
 class ListItem extends Component {
   handleClick = (event) => this.props.func(event, this.props.id)

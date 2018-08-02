@@ -180,6 +180,7 @@ class DealsSlider extends Component {
     super(props)
     this.state = {
       data: this.props.img,
+      favoriteData: [],
       first: this.props.img[0],
       active: this.props.img[1],
       last: this.props.img[2],
@@ -187,6 +188,20 @@ class DealsSlider extends Component {
     }
     this.moveLeft = this.moveLeft.bind(this)
     this.moveRight = this.moveRight.bind(this)
+  }
+
+  favoriteAdd = (event) => {
+    console.log("localStorage now", localStorage)
+    console.log("Товар добавлен в избранное", this.state.active.id)
+    let itemID = this.state.active.id
+    event.preventDefault()
+    let tempData = this.state.favoriteData.concat(this.state.data.filter((el) => itemID === el.id))
+    this.setState({
+      favoriteData: tempData
+    })
+    let serialfavoriteData = JSON.stringify(tempData);
+    localStorage.setItem("favoriteKey", serialfavoriteData);
+    console.log("localStorage now", localStorage)
   }
 
   moveLeft() {
@@ -228,11 +243,12 @@ class DealsSlider extends Component {
   }
 
   render() {
+    console.log(this.state.data)
     return (
       <div className="new-deals__slider">
         <div className="new-deals__arrow new-deals__arrow_left arrow" onClick={this.moveLeft}></div>
         <ProductFirst images={this.state.first.images[0]} />
-        <ProductActive images={this.state.active.images[0]} />
+        <ProductActive images={this.state.active.images[0]} func={this.favoriteAdd} id={this.state.active.id} />
         <ProductLast images={this.state.last.images[0]} />
         <div className="new-deals__arrow new-deals__arrow_right arrow" onClick={this.moveRight}></div>
       </div>
@@ -249,17 +265,20 @@ const ProductFirst = (props) => {
     </div>)
 }
 
-const ProductActive = (props) => {
-  return (
-    <div>
-      <div className="new-deals__product new-deals__product_active">
-        <NavLink className="new-deals__product_link" to="/productCard">
-          <img className="new-deals__product_active_img" src={props.images} alt={"ActiveProduct"} />
-        </NavLink>
-        <div className="new-deals__product_favorite"></div>
+class ProductActive extends Component {
+  handleClick = (event) => this.props.func(event)
+  render() {
+    return (
+      <div>
+        <div className="new-deals__product new-deals__product_active" onClick={this.handleClick}>
+          <NavLink className="new-deals__product_link" to={`productCard/${this.props.id}`}>
+            <img className="new-deals__product_active_img" src={this.props.images} alt={"ActiveProduct"} />
+          </NavLink>
+          <div className="new-deals__product_favorite"></div>
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 }
 
 const ProductLast = (props) => {

@@ -11,7 +11,8 @@ class ProductCard extends Component {
       sitepath: [],
       data: [],
       selectedImage: [],
-      id: props.match.params.id
+      id: props.match.params.id,
+      favoriteData: []
     }
   }
 
@@ -59,6 +60,18 @@ class ProductCard extends Component {
       selectedImage: selectedImage
     })
   }
+
+  favoriteAdd = (event) => {
+    console.log("localStorage now", localStorage)
+    console.log("Товар добавлен в избранное", this.state.data)
+    let tempData = this.state.favoriteData.concat(this.state.data)
+    this.setState({
+      favoriteData: tempData
+    })
+    let serialfavoriteData = JSON.stringify(tempData);
+    localStorage.setItem("favoriteKey", serialfavoriteData);
+  }
+
   render() {
     return (
       <div>
@@ -115,9 +128,11 @@ class ProductCard extends Component {
                 <div className="size-wrapper">
                   <NavLink to="/"><span className="size-rule"></span><p className="size-table">Таблица размеров</p></NavLink>
                 </div>
-                <NavLink to="/" className="in-favourites-wrapper">
-                  <div className="favourite" to="/"></div><p className="in-favourites">В избранное</p>
-                </NavLink>
+
+                <div className="in-favourites-wrapper" onClick={this.favoriteAdd}>
+                  <div className="favourite"></div>
+                  <p className="in-favourites">В избранное</p>
+                </div>
 
                 <div className="basket-item__quantity">
                   <div className="basket-item__quantity-change basket-item-list__quantity-change_minus">-</div>1

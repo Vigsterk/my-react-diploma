@@ -6,6 +6,7 @@ import { NavLink } from 'react-router-dom'
 class Favorite extends Component {
   constructor(props) {
     super(props)
+    console.log(localStorage)
     this.state = {
       sitepath: [
         {
@@ -24,9 +25,16 @@ class Favorite extends Component {
     this.props.func(false)
   }
 
-  favoriteRemove = (event, index) => {
+  favoriteRemove = (event, itemID) => {
     event.preventDefault()
-    console.log(index)
+    let favoriteFilter = this.state.favoriteData.filter((el) => itemID === el.id);
+    let tempData = this.state.favoriteData.indexOf(favoriteFilter[0])
+    let tempFavoriteData = [...this.state.favoriteData]
+    tempFavoriteData.splice(tempData, 1)
+    this.setState({
+      favoriteData: tempFavoriteData
+    })
+    localStorage.setItem("favoriteKey", tempFavoriteData);
   }
 
   render() {
@@ -88,9 +96,6 @@ class ListItem extends Component {
     )
   }
 }
-
-
-
 
 class SortBy extends Component {
   render() {
