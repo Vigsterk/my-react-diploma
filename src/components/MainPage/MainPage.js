@@ -58,7 +58,6 @@ const Slider = () => {
         <h2 className="h2">К весне готовы!</h2>
       </div>
     </div>
-
   )
 }
 
@@ -149,7 +148,6 @@ class ListItem extends Component {
         <button className={this.props.isActive ? 'new-deals__item-button new-deals__item-button_active' : 'new-deals__item-button'} onClick={this.handleClick}>{this.props.title}</button>
       </li>)
   }
-
 }
 
 const newDealsData = [
@@ -191,17 +189,14 @@ class DealsSlider extends Component {
   }
 
   favoriteAdd = (event) => {
-    console.log("localStorage now", localStorage)
-    console.log("Товар добавлен в избранное", this.state.active.id)
     let itemID = this.state.active.id
     event.preventDefault()
     let tempData = this.state.favoriteData.concat(this.state.data.filter((el) => itemID === el.id))
     this.setState({
       favoriteData: tempData
     })
-    let serialfavoriteData = JSON.stringify(tempData);
-    localStorage.setItem("favoriteKey", serialfavoriteData);
-    console.log("localStorage now", localStorage)
+    const serialTempData = JSON.stringify(tempData)
+    localStorage.setItem("mainPageKey", serialTempData);
   }
 
   moveLeft() {
@@ -243,7 +238,6 @@ class DealsSlider extends Component {
   }
 
   render() {
-    console.log(this.state.data)
     return (
       <div className="new-deals__slider">
         <div className="new-deals__arrow new-deals__arrow_left arrow" onClick={this.moveLeft}></div>

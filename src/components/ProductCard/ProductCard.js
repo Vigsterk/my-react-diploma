@@ -68,8 +68,8 @@ class ProductCard extends Component {
     this.setState({
       favoriteData: tempData
     })
-    let serialfavoriteData = JSON.stringify(tempData);
-    localStorage.setItem("favoriteKey", serialfavoriteData);
+    const serialTempData = JSON.stringify(tempData)
+    localStorage.setItem("productCardKey", serialTempData);
   }
 
   render() {

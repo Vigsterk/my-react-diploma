@@ -29,7 +29,6 @@ class Catalogue extends Component {
       pages: "",
       favoriteData: []
     }
-
   }
 
   componentDidMount() {
@@ -96,16 +95,13 @@ class Catalogue extends Component {
   }
 
   favoriteAdd = (event, itemID) => {
-    console.log("localStorage now", localStorage)
-    console.log("Товар добавлен в избранное", itemID)
     event.preventDefault()
     let tempData = this.state.favoriteData.concat(this.state.data.filter((el) => itemID === el.id))
     this.setState({
       favoriteData: tempData
     })
-    let serialfavoriteData = JSON.stringify(tempData);
-    localStorage.setItem("favoriteKey", serialfavoriteData);
-    console.log("localStorage now", localStorage)
+    const serialTempData = JSON.stringify(tempData)
+    localStorage.setItem("catalogueKey", serialTempData);
   }
 
   render() {

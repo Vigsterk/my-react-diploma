@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import './style-favorite.css';
 import SitePath from '../SitePath/SitePath';
 import { NavLink } from 'react-router-dom'
+import favoriteStorage from '../js/localStorageAPI';
 
 class Favorite extends Component {
   constructor(props) {
     super(props)
-    console.log(localStorage)
+    favoriteStorage()
     this.state = {
       sitepath: [
         {
@@ -38,7 +39,6 @@ class Favorite extends Component {
   }
 
   render() {
-    console.log(this.state.favoriteData)
     return (
       <div className="wrapper wrapper_favorite">
         <SitePath pathprops={this.state.sitepath} />
