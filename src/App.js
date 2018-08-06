@@ -31,7 +31,7 @@ class App extends Component {
         <div className='container'>
           <Header status={this.state.activeStatus} />
           <Route path='/' exact component={CarryedMainPage} />
-          <Route path='/catalogue' exact component={CarryedCatalogue} />
+          <Route path='/catalogue/' exact component={CarryedCatalogue} />
           <Route path='/favorite' exact component={CarryedFavorite} />
           <Route path='/order' exact component={CarryedOrder} />
           <Route path='/orderEnd' exact component={CarryedOrderEnd} />

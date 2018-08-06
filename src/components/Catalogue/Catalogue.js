@@ -8,7 +8,7 @@ import { sidebarColorData, sidebarOccasionData, sidebarDivisionData } from "./Ca
 class Catalogue extends Component {
   constructor(props) {
     super(props)
-    console.log(props)
+    console.log(localStorage)
     this.state = {
       sitepath: [
         {
@@ -21,13 +21,15 @@ class Catalogue extends Component {
         },
         {
           to: "/",
-          title: "Мужская обувь" //Какие категории отвечают за выборку мужская/женская и прочие?
+          title: "Мужская обувь" //{"id":12,"title":"Мужская обувь"},{"id":13,"title":"Женская обувь"},{"id":14,"title":"Обувь унисекс"},{"id":15,"title":"Детская обувь"}
         }],
       data: [],
       dataVault: [],
       page: 1,
       pages: "",
-      favoriteData: []
+      goods: "",
+      favoriteData: localStorage.catalogueKey ? JSON.parse(localStorage.catalogueKey) : [],
+      favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : []
     }
   }
 
@@ -48,6 +50,7 @@ class Catalogue extends Component {
         this.setState({
           data: data.data,
           pages: data.pages,
+          goods: data.goods,
           dataVault: this.state.dataVault.concat(data),
         })
       })
@@ -96,12 +99,34 @@ class Catalogue extends Component {
 
   favoriteAdd = (event, itemID) => {
     event.preventDefault()
-    let tempData = this.state.favoriteData.concat(this.state.data.filter((el) => itemID === el.id))
-    this.setState({
-      favoriteData: tempData
-    })
-    const serialTempData = JSON.stringify(tempData)
-    localStorage.setItem("catalogueKey", serialTempData);
+    let favoriteFilter = this.state.favoriteData.filter((el) => itemID === el.id);
+    if (favoriteFilter.length > 0 && favoriteFilter[0].id === itemID) {
+      let removeData = this.state.favoriteData.indexOf(favoriteFilter[0])
+      let tempFavoriteData = [...this.state.favoriteData]
+      tempFavoriteData.splice(removeData, 1)
+      let tempFavoriteKeyData = [...this.state.favoriteKeyData]
+      tempFavoriteKeyData.splice(removeData, 1)
+      this.setState({
+        favoriteData: tempFavoriteData,
+        favoriteKeyData: tempFavoriteKeyData
+      })
+      console.log("Удалён")
+      localStorage.setItem("catalogueKey", tempFavoriteData);
+    } else {
+      let tempData = this.state.favoriteData.concat(this.state.data.filter((el) => itemID === el.id))
+      this.setState({
+        favoriteData: tempData,
+      })
+      console.log("Добавлен")
+      const serialTempData = JSON.stringify(tempData)
+      localStorage.setItem("catalogueKey", serialTempData);
+    }
+  }
+
+  checkActiveId(itemID) {
+    let favoriteData = this.state.favoriteKeyData.length > 0 ? this.state.favoriteKeyData : this.state.favoriteData
+    let result = favoriteData.find((el) => itemID === el.id)
+    return result
   }
 
   render() {
@@ -114,7 +139,7 @@ class Catalogue extends Component {
             <section className="product-catalogue__head">
               <div className="product-catalogue__section-title">
                 <h2 className="section-name">Женская обувь</h2>
-                <span className="amount"> 1 764 товара</span>
+                <span className="amount">{this.state.goods}</span>
               </div>
               <div className="product-catalogue__sort-by">
                 <p className="sort-by">Сортировать</p>
@@ -135,6 +160,7 @@ class Catalogue extends Component {
                   price={items.price}
                   oldPrice={items.oldPrice}
                   func={this.favoriteAdd}
+                  isActive={this.checkActiveId(items.id)}
                 />
               )}
               <OverlookedSlider />
@@ -155,7 +181,7 @@ class ListItem extends Component {
         <div className="item-pic">
           {this.props.images && this.props.images.map((item, index) =>
             <img key={index} className="item-pic" src={item} alt={this.props.title} />)}
-          <div className="product-catalogue__product_favorite" onClick={this.handleClick}>
+          <div className={this.props.isActive ? 'product-catalogue__product_favorite product-catalogue__product_favorite-chosen' : 'product-catalogue__product_favorite'} onClick={this.handleClick}>
             <p className="product-catalogue__product_favorite-icon"></p>
           </div>
           <div className="arrow arrow_left" ></div>

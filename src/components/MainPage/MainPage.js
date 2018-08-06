@@ -98,7 +98,6 @@ class NewDeals extends Component {
       productInfo: param
     })
   }
-
   render() {
     return (
       <section className="new-deals wave-bottom">
@@ -178,7 +177,7 @@ class DealsSlider extends Component {
     super(props)
     this.state = {
       data: this.props.img,
-      favoriteData: [],
+      favoriteData: localStorage.mainPageKey ? JSON.parse(localStorage.mainPageKey) : [],
       first: this.props.img[0],
       active: this.props.img[1],
       last: this.props.img[2],
@@ -191,6 +190,7 @@ class DealsSlider extends Component {
   favoriteAdd = (event) => {
     let itemID = this.state.active.id
     event.preventDefault()
+    console.log("favoritedata now", this.state.favoriteData)
     let tempData = this.state.favoriteData.concat(this.state.data.filter((el) => itemID === el.id))
     this.setState({
       favoriteData: tempData

@@ -12,7 +12,7 @@ class ProductCard extends Component {
       data: [],
       selectedImage: [],
       id: props.match.params.id,
-      favoriteData: []
+      favoriteData: localStorage.productCardKey ? JSON.parse(localStorage.productCardKey) : [],
     }
   }
 
@@ -62,8 +62,6 @@ class ProductCard extends Component {
   }
 
   favoriteAdd = (event) => {
-    console.log("localStorage now", localStorage)
-    console.log("Товар добавлен в избранное", this.state.data)
     let tempData = this.state.favoriteData.concat(this.state.data)
     this.setState({
       favoriteData: tempData

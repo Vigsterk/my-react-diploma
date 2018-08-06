@@ -63,7 +63,7 @@ class TopMenu extends Component {
           <ul className="top-menu__items">
             {(this.state.isActive ? this.state.data : this.state.dataVault).map(item =>
               <li key={item.id} className="top-menu__item">
-                <NavLink to="/catalogue">{item.title}</NavLink>
+                <NavLink to={`catalogue/${item.id}`}>{item.title}</NavLink>
               </li>)}
           </ul>
         </div>
