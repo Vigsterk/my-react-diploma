@@ -157,10 +157,6 @@ select {
   background-repeat: no-repeat;
 }
 
-.product-catalogue__product_favorite-icon{
-  z-index: 100;
-}
-
 .product-catalogue .product-catalogue__product_favorite a:hover,
 .product-catalogue .product-catalogue__product_favorite-icon:hover {
   cursor: pointer;

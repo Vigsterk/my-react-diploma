@@ -178,6 +178,7 @@ class DealsSlider extends Component {
     this.state = {
       data: this.props.img,
       favoriteData: localStorage.mainPageKey ? JSON.parse(localStorage.mainPageKey) : [],
+      favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [],
       first: this.props.img[0],
       active: this.props.img[1],
       last: this.props.img[2],
@@ -187,16 +188,30 @@ class DealsSlider extends Component {
     this.moveRight = this.moveRight.bind(this)
   }
 
-  favoriteAdd = (event) => {
-    let itemID = this.state.active.id
+  favoriteAdd = (event, itemID) => {
     event.preventDefault()
-    console.log("favoritedata now", this.state.favoriteData)
-    let tempData = this.state.favoriteData.concat(this.state.data.filter((el) => itemID === el.id))
-    this.setState({
-      favoriteData: tempData
-    })
-    const serialTempData = JSON.stringify(tempData)
-    localStorage.setItem("mainPageKey", serialTempData);
+    let favoriteFilter = this.state.favoriteData.filter((el) => itemID === el.id);
+    if (favoriteFilter.length > 0 && favoriteFilter[0].id === itemID) {
+      let removeData = this.state.favoriteData.indexOf(favoriteFilter[0])
+      let tempFavoriteData = [...this.state.favoriteData]
+      tempFavoriteData.splice(removeData, 1)
+      let tempFavoriteKeyData = [...this.state.favoriteKeyData]
+      tempFavoriteKeyData.splice(removeData, 1)
+      this.setState({
+        favoriteData: tempFavoriteData,
+        favoriteKeyData: tempFavoriteKeyData
+      })
+      console.log("Удалён")
+      localStorage.setItem("mainPageKey", tempFavoriteData);
+    } else {
+      let tempData = this.state.favoriteData.concat(this.state.data.filter((el) => itemID === el.id))
+      this.setState({
+        favoriteData: tempData,
+      })
+      console.log("Добавлен")
+      const serialTempData = JSON.stringify(tempData)
+      localStorage.setItem("mainPageKey", serialTempData);
+    }
   }
 
   moveLeft() {
@@ -237,12 +252,23 @@ class DealsSlider extends Component {
     this.state.func(tempDataActive)
   }
 
+  checkActiveId(itemID) {
+    let favoriteData = this.state.favoriteKeyData.length > 0 ? this.state.favoriteKeyData : this.state.favoriteData
+    let result = favoriteData.find((el) => itemID === el.id)
+    return result
+  }
+
   render() {
     return (
       <div className="new-deals__slider">
         <div className="new-deals__arrow new-deals__arrow_left arrow" onClick={this.moveLeft}></div>
         <ProductFirst images={this.state.first.images[0]} />
-        <ProductActive images={this.state.active.images[0]} func={this.favoriteAdd} id={this.state.active.id} />
+        <ProductActive
+          images={this.state.active.images[0]}
+          func={this.favoriteAdd}
+          id={this.state.active.id}
+          isActive={this.checkActiveId(this.state.active.id)}
+        />
         <ProductLast images={this.state.last.images[0]} />
         <div className="new-deals__arrow new-deals__arrow_right arrow" onClick={this.moveRight}></div>
       </div>
@@ -260,15 +286,15 @@ const ProductFirst = (props) => {
 }
 
 class ProductActive extends Component {
-  handleClick = (event) => this.props.func(event)
+  handleClick = (event) => this.props.func(event, this.props.id)
   render() {
     return (
       <div>
-        <div className="new-deals__product new-deals__product_active" onClick={this.handleClick}>
+        <div className="new-deals__product new-deals__product_active">
           <NavLink className="new-deals__product_link" to={`productCard/${this.props.id}`}>
             <img className="new-deals__product_active_img" src={this.props.images} alt={"ActiveProduct"} />
           </NavLink>
-          <div className="new-deals__product_favorite"></div>
+          <div className={this.props.isActive ? "new-deals__product_favorite-chosen" : "new-deals__product_favorite"} onClick={this.handleClick}></div>
         </div>
       </div>
     )

@@ -7,17 +7,21 @@ class ProductCard extends Component {
   constructor(props) {
     super(props)
     console.log(props)
+
     this.state = {
       sitepath: [],
       data: [],
       selectedImage: [],
       id: props.match.params.id,
       favoriteData: localStorage.productCardKey ? JSON.parse(localStorage.productCardKey) : [],
+      favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [],
+      isActive: false
     }
   }
 
   componentDidMount() {
     this.props.func(false)
+    this.checkActiveId(this.state.id)
     fetch(`https://neto-api.herokuapp.com/bosa-noga/products/${this.state.id}`, {
       method: "GET"
     })
@@ -47,7 +51,6 @@ class ProductCard extends Component {
             }
           ],
         })
-        console.log(this.state.data)
       })
       .catch(error => {
         console.log(error)
@@ -62,12 +65,51 @@ class ProductCard extends Component {
   }
 
   favoriteAdd = (event) => {
-    let tempData = this.state.favoriteData.concat(this.state.data)
-    this.setState({
-      favoriteData: tempData
-    })
-    const serialTempData = JSON.stringify(tempData)
-    localStorage.setItem("productCardKey", serialTempData);
+    event.preventDefault()
+    let favoriteFilter = this.state.favoriteData.filter((item) => this.state.data.id === item.id);
+    console.log("найден", favoriteFilter)
+    if (favoriteFilter.length > 0 && favoriteFilter[0].id === this.state.data.id) {
+      let removeData = this.state.favoriteData.indexOf(favoriteFilter[0])
+      let tempFavoriteData = [...this.state.favoriteData]
+      tempFavoriteData.splice(removeData, 1)
+      let tempFavoriteKeyData = [...this.state.favoriteKeyData]
+      tempFavoriteKeyData.splice(removeData, 1)
+      this.setState({
+        favoriteData: tempFavoriteData,
+        favoriteKeyData: tempFavoriteKeyData,
+        isActive: false
+      })
+      console.log("Удалён")
+      localStorage.setItem("productCardKey", tempFavoriteData);
+    } else {
+      let tempData = [...this.state.favoriteData].concat(this.state.data)
+      console.log(tempData)
+      this.setState({
+        favoriteData: tempData,
+        isActive: true
+      })
+      console.log("Добавлен")
+      const serialTempData = JSON.stringify(tempData)
+      localStorage.setItem("productCardKey", serialTempData);
+    }
+  }
+
+  checkActiveId(itemID) {
+    console.log("Я проверил1", itemID)
+    console.log("Я проверил2", this.state.favoriteData)
+    console.log("Я проверил3", this.state.favoriteKeyData)
+    let favoriteData = this.state.favoriteKeyData.length > 0 ? this.state.favoriteKeyData : this.state.favoriteData
+    let result = favoriteData.find((el) => itemID === el.id)
+    console.log(result)
+    if (result) {
+      this.setState({
+        isActive: true
+      })
+    }
+  }
+
+  addToCart = () => {
+    console.log("Add to Cart")
   }
 
   render() {
@@ -120,7 +162,7 @@ class ProductCard extends Component {
 
                 <p className="size">Размер</p>
                 <ul className="sizes">
-                  {this.state.data.sizes && this.state.data.sizes.map(item => <li className="active">{item.size}</li>)}
+                  {this.state.data.sizes && this.state.data.sizes.map((item, index) => <li key={index} className="active">{item.size}</li>)}
                 </ul>
 
                 <div className="size-wrapper">
@@ -128,8 +170,8 @@ class ProductCard extends Component {
                 </div>
 
                 <div className="in-favourites-wrapper" onClick={this.favoriteAdd}>
-                  <div className="favourite"></div>
-                  <p className="in-favourites">В избранное</p>
+                  <div className={this.state.isActive ? 'favourite-active' : 'favourite'}></div>
+                  {this.state.isActive ? <p className="in-favourites">В избранном</p> : <p className="in-favourites">В избранное</p>}
                 </div>
 
                 <div className="basket-item__quantity">
@@ -139,7 +181,8 @@ class ProductCard extends Component {
 
                 <div className="price">{this.state.data.price}₽</div>
 
-                <button className="in-basket in-basket-click">В корзину</button>
+                <button className="in-basket in-basket-click" onClick={this.addToCart}>В корзину</button>
+
               </div>
             </section>
           </section>
@@ -181,9 +224,9 @@ class FavoriteSlider extends Component {
       <section className="main-screen__favourite-product-slider" >
         <div className="favourite-product-slider">
           <div className="favourite-product-slider__arrow favourite-product-slider__arrow_up arrow-up" onClick={this.arrowUp}></div>
-          <FirstImg img={this.state.firstPic} />
-          {this.state.secondPic && <SecondImg img={this.state.secondPic} />}
-          {this.state.lastPic && <LastImg img={this.state.lastPic} />}
+          <FirstImg img={this.state.firstPic} title={this.state.data.title} />
+          {this.state.secondPic && <SecondImg img={this.state.secondPic} title={this.state.data.title} />}
+          {this.state.lastPic && <LastImg img={this.state.lastPic} title={this.state.data.title} />}
           <div className="favourite-product-slider__arrow favourite-product-slider__arrow_down arrow-down" onClick={this.arrowDown}></div>
         </div>
       </section>
@@ -194,21 +237,21 @@ class FavoriteSlider extends Component {
 const FirstImg = (props) => {
   return (
     <div className="favourite-product-slider__item">
-      <img className="favorite-slider-img favourite-product-slider__item-1" src={props.img} />
+      <img className="favorite-slider-img favourite-product-slider__item-1" src={props.img} alt={props.title} />
     </div>
   )
 }
 const SecondImg = (props) => {
   return (
     <div className="favourite-product-slider__item">
-      <img className="favorite-slider-img favourite-product-slider__item-2" src={props.img} />
+      <img className="favorite-slider-img favourite-product-slider__item-2" src={props.img} alt={props.title} />
     </div>
   )
 }
 const LastImg = (props) => {
   return (
     <div className="favourite-product-slider__item">
-      <img className="favorite-slider-img favourite-product-slider__item-3" src={props.img} />
+      <img className="favorite-slider-img favourite-product-slider__item-3" src={props.img} alt={props.title} />
     </div>
   )
 }

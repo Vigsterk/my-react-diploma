@@ -10,9 +10,6 @@ import header_logo from '../img/header-logo.png';
 import { NavLink } from "react-router-dom"
 
 class Header extends Component {
-  constructor(props) {
-    super(props)
-  }
   render() {
     return (
       <header className="header">

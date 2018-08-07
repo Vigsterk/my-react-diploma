@@ -70,11 +70,11 @@ class Catalogue extends Component {
         data: dataVaultFilter[0].data
       })
     } else {
-      this.ReloadCatalogue(loadPage)
+      this.reloadCatalogue(loadPage)
     }
   }
 
-  ReloadCatalogue = (loadPage) => {
+  reloadCatalogue = (loadPage) => {
     fetch(`https://neto-api.herokuapp.com/bosa-noga/products?page=${loadPage}`, {
       method: "GET"
     })
@@ -181,8 +181,8 @@ class ListItem extends Component {
         <div className="item-pic">
           {this.props.images && this.props.images.map((item, index) =>
             <img key={index} className="item-pic" src={item} alt={this.props.title} />)}
-          <div className={this.props.isActive ? 'product-catalogue__product_favorite product-catalogue__product_favorite-chosen' : 'product-catalogue__product_favorite'} onClick={this.handleClick}>
-            <p className="product-catalogue__product_favorite-icon"></p>
+          <div className='product-catalogue__product_favorite' onClick={this.handleClick}>
+            <p className={this.props.isActive ? 'product-catalogue__product_favorite-chosen' : 'product-catalogue__product_favorite-icon'} ></p>
           </div>
           <div className="arrow arrow_left" ></div>
           <div className="arrow arrow_right" ></div>
