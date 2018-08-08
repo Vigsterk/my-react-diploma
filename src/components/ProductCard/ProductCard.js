@@ -15,13 +15,16 @@ class ProductCard extends Component {
       id: props.match.params.id,
       favoriteData: localStorage.productCardKey ? JSON.parse(localStorage.productCardKey) : [],
       favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [],
-      isActive: false
+      isActive: false,
+      productCartCount: 1,
+      productCartPrice: "",
+      productCartDefaultPrice: "",
+      productCartActiveSize: ""
     }
   }
 
   componentDidMount() {
     this.props.func(false)
-    this.checkActiveId(this.state.id)
     fetch(`https://neto-api.herokuapp.com/bosa-noga/products/${this.state.id}`, {
       method: "GET"
     })
@@ -36,6 +39,8 @@ class ProductCard extends Component {
         this.setState({
           data: data.data,
           selectedImage: data.data.images[0],
+          productCartDefaultPrice: data.data.price,
+          productCartPrice: data.data.price,
           sitepath: [
             {
               to: "/",
@@ -51,6 +56,7 @@ class ProductCard extends Component {
             }
           ],
         })
+        this.checkActiveId(this.state.data.id)
       })
       .catch(error => {
         console.log(error)
@@ -87,12 +93,12 @@ class ProductCard extends Component {
       this.setState({
         favoriteData: tempData,
         isActive: true
-      })
-      console.log("Добавлен")
-      const serialTempData = JSON.stringify(tempData)
+      });
+      console.log("Добавлен");
+      const serialTempData = JSON.stringify(tempData);
       localStorage.setItem("productCardKey", serialTempData);
-    }
-  }
+    };
+  };
 
   checkActiveId(itemID) {
     console.log("Я проверил1", itemID)
@@ -104,12 +110,72 @@ class ProductCard extends Component {
     if (result) {
       this.setState({
         isActive: true
-      })
+      });
+    };
+  };
+
+
+  incrementCount = () => {
+    let tempCount = this.state.productCartCount;
+    tempCount += 1;
+    let tempPrice = this.state.productCartPrice + this.state.productCartDefaultPrice;
+    this.setState({
+      productCartCount: tempCount,
+      productCartPrice: tempPrice
+    });
+  };
+
+  decrementCount = () => {
+    let tempCount = this.state.productCartCount;
+    let tempPrice = this.state.productCartPrice
+    if (tempCount > 1) {
+      tempCount -= 1
+    };
+    if (tempPrice > this.state.productCartDefaultPrice) {
+      tempPrice -= this.state.productCartDefaultPrice
     }
+    this.setState({
+      productCartCount: tempCount,
+      productCartPrice: tempPrice
+    });
+  };
+
+  setProductSize = (index, size) => {
+    this.setState({
+      productCartActiveSize: {
+        idx: index,
+        size: size
+      }
+    })
   }
 
   addToCart = () => {
-    console.log("Add to Cart")
+    console.log(this.state.data.id)
+    const cartItemProps = {
+      "id": this.state.data.id,
+      "size": this.state.productCartActiveSize.size,
+      "amount": this.state.productCartCount
+    }
+    const serialCartItemProps = JSON.stringify(cartItemProps)
+    console.log(serialCartItemProps)
+
+    fetch(`https://neto-api.herokuapp.com/bosa-noga/cart/`, {
+      method: "POST",
+      body: serialCartItemProps
+    })
+      .then(response => {
+        if (200 <= response.status && response.status < 300) {
+          return response;
+        }
+        throw new Error(response.statusText);
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+      })
+      .catch(error => {
+        console.log(error)
+      });
   }
 
   render() {
@@ -117,7 +183,7 @@ class ProductCard extends Component {
       <div>
         <SitePath pathprops={this.state.sitepath} />
         <main className="product-card">
-          <section class="product-card-content">
+          <section className="product-card-content">
             {this.state.data.title && <h2 className="section-name">{this.state.data.title}</h2>}
             <section className="product-card-content__main-screen">
               {this.state.data.images && <FavoriteSlider data={this.state.data} func={this.changeImage} />}
@@ -162,7 +228,13 @@ class ProductCard extends Component {
 
                 <p className="size">Размер</p>
                 <ul className="sizes">
-                  {this.state.data.sizes && this.state.data.sizes.map((item, index) => <li key={index} className="active">{item.size}</li>)}
+                  {this.state.data.sizes && this.state.data.sizes.map((item, index) => <ListItem
+                    key={index}
+                    size={item.size}
+                    idx={index}
+                    func={this.setProductSize}
+                    isActive={this.state.productCartActiveSize.idx === index}
+                  />)}
                 </ul>
 
                 <div className="size-wrapper">
@@ -175,11 +247,11 @@ class ProductCard extends Component {
                 </div>
 
                 <div className="basket-item__quantity">
-                  <div className="basket-item__quantity-change basket-item-list__quantity-change_minus">-</div>1
-									  <div className="basket-item__quantity-change basket-item-list__quantity-change_plus">+</div>
+                  <div className="basket-item__quantity-change basket-item-list__quantity-change_minus" onClick={this.decrementCount}>-</div>{this.state.productCartCount}
+                  <div className="basket-item__quantity-change basket-item-list__quantity-change_plus" onClick={this.incrementCount}>+</div>
                 </div>
 
-                <div className="price">{this.state.data.price}₽</div>
+                <div className="price">{this.state.productCartPrice}₽</div>
 
                 <button className="in-basket in-basket-click" onClick={this.addToCart}>В корзину</button>
 
@@ -190,6 +262,15 @@ class ProductCard extends Component {
         <OverlookedSlider />
         <SimilarSlider />
       </div>
+    )
+  }
+}
+
+class ListItem extends Component {
+  handleClick = () => this.props.func(this.props.idx, this.props.size)
+  render() {
+    return (
+      <li className={this.props.isActive ? "active" : "not-active"} onClick={this.handleClick}>{this.props.size}</li>
     )
   }
 }

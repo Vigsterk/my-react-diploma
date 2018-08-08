@@ -170,49 +170,22 @@ class DroppedMenu extends Component {
   }
 }
 
-//Только для рендера. Корзина
-
 class ProductList extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: [{
-        src: "img/product-list__pic_1.jpg",
-        title: "Ботинки женские",
-        producer: "Baldinini",
-        price: 12360,
-        url: "/product-card-desktop.html",
-        id: 1
-      },
-      {
-        src: "img/product-list__pic_1.jpg",
-        title: "Ботинки женские",
-        producer: "Baldinini",
-        price: 12360,
-        url: "/product-card-desktop.html",
-        id: 2
-      },
-      {
-        src: "img/product-list__pic_1.jpg",
-        title: "Ботинки женские",
-        producer: "Baldinini",
-        price: 12360,
-        url: "/product-card-desktop.html",
-        id: 3
-      }]
+      cartData: localStorage.productCartKey ? JSON.parse(localStorage.productCartKey) : []
     }
   }
   render() {
     return (
       <div className="basket-dropped__product-list product-list">
-        {this.state.data.map(item =>
+        {this.state.cartData.map(item =>
           <div key={item.id} className="product-list__item">
-            <a className="product-list__pic">
-              <img src={item.src} alt="product" />
-            </a>
-            <a href={item.url} className="product-list__product">
-              {item.title}, {item.producer}
-            </a>
+            <NavLink to={`productCard/${item.id}`} className="product-list__pic_wrap">
+              <img className="product-list__pic" src={item.images[0]} alt={item.title} />
+              <p className="product-list__product">{item.title}, {item.brand}</p>
+            </NavLink>
             <div className="product-list__fill"></div>
             <div className="product-list__price">
               {item.price}

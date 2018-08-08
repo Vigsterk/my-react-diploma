@@ -38,6 +38,25 @@ class Favorite extends Component {
     localStorage.setItem("favoriteKey", tempFavoriteData);
   }
 
+  GetNoun = (number, one, two, five, none) => {
+    number = Math.abs(number);
+    number %= 100;
+    if (!number) {
+      return none;
+    }
+    if (number >= 5 && number <= 20) {
+      return five;
+    }
+    number %= 10;
+    if (number == 1) {
+      return one;
+    }
+    if (number >= 2 && number <= 4) {
+      return two;
+    }
+    return five;
+  }
+
   render() {
     return (
       <div className="wrapper wrapper_favorite">
@@ -46,7 +65,7 @@ class Favorite extends Component {
           <section className="product-catalogue__head product-catalogue__head_favorite">
             <div className="product-catalogue__section-title">
               <h2 className="section-name">В вашем избранном</h2>
-              <span className="amount amount_favorite">{this.state.favoriteData.length}</span>
+              <span className="amount amount_favorite">{this.state.favoriteData.length > 0 && this.state.favoriteData.length} {this.GetNoun(this.state.favoriteData.length, 'товар', 'товара', 'товаров', 'нет товаров')}</span>
             </div>
             <SortBy />
           </section>

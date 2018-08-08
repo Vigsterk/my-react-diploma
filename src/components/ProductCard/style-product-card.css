@@ -196,7 +196,7 @@ a.main-screen__favourite-product-pic__zoom{
 .sizes {
   position: relative;
   top: 19px;
-  left: 130px;
+  left: 25px;
   display: inline-block;
 }
 
@@ -209,8 +209,11 @@ a.main-screen__favourite-product-pic__zoom{
 li.active {
   background: #A1B3BF;
   border-radius: 50%;
+  cursor: pointer;
 }
-
+.not-active{
+  cursor: pointer;
+}
 .size-wrapper {
   position: relative;
   top: 45px;

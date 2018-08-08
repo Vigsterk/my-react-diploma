@@ -1023,10 +1023,12 @@ li a:hover {
   margin: 5px 0;
   color: #ffffff;
 }
-.product-list__pic {
+.product-list__pic_wrap {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.product-list__pic{
   width: 39px;
   height: 39px;
   background-color: #ffffff;
