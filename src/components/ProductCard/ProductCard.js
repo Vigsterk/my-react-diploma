@@ -6,8 +6,6 @@ import SitePath from '../SitePath/SitePath'
 class ProductCard extends Component {
   constructor(props) {
     super(props)
-    console.log(props)
-
     this.state = {
       sitepath: [],
       data: [],
@@ -19,7 +17,7 @@ class ProductCard extends Component {
       productCartCount: 1,
       productCartPrice: "",
       productCartDefaultPrice: "",
-      productCartActiveSize: ""
+      productCartActiveSize: "",
     }
   }
 
@@ -73,7 +71,6 @@ class ProductCard extends Component {
   favoriteAdd = (event) => {
     event.preventDefault()
     let favoriteFilter = this.state.favoriteData.filter((item) => this.state.data.id === item.id);
-    console.log("найден", favoriteFilter)
     if (favoriteFilter.length > 0 && favoriteFilter[0].id === this.state.data.id) {
       let removeData = this.state.favoriteData.indexOf(favoriteFilter[0])
       let tempFavoriteData = [...this.state.favoriteData]
@@ -85,7 +82,6 @@ class ProductCard extends Component {
         favoriteKeyData: tempFavoriteKeyData,
         isActive: false
       })
-      console.log("Удалён")
       localStorage.setItem("productCardKey", tempFavoriteData);
     } else {
       let tempData = [...this.state.favoriteData].concat(this.state.data)
@@ -94,26 +90,20 @@ class ProductCard extends Component {
         favoriteData: tempData,
         isActive: true
       });
-      console.log("Добавлен");
       const serialTempData = JSON.stringify(tempData);
       localStorage.setItem("productCardKey", serialTempData);
     };
   };
 
   checkActiveId(itemID) {
-    console.log("Я проверил1", itemID)
-    console.log("Я проверил2", this.state.favoriteData)
-    console.log("Я проверил3", this.state.favoriteKeyData)
     let favoriteData = this.state.favoriteKeyData.length > 0 ? this.state.favoriteKeyData : this.state.favoriteData
     let result = favoriteData.find((el) => itemID === el.id)
-    console.log(result)
     if (result) {
       this.setState({
         isActive: true
       });
     };
   };
-
 
   incrementCount = () => {
     let tempCount = this.state.productCartCount;
@@ -150,17 +140,18 @@ class ProductCard extends Component {
   }
 
   addToCart = () => {
-    console.log(this.state.data.id)
     const cartItemProps = {
       "id": this.state.data.id,
       "size": this.state.productCartActiveSize.size,
       "amount": this.state.productCartCount
     }
     const serialCartItemProps = JSON.stringify(cartItemProps)
-    console.log(serialCartItemProps)
 
     fetch(`https://neto-api.herokuapp.com/bosa-noga/cart/`, {
       method: "POST",
+      headers: {
+        "Content-type": "application/json"
+      },
       body: serialCartItemProps
     })
       .then(response => {
@@ -171,7 +162,9 @@ class ProductCard extends Component {
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data)
+        const serialTempData = JSON.stringify(data.data);
+        localStorage.setItem("postCartIDKey", serialTempData);
+        this.props.cartUploader(data.data)
       })
       .catch(error => {
         console.log(error)
@@ -191,7 +184,6 @@ class ProductCard extends Component {
                 {this.state.data.images && <img src={this.state.selectedImage} alt={this.state.data.title} />}
                 <NavLink to="/" className="main-screen__favourite-product-pic__zoom" />
               </div>
-
               <div className="main-screen__product-info">
                 <div className="product-info-title">
                   <h2>{this.state.data.title}</h2>
@@ -225,7 +217,6 @@ class ProductCard extends Component {
                     </tr>
                   </table>
                 </div>
-
                 <p className="size">Размер</p>
                 <ul className="sizes">
                   {this.state.data.sizes && this.state.data.sizes.map((item, index) => <ListItem
@@ -236,25 +227,19 @@ class ProductCard extends Component {
                     isActive={this.state.productCartActiveSize.idx === index}
                   />)}
                 </ul>
-
                 <div className="size-wrapper">
                   <NavLink to="/"><span className="size-rule"></span><p className="size-table">Таблица размеров</p></NavLink>
                 </div>
-
                 <div className="in-favourites-wrapper" onClick={this.favoriteAdd}>
                   <div className={this.state.isActive ? 'favourite-active' : 'favourite'}></div>
                   {this.state.isActive ? <p className="in-favourites">В избранном</p> : <p className="in-favourites">В избранное</p>}
                 </div>
-
                 <div className="basket-item__quantity">
                   <div className="basket-item__quantity-change basket-item-list__quantity-change_minus" onClick={this.decrementCount}>-</div>{this.state.productCartCount}
                   <div className="basket-item__quantity-change basket-item-list__quantity-change_plus" onClick={this.incrementCount}>+</div>
                 </div>
-
                 <div className="price">{this.state.productCartPrice}₽</div>
-
                 <button className="in-basket in-basket-click" onClick={this.addToCart}>В корзину</button>
-
               </div>
             </section>
           </section>
@@ -322,6 +307,7 @@ const FirstImg = (props) => {
     </div>
   )
 }
+
 const SecondImg = (props) => {
   return (
     <div className="favourite-product-slider__item">
@@ -329,6 +315,7 @@ const SecondImg = (props) => {
     </div>
   )
 }
+
 const LastImg = (props) => {
   return (
     <div className="favourite-product-slider__item">

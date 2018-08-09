@@ -14,7 +14,7 @@ class Header extends Component {
     return (
       <header className="header">
         <TopMenu bool={this.props.status} />
-        <HeaderMain />
+        <HeaderMain cart={this.props.cart} />
         <MainMenu />
         <DroppedMenu />
       </header>
@@ -52,7 +52,6 @@ class TopMenu extends Component {
         console.log(error)
       });
   }
-
   render() {
     return (
       <div className="top-menu">
@@ -117,7 +116,7 @@ class HeaderMain extends Component {
             <div className="basket-dropped__title">
               В вашей корзине:
             </div>
-            <ProductList />
+            <ProductList cart={this.props.cart} />
             <NavLink className="basket-dropped__order-button" to="/order">Оформить заказ</NavLink>
           </div>
         </div>
@@ -174,13 +173,72 @@ class ProductList extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      cartData: localStorage.productCartKey ? JSON.parse(localStorage.productCartKey) : []
+      cartItemID: "",
+      cartItems: []
     }
+    this.loadingCart()
   }
+
+  loadingCart = () => {
+    let cartDataJson = localStorage.postCartIDKey ? JSON.parse(localStorage.postCartIDKey) : [];
+    let cartData = this.props.cart.id ? this.props.cart.id : cartDataJson.id;
+    console.log("CartID", cartData)
+    fetch(`https://neto-api.herokuapp.com/bosa-noga/cart/${cartData}`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json"
+      },
+    })
+      .then(response => {
+        if (200 <= response.status && response.status < 300) {
+          return response;
+        }
+        throw new Error(response.statusText);
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.data.products[0].id)
+        this.setState({
+          cartItemID: data.data.products[0].id
+        })
+        console.log("CartItemID", this.state.cartItemID)
+        this.loadItemData()
+      })
+      .catch(error => {
+        console.log(error)
+      });
+  }
+
+  loadItemData = () => {
+    fetch(`https://neto-api.herokuapp.com/bosa-noga/products/${this.state.cartItemID}`, {
+      method: "GET"
+    })
+      .then(response => {
+        if (200 <= response.status && response.status < 300) {
+          return response;
+        }
+        throw new Error(response.statusText);
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        let tempData = [...this.state.cartItems]
+        tempData.push(data.data)
+        console.log("tempData", tempData)
+        this.setState({
+          cartItems: tempData
+        })
+        console.log(this.state.cartItems)
+      })
+      .catch(error => {
+        console.log(error)
+      });
+  }
+
   render() {
     return (
       <div className="basket-dropped__product-list product-list">
-        {this.state.cartData.map(item =>
+        {this.state.cartItems.length > 0 && this.state.cartItems.map(item =>
           <div key={item.id} className="product-list__item">
             <NavLink to={`productCard/${item.id}`} className="product-list__pic_wrap">
               <img className="product-list__pic" src={item.images[0]} alt={item.title} />

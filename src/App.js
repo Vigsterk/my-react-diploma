@@ -7,6 +7,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      productCartItems: [],
       activeStatus: true
     }
     this.CarryedMainPage = this.bindProps(MainPage, { func: this.reloadCategories });
@@ -14,8 +15,15 @@ class App extends Component {
     this.CarryedFavorite = this.bindProps(Favorite, { func: this.reloadCategories });
     this.CarryedOrder = this.bindProps(Order, { func: this.reloadCategories });
     this.CarryedOrderEnd = this.bindProps(OrderEnd, { func: this.reloadCategories });
-    this.CarryedProductCard = this.bindProps(ProductCard, { func: this.reloadCategories });
+    this.CarryedProductCard = this.bindProps(ProductCard, { func: this.reloadCategories, cartUploader: this.cartItemUploader });
   }
+  cartItemUploader = (data) => {
+    this.setState({
+      productCartItems: data
+    })
+    console.log("productCartItems in APP", this.state.productCartItems)
+  }
+
   reloadCategories = (response) => {
     this.state.activeStatus === true && this.setState({
       activeStatus: response
@@ -29,7 +37,7 @@ class App extends Component {
     return (
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <div className='container'>
-          <Header status={this.state.activeStatus} />
+          <Header status={this.state.activeStatus} cart={this.state.productCartItems} />
           <Route path='/' exact component={CarryedMainPage} />
           <Route path='/catalogue/' exact component={CarryedCatalogue} />
           <Route path='/favorite' exact component={CarryedFavorite} />
