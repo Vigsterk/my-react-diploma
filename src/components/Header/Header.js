@@ -179,12 +179,13 @@ class ProductList extends Component {
       cartItemID: "",
       cartItems: []
     }
-    this.loadingCart(props)
+    this.loadCartData()
   }
 
-  loadingCart = (props) => {
+  loadCartData = () => {
+    console.log(this.props.cart)
     let cartDataJson = localStorage.postCartIDKey ? JSON.parse(localStorage.postCartIDKey) : [];
-    let cartData = props.cart.id ? props.cart.id : cartDataJson.id;
+    let cartData = this.props.cart.id ? this.props.cart.id : cartDataJson.id;
     console.log("CartID", cartData)
     fetch(`https://neto-api.herokuapp.com/bosa-noga/cart/${cartData}`, {
       headers: {
@@ -208,6 +209,13 @@ class ProductList extends Component {
       .catch(error => {
         console.log(error)
       });
+  }
+
+  componentDidUpdate(prevProps) {
+    console.log(prevProps)
+    if (this.props.cart !== prevProps.cart) {
+      this.loadCartData(this.props.cart);
+    }
   }
 
   loadItemData = () => {
