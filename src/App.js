@@ -17,11 +17,9 @@ class App extends Component {
     this.CarryedOrderEnd = this.bindProps(OrderEnd, { func: this.reloadCategories });
     this.CarryedProductCard = this.bindProps(ProductCard, { func: this.reloadCategories, cartUploader: this.cartItemUploader });
   }
+
   cartItemUploader = (data) => {
-    this.setState({
-      productCartItems: data
-    })
-    console.log("productCartItems in APP", this.state.productCartItems)
+    this.setState({ productCartItems: data })
   }
 
   reloadCategories = (response) => {

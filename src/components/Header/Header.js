@@ -11,6 +11,7 @@ import { NavLink } from "react-router-dom"
 
 class Header extends Component {
   render() {
+    console.log("cart props in header", this.props.cart)
     return (
       <header className="header">
         <TopMenu bool={this.props.status} />
@@ -70,6 +71,7 @@ class TopMenu extends Component {
 
 class HeaderMain extends Component {
   render() {
+    console.log("cart props in headerMain", this.props.cart)
     return (
       <div className="header-main">
         <div className="header-main__wrapper wrapper">
@@ -172,30 +174,29 @@ class DroppedMenu extends Component {
 class ProductList extends Component {
   constructor(props) {
     super(props)
+    console.log(props)
     this.state = {
       cartItemID: "",
       cartItems: []
     }
-    this.loadingCart()
+    this.loadingCart(props)
   }
 
-  loadingCart = () => {
+  loadingCart = (props) => {
     let cartDataJson = localStorage.postCartIDKey ? JSON.parse(localStorage.postCartIDKey) : [];
-    let cartData = this.props.cart.id ? this.props.cart.id : cartDataJson.id;
+    let cartData = props.cart.id ? props.cart.id : cartDataJson.id;
     console.log("CartID", cartData)
     fetch(`https://neto-api.herokuapp.com/bosa-noga/cart/${cartData}`, {
-      method: "GET",
       headers: {
         "Content-type": "application/json"
       },
     })
       .then(response => {
         if (200 <= response.status && response.status < 300) {
-          return response;
+          return response.json();
         }
         throw new Error(response.statusText);
       })
-      .then(response => response.json())
       .then(data => {
         console.log(data.data.products[0].id)
         this.setState({
@@ -236,6 +237,7 @@ class ProductList extends Component {
   }
 
   render() {
+    console.log("cart props in ProductList", this.props.cart)
     return (
       <div className="basket-dropped__product-list product-list">
         {this.state.cartItems.length > 0 && this.state.cartItems.map(item =>
