@@ -11,7 +11,6 @@ import { NavLink } from "react-router-dom"
 
 class Header extends Component {
   render() {
-    console.log("cart props in header", this.props.cart)
     return (
       <header className="header">
         <TopMenu bool={this.props.status} />
@@ -71,7 +70,6 @@ class TopMenu extends Component {
 
 class HeaderMain extends Component {
   render() {
-    console.log("cart props in headerMain", this.props.cart)
     return (
       <div className="header-main">
         <div className="header-main__wrapper wrapper">
@@ -174,18 +172,16 @@ class DroppedMenu extends Component {
 class ProductList extends Component {
   constructor(props) {
     super(props)
-    console.log(props)
     this.state = {
-      cartItemID: "",
-      cartItems: []
+      cartIDJson: localStorage.postCartIDKey ? JSON.parse(localStorage.postCartIDKey) : [],
+      cartData: [],
+      loadedCartItems: [],
     }
     this.loadCartData()
   }
 
   loadCartData = () => {
-    console.log(this.props.cart)
-    let cartDataJson = localStorage.postCartIDKey ? JSON.parse(localStorage.postCartIDKey) : [];
-    let cartData = this.props.cart.id ? this.props.cart.id : cartDataJson.id;
+    let cartData = this.props.cart.id ? this.props.cart.id : this.state.cartIDJson.id;
     console.log("CartID", cartData)
     fetch(`https://neto-api.herokuapp.com/bosa-noga/cart/${cartData}`, {
       headers: {
@@ -199,28 +195,27 @@ class ProductList extends Component {
         throw new Error(response.statusText);
       })
       .then(data => {
-        console.log(data.data.products[0].id)
         this.setState({
-          cartItemID: data.data.products[0].id
+          cartData: data.data,
+          loadedCartItems: []
         })
-        console.log("CartItemID", this.state.cartItemID)
-        this.loadItemData()
+        data.data.products.forEach(element => {
+          this.loadItemData(element)
+        })
       })
       .catch(error => {
         console.log(error)
       });
   }
 
+
   componentDidUpdate(prevProps) {
-    console.log(prevProps)
     if (this.props.cart !== prevProps.cart) {
       this.loadCartData(this.props.cart);
     }
   }
-
-  loadItemData = () => {
-    fetch(`https://neto-api.herokuapp.com/bosa-noga/products/${this.state.cartItemID}`, {
-      method: "GET"
+  loadItemData = (cartProps) => {
+    fetch(`https://neto-api.herokuapp.com/bosa-noga/products/${cartProps.id}`, {
     })
       .then(response => {
         if (200 <= response.status && response.status < 300) {
@@ -230,43 +225,102 @@ class ProductList extends Component {
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data)
-        let tempData = [...this.state.cartItems]
-        tempData.push(data.data)
-        console.log("tempData", tempData)
-        this.setState({
-          cartItems: tempData
+        let tempData = [...this.state.loadedCartItems]
+        tempData.push({
+          products: data.data,
+          amount: cartProps.amount
         })
-        console.log(this.state.cartItems)
+        console.log(tempData)
+        this.setState({
+          loadedCartItems: tempData
+        })
       })
       .catch(error => {
         console.log(error)
       });
   }
 
+  removeItem = (itemID) => {
+    let cartData = this.props.cart.id ? this.props.cart.id : this.state.cartIDJson.id;
+    let sizeParam = this.state.cartData.products.find((el) => itemID === el.id)
+    const cartItemProps = {
+      "id": itemID,
+      "size": sizeParam.size,
+      "amount": 0
+    }
+    const serialCartItemProps = JSON.stringify(cartItemProps)
+
+    console.log(serialCartItemProps)
+
+    fetch(`https://neto-api.herokuapp.com/bosa-noga/cart/${cartData}`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: serialCartItemProps
+    })
+      .then(response => {
+        if (200 <= response.status && response.status < 300) {
+          return response;
+        }
+        throw new Error(response.statusText);
+      })
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          cartData: data.data,
+          loadedCartItems: []
+        })
+        data.data.products.forEach(element => {
+          this.loadItemData(element)
+        })
+      })
+      .catch(error => {
+        console.log(error)
+      });
+  }
+
+
   render() {
-    console.log("cart props in ProductList", this.props.cart)
     return (
       <div className="basket-dropped__product-list product-list">
-        {this.state.cartItems.length > 0 && this.state.cartItems.map(item =>
-          <div key={item.id} className="product-list__item">
-            <NavLink to={`productCard/${item.id}`} className="product-list__pic_wrap">
-              <img className="product-list__pic" src={item.images[0]} alt={item.title} />
-              <p className="product-list__product">{item.title}, {item.brand}</p>
-            </NavLink>
-            <div className="product-list__fill"></div>
-            <div className="product-list__price">
-              {item.price}
-              <i className="fa fa-rub" aria-hidden="true"></i>
-            </div>
-            <div className="product-list__delete">
-              <i className="fa fa-times" aria-hidden="true"></i>
-            </div>
-          </div>
+        {this.state.loadedCartItems.length > 0 && this.state.loadedCartItems.map(item =>
+          <ListItem
+            key={item.products.id}
+            id={item.products.id}
+            title={item.products.title}
+            images={item.products.images}
+            brand={item.products.brand}
+            price={item.products.price * item.amount}
+            func={this.removeItem}
+          />
         )}
       </div>
     )
   }
 }
+
+class ListItem extends Component {
+  handleClick = () => this.props.func(this.props.id)
+  render() {
+    return (
+      <div className="product-list__item">
+        <NavLink to={`productCard/${this.props.id}`} className="product-list__pic_wrap">
+          <img className="product-list__pic" src={this.props.images[0]} alt={this.props.title} />
+          <p className="product-list__product">{this.props.title}, {this.props.brand}</p>
+        </NavLink>
+        <div className="product-list__fill"></div>
+        <div className="product-list__price">
+          {this.props.price}
+          <i className="fa fa-rub" aria-hidden="true"></i>
+        </div>
+        <div className="product-list__delete" onClick={this.handleClick}>
+          <i className="fa fa-times" aria-hidden="true"></i>
+        </div>
+      </div>
+    );
+  }
+}
+
 
 export default Header;

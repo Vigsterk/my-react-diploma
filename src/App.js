@@ -7,7 +7,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      productCartItems: [],
+      productCartItems: "",
       activeStatus: true
     }
     this.CarryedMainPage = this.bindProps(MainPage, { func: this.reloadCategories });
@@ -20,6 +20,7 @@ class App extends Component {
 
   cartItemUploader = (data) => {
     this.setState({ productCartItems: data })
+    console.log(data)
   }
 
   reloadCategories = (response) => {

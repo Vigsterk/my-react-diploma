@@ -140,14 +140,25 @@ class ProductCard extends Component {
   }
 
   addToCart = () => {
+
     const cartItemProps = {
       "id": this.state.data.id,
       "size": this.state.productCartActiveSize.size,
       "amount": this.state.productCartCount
     }
-    const serialCartItemProps = JSON.stringify(cartItemProps)
 
-    fetch(`https://neto-api.herokuapp.com/bosa-noga/cart/`, {
+    const serialCartItemProps = JSON.stringify(cartItemProps)
+    const cartIDJson = localStorage.postCartIDKey ? JSON.parse(localStorage.postCartIDKey) : []
+    let link = ``;
+    if (localStorage.postCartIDKey) {
+      link = `cart/${cartIDJson.id}`
+      console.log("not empty link", link)
+    } else {
+      link = `cart/`
+      console.log("empty link", link)
+    }
+
+    fetch(`https://neto-api.herokuapp.com/bosa-noga/${link}`, {
       method: "POST",
       headers: {
         "Content-type": "application/json"
@@ -162,6 +173,7 @@ class ProductCard extends Component {
       })
       .then(response => response.json())
       .then(data => {
+        console.log(data)
         const serialTempData = JSON.stringify(data.data);
         localStorage.setItem("postCartIDKey", serialTempData);
         this.props.cartUploader(data.data)
@@ -170,6 +182,8 @@ class ProductCard extends Component {
         console.log(error)
       });
   }
+
+
 
   render() {
     return (
