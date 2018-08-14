@@ -3,6 +3,7 @@ import './style-favorite.css';
 import SitePath from '../SitePath/SitePath';
 import { NavLink } from 'react-router-dom'
 import favoriteStorage from '../js/localStorageAPI';
+import Pagination from '../Pagination/Pagination';
 
 class Favorite extends Component {
   constructor(props) {
@@ -18,7 +19,9 @@ class Favorite extends Component {
           to: "/",
           title: "Избранное"
         }],
-      favoriteData: JSON.parse(localStorage.getItem("favoriteKey"))
+      favoriteData: JSON.parse(localStorage.getItem("favoriteKey")),
+      page: 1,
+      pages: "",
     }
 
   }
@@ -37,6 +40,14 @@ class Favorite extends Component {
     })
     localStorage.setItem("favoriteKey", tempFavoriteData);
   }
+
+  changePage = (page) => {
+    let loadPage = page;
+    this.setState({
+      page: loadPage
+    })
+  }
+
 
   GetNoun = (number, one, two, five, none) => {
     number = Math.abs(number);
@@ -82,6 +93,7 @@ class Favorite extends Component {
               />)}
           </section>
         </main>
+        {this.state.pages && <Pagination page={this.state.page} pages={this.state.pages} func={this.changePage} />}
       </div>
     )
   }

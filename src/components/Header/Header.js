@@ -174,10 +174,10 @@ class ProductList extends Component {
     super(props)
     this.state = {
       cartIDJson: localStorage.postCartIDKey ? JSON.parse(localStorage.postCartIDKey) : [],
-      cartData: [],
+      cartDataStorage: [],
       loadedCartItems: [],
     }
-    this.loadCartData()
+    this.props.cart.id && this.loadCartData()
   }
 
   loadCartData = () => {
@@ -196,7 +196,7 @@ class ProductList extends Component {
       })
       .then(data => {
         this.setState({
-          cartData: data.data,
+          cartDataStorage: data.data,
           loadedCartItems: []
         })
         data.data.products.forEach(element => {
@@ -208,12 +208,12 @@ class ProductList extends Component {
       });
   }
 
-
   componentDidUpdate(prevProps) {
     if (this.props.cart !== prevProps.cart) {
       this.loadCartData(this.props.cart);
     }
   }
+
   loadItemData = (cartProps) => {
     fetch(`https://neto-api.herokuapp.com/bosa-noga/products/${cartProps.id}`, {
     })
@@ -230,7 +230,6 @@ class ProductList extends Component {
           products: data.data,
           amount: cartProps.amount
         })
-        console.log(tempData)
         this.setState({
           loadedCartItems: tempData
         })
@@ -242,15 +241,19 @@ class ProductList extends Component {
 
   removeItem = (itemID) => {
     let cartData = this.props.cart.id ? this.props.cart.id : this.state.cartIDJson.id;
-    let sizeParam = this.state.cartData.products.find((el) => itemID === el.id)
+    if (!cartData.products) {
+      localStorage.removeItem("postCartIDKey")
+      this.setState({
+        loadedCartItems: []
+      })
+    }
+    let sizeParam = this.state.cartDataStorage.products.find((el) => itemID === el.id)
     const cartItemProps = {
-      "id": itemID,
-      "size": sizeParam.size,
-      "amount": 0
+      id: itemID,
+      size: sizeParam.size,
+      amount: 0
     }
     const serialCartItemProps = JSON.stringify(cartItemProps)
-
-    console.log(serialCartItemProps)
 
     fetch(`https://neto-api.herokuapp.com/bosa-noga/cart/${cartData}`, {
       method: "POST",
@@ -268,7 +271,7 @@ class ProductList extends Component {
       .then(response => response.json())
       .then(data => {
         this.setState({
-          cartData: data.data,
+          cartDataStorage: data.data,
           loadedCartItems: []
         })
         data.data.products.forEach(element => {
@@ -279,7 +282,6 @@ class ProductList extends Component {
         console.log(error)
       });
   }
-
 
   render() {
     return (

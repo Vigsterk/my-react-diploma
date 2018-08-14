@@ -140,22 +140,23 @@ class ProductCard extends Component {
   }
 
   addToCart = () => {
-
     const cartItemProps = {
-      "id": this.state.data.id,
-      "size": this.state.productCartActiveSize.size,
-      "amount": this.state.productCartCount
+      id: this.state.data.id,
+      size: this.state.productCartActiveSize.size,
+      amount: this.state.productCartCount
     }
 
     const serialCartItemProps = JSON.stringify(cartItemProps)
     const cartIDJson = localStorage.postCartIDKey ? JSON.parse(localStorage.postCartIDKey) : []
+    console.log(cartIDJson)
     let link = ``;
-    if (localStorage.postCartIDKey) {
+    if (cartIDJson.products) {
       link = `cart/${cartIDJson.id}`
-      console.log("not empty link", link)
+      console.log("not empty cart ID", link)
+      console.log(localStorage.postCartIDKey)
     } else {
       link = `cart/`
-      console.log("empty link", link)
+      console.log("empty cart", link)
     }
 
     fetch(`https://neto-api.herokuapp.com/bosa-noga/${link}`, {
