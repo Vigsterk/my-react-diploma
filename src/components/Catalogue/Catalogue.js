@@ -28,7 +28,6 @@ class Catalogue extends Component {
       page: 1,
       pages: "",
       goods: "",
-      favoriteData: localStorage.catalogueKey ? JSON.parse(localStorage.catalogueKey) : [],
       favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : []
     }
   }
@@ -99,32 +98,30 @@ class Catalogue extends Component {
 
   favoriteAdd = (event, itemID) => {
     event.preventDefault()
-    let favoriteFilter = this.state.favoriteData.filter((el) => itemID === el.id);
+    let tempFavoriteKeyData = [...this.state.favoriteKeyData]
+    let favoriteFilter = this.state.favoriteKeyData.filter((el) => itemID === el.id);
     if (favoriteFilter.length > 0 && favoriteFilter[0].id === itemID) {
-      let removeData = this.state.favoriteData.indexOf(favoriteFilter[0])
-      let tempFavoriteData = [...this.state.favoriteData]
-      tempFavoriteData.splice(removeData, 1)
-      let tempFavoriteKeyData = [...this.state.favoriteKeyData]
+      let removeData = this.state.favoriteKeyData.indexOf(favoriteFilter[0])
       tempFavoriteKeyData.splice(removeData, 1)
       this.setState({
-        favoriteData: tempFavoriteData,
         favoriteKeyData: tempFavoriteKeyData
       })
       console.log("Удалён")
-      localStorage.setItem("catalogueKey", tempFavoriteData);
+      const serialTempData = JSON.stringify(tempFavoriteKeyData)
+      localStorage.setItem("favoriteKey", serialTempData);
     } else {
-      let tempData = this.state.favoriteData.concat(this.state.data.filter((el) => itemID === el.id))
+      tempFavoriteKeyData.push(this.state.data.find((el) => itemID === el.id))
+      console.log("Добавлен", tempFavoriteKeyData)
       this.setState({
-        favoriteData: tempData,
+        favoriteKeyData: tempFavoriteKeyData,
       })
-      console.log("Добавлен")
-      const serialTempData = JSON.stringify(tempData)
-      localStorage.setItem("catalogueKey", serialTempData);
+      const serialTempData = JSON.stringify(tempFavoriteKeyData)
+      localStorage.setItem("favoriteKey", serialTempData);
     }
   }
 
   checkActiveId(itemID) {
-    let favoriteData = this.state.favoriteKeyData.length > 0 ? this.state.favoriteKeyData : this.state.favoriteData
+    let favoriteData = this.state.favoriteKeyData && this.state.favoriteKeyData
     let result = favoriteData.find((el) => itemID === el.id)
     return result
   }

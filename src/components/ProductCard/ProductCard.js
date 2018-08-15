@@ -11,7 +11,6 @@ class ProductCard extends Component {
       data: [],
       selectedImage: [],
       id: props.match.params.id,
-      favoriteData: localStorage.productCardKey ? JSON.parse(localStorage.productCardKey) : [],
       favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [],
       isActive: false,
       productCartCount: 1,
@@ -70,33 +69,33 @@ class ProductCard extends Component {
 
   favoriteAdd = (event) => {
     event.preventDefault()
-    let favoriteFilter = this.state.favoriteData.filter((item) => this.state.data.id === item.id);
+    let favoriteFilter = this.state.favoriteKeyData.filter((item) => this.state.data.id === item.id);
+    let tempFavoriteKeyData = [...this.state.favoriteKeyData]
     if (favoriteFilter.length > 0 && favoriteFilter[0].id === this.state.data.id) {
-      let removeData = this.state.favoriteData.indexOf(favoriteFilter[0])
-      let tempFavoriteData = [...this.state.favoriteData]
-      tempFavoriteData.splice(removeData, 1)
-      let tempFavoriteKeyData = [...this.state.favoriteKeyData]
+      let removeData = this.state.favoriteKeyData.indexOf(favoriteFilter[0])
       tempFavoriteKeyData.splice(removeData, 1)
       this.setState({
-        favoriteData: tempFavoriteData,
         favoriteKeyData: tempFavoriteKeyData,
         isActive: false
       })
-      localStorage.setItem("productCardKey", tempFavoriteData);
+      console.log("Удалён")
+      const serialTempData = JSON.stringify(tempFavoriteKeyData);
+      localStorage.setItem("favoriteKey", serialTempData);
+
     } else {
-      let tempData = [...this.state.favoriteData].concat(this.state.data)
-      console.log(tempData)
+      tempFavoriteKeyData.push(this.state.data.find((el) => this.state.data.id === el.id))
+      console.log("Добавлен", tempFavoriteKeyData)
       this.setState({
-        favoriteData: tempData,
+        favoriteKeyData: tempFavoriteKeyData,
         isActive: true
       });
-      const serialTempData = JSON.stringify(tempData);
-      localStorage.setItem("productCardKey", serialTempData);
+      const serialTempData = JSON.stringify(tempFavoriteKeyData);
+      localStorage.setItem("favoriteKey", serialTempData);
     };
-  };
+  }
 
   checkActiveId(itemID) {
-    let favoriteData = this.state.favoriteKeyData.length > 0 ? this.state.favoriteKeyData : this.state.favoriteData
+    let favoriteData = this.state.favoriteKeyData && this.state.favoriteKeyData
     let result = favoriteData.find((el) => itemID === el.id)
     if (result) {
       this.setState({
@@ -176,7 +175,7 @@ class ProductCard extends Component {
       .then(data => {
         console.log(data)
         const serialTempData = JSON.stringify(data.data);
-        localStorage.setItem("postCartIDKey", serialTempData);
+        localStorage.setItem("favoriteKey", serialTempData);
         this.props.cartUploader(data.data)
       })
       .catch(error => {

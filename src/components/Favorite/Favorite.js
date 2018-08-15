@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import './style-favorite.css';
 import SitePath from '../SitePath/SitePath';
 import { NavLink } from 'react-router-dom'
-import favoriteStorage from '../js/localStorageAPI';
 import Pagination from '../Pagination/Pagination';
 
 class Favorite extends Component {
   constructor(props) {
     super(props)
-    favoriteStorage()
     this.state = {
       sitepath: [
         {
@@ -19,7 +17,7 @@ class Favorite extends Component {
           to: "/",
           title: "Избранное"
         }],
-      favoriteData: JSON.parse(localStorage.getItem("favoriteKey")),
+      favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [],
       page: 1,
       pages: "",
     }
@@ -31,14 +29,19 @@ class Favorite extends Component {
 
   favoriteRemove = (event, itemID) => {
     event.preventDefault()
-    let favoriteFilter = this.state.favoriteData.filter((el) => itemID === el.id);
-    let tempData = this.state.favoriteData.indexOf(favoriteFilter[0])
-    let tempFavoriteData = [...this.state.favoriteData]
-    tempFavoriteData.splice(tempData, 1)
-    this.setState({
-      favoriteData: tempFavoriteData
-    })
-    localStorage.setItem("favoriteKey", tempFavoriteData);
+    let favoriteFilter = this.state.favoriteKeyData.filter((item) => itemID === item.id);
+    let tempFavoriteKeyData = [...this.state.favoriteKeyData]
+    if (favoriteFilter.length > 0 && favoriteFilter[0].id === itemID) {
+      let removeData = this.state.favoriteKeyData.indexOf(favoriteFilter[0])
+      tempFavoriteKeyData.splice(removeData, 1)
+      this.setState({
+        favoriteKeyData: tempFavoriteKeyData,
+        isActive: false
+      })
+      console.log("Удалён")
+      const serialTempData = JSON.stringify(tempFavoriteKeyData);
+      localStorage.setItem("favoriteKey", serialTempData);
+    }
   }
 
   changePage = (page) => {
@@ -69,6 +72,7 @@ class Favorite extends Component {
   }
 
   render() {
+    console.log(this.state.favoriteKeyData)
     return (
       <div className="wrapper wrapper_favorite">
         <SitePath pathprops={this.state.sitepath} />
@@ -76,12 +80,12 @@ class Favorite extends Component {
           <section className="product-catalogue__head product-catalogue__head_favorite">
             <div className="product-catalogue__section-title">
               <h2 className="section-name">В вашем избранном</h2>
-              <span className="amount amount_favorite">{this.state.favoriteData.length > 0 && this.state.favoriteData.length} {this.GetNoun(this.state.favoriteData.length, 'товар', 'товара', 'товаров', 'нет товаров')}</span>
+              <span className="amount amount_favorite">{this.state.favoriteKeyData.length > 0 && this.state.favoriteKeyData.length} {this.GetNoun(this.state.favoriteKeyData.length, 'товар', 'товара', 'товаров', 'нет товаров')}</span>
             </div>
             <SortBy />
           </section>
           <section className="product-catalogue__item-list product-catalogue__item-list_favorite">
-            {this.state.favoriteData.length > 0 && this.state.favoriteData.map(items =>
+            {this.state.favoriteKeyData.length > 0 && this.state.favoriteKeyData.map(items =>
               <ListItem key={items.id}
                 id={items.id}
                 title={items.title}
