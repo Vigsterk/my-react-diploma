@@ -191,7 +191,7 @@ class ListItem extends Component {
           {this.props.oldPrice && <p className="item-price old-price"><s>{this.props.oldPrice}</s></p>}
           <div className="sizes" id="size">
             <p className="sizes__title">Размеры в наличии:</p>
-            <p className="sizes__avalible">36, 37, 38, 39, 40, 41, 42</p>
+            <p className="sizes__avalible">8, 10, 12, 14, 15, 16, 18, 20</p>
           </div>
         </div>
       </NavLink>
@@ -229,188 +229,61 @@ class OverlookedSlider extends Component {
   }
 }
 
+
 class SideBar extends Component {
+  openerButton = (event) => {
+    console.log("opener use", event.target)
+  }
   render() {
     return (
       <section className="sidebar">
         <section className="sidebar__division">
-          <div className="sidebar__catalogue-list">
-            <div className="sidebar__division-title">
-              <h3>Каталог</h3>
-              <div className="opener-down"></div>
-            </div>
-            <ul>
-              {sidebarDivisionData.map((item, index) => <li key={index}><NavLink to="/">{item}</NavLink></li>)}
-            </ul>
-          </div>
+          <SideBarCatalogueList
+            func={this.openerButton} />
         </section>
+
         <div className="separator-150 separator-150-1"></div>
         <section className="sidebar__division">
-          <div className="sidebar__price">
-            <div className="sidebar__division-title">
-              <h3>Цена</h3>
-              <div className="opener-down"></div>
-            </div>
-            <div className="price-slider">
-              <div className="circle-container">
-                <div className="circle-1"></div>
-                <div className="line-white"></div>
-                <div className="line-colored"></div>
-                <div className="circle-2"></div>
-              </div>
-              <div className="counter">
-                <input type="text" className="input-1" value="1000" />
-                <div className="input-separator"></div>
-                <input type="text" className="input-2" value="30 000" />
-              </div>
-            </div>
-          </div>
+          <SideBarPrice
+            func={this.openerButton} />
         </section>
+
         <div className="separator-150 separator-150-2"></div>
         <section className="sidebar__division">
-          <div className="sidebar__color">
-            <div className="sidebar__division-title">
-              <h3>Цвет</h3>
-              <div className="opener-down"></div>
-            </div>
-            <ul>
-              {sidebarColorData.map(item => <li key={item.colorId}>
-                <NavLink to="/">
-                  <div className={`color ${item.color}`}></div>
-                  <span className="color-name">{item.colorName}</span>
-                </NavLink>
-              </li>)}
-            </ul>
-          </div>
+          <SideBarColor
+            func={this.openerButton} />
         </section>
+
         <div className="separator-150 separator-150-3"></div>
         <section className="sidebar__division">
-          <div className="sidebar__size">
-            <div className="sidebar__division-title">
-              <h3>Размер</h3>
-              <div className="opener-down"></div>
-            </div>
-            <ul>
-
-              <div className="list-1">
-                <li><label><input type="checkbox" className="checkbox"
-                  name="checkbox-31" />
-                  <span className="checkbox-custom"></span>
-                  <span className="label">31</span>
-                </label>
-                </li>
-                <li><label><input type="checkbox" className="checkbox"
-                  name="checkbox-33" />
-                  <span className="checkbox-custom"></span>
-                  <span className="label">33</span>
-                </label>
-                </li>
-                <li><label><input type="checkbox" className="checkbox"
-                  name="checkbox-35" /><span
-                    className="checkbox-custom"></span> <span
-                      className="label">35</span></label></li>
-                <li><label><input type="checkbox" className="checkbox"
-                  name="checkbox-37" /><span
-                    className="checkbox-custom"></span> <span
-                      className="label">37</span></label></li>
-                <li><label><input type="checkbox" className="checkbox"
-                  name="checkbox-39" />
-                  <span className="checkbox-custom"></span>
-                  <span className="label">39</span>
-                </label>
-                </li>
-              </div>
-
-              <div className="list-2">
-                <li><label><input type="checkbox" className="checkbox"
-                  name="checkbox-32" />
-                  <span className="checkbox-custom"></span>
-                  <span className="label">32</span>
-                </label>
-                </li>
-                <li><label><input type="checkbox"
-                  className="checkbox"
-                  name="checkbox-34" />
-                  <span className="checkbox-custom"></span>
-                  <span className="label">34</span>
-                </label>
-                </li>
-                <li><label><input type="checkbox"
-                  className="checkbox"
-                  name="checkbox-36"
-                  checked />
-                  <span className="checkbox-custom"></span>
-                  <span className="label">36</span>
-                </label>
-                </li>
-                <li><label><input type="checkbox"
-                  className="checkbox"
-                  name="checkbox-38" />
-                  <span className="checkbox-custom"></span>
-                  <span className="label">38</span>
-                </label>
-                </li>
-                <li><label><input type="checkbox"
-                  className="checkbox"
-                  name="checkbox-40" />
-                  <span className="checkbox-custom"></span>
-                  <span className="label">40</span>
-                </label>
-                </li>
-              </div>
-
-            </ul>
-          </div>
+          <SideBarSize
+            func={this.openerButton} />
         </section>
+
         <div className="separator-150 separator-150-4"></div>
         <section className="sidebar__division">
-          <div className="sidebar__heel-height">
-            <div className="sidebar__division-title">
-              <h3>Размер каблука</h3>
-
-              <div className="opener-up"></div>
-            </div>
-          </div>
+          <SideBarHeelSize
+            func={this.openerButton} />
         </section>
+
         <div className="separator-150 separator-150-5"></div>
         <section className="sidebar__division">
-          <div className="sidebar__occasion">
-            <div className="sidebar__division-title">
-              <h3>Повод</h3>
-              <div className="opener-down"></div>
-            </div>
-            <ul>
-              {sidebarOccasionData.map((item, index) => <li key={index}><NavLink to="/">{item}</NavLink></li>)}
-            </ul>
-          </div>
+          <SideBarOcassion
+            func={this.openerButton} />
         </section>
+
         <div className="separator-150 separator-150-6"></div>
         <section className="sidebar__division">
-          <div className="sidebar__season">
-            <div className="sidebar__division-title">
-              <h3>Сезон</h3>
-
-              <div className="opener-up"></div>
-            </div>
-          </div>
+          <SideBarSeason
+            func={this.openerButton} />
         </section>
+
         <div className="separator-150 separator-150-7"></div>
         <section className="sidebar__division">
-          <div className="sidebar__brand">
-            <h3>Бренд</h3>
+          <SideBarBrand />
 
-            <form action="post" className="brand-search">
-              <input type="search"
-                className="brand-search"
-                id="brand-search"
-                placeholder="Поиск" />
-              <input type="submit" name=""
-                value="" className="submit" />
-            </form>
-          </div>
-          <label><input type="checkbox"
-            className="checkbox"
-            name="checkbox-disc" />
+          <label>
+            <input type="checkbox" className="checkbox" name="checkbox-disc" />
             <span className="checkbox-discount"></span>
             <span className="text-discount">Со скидкой</span>
           </label>
@@ -424,6 +297,241 @@ class SideBar extends Component {
           </div>
         </section>
       </section>
+    )
+  }
+}
+
+class SideBarCatalogueList extends Component {
+  handleClick = (event) => this.props.func(event)
+  render() {
+    return (
+      <div className="sidebar__catalogue-list">
+        <div className="sidebar__division-title">
+          <h3>Каталог</h3>
+          <div className="opener-down" onClick={this.handleClick}></div>
+        </div>
+        <ul>
+          {sidebarDivisionData.map((item, index) => <li key={index}><NavLink to="/">{item}</NavLink></li>)}
+        </ul>
+      </div>
+
+    )
+  }
+}
+
+class SideBarPrice extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      minPriceValue: 1000,
+      maxPriceValue: 30000
+    }
+  }
+  handleClick = (event) => this.props.func(event)
+
+  setPrice = (value, event) => {
+    console.log(event.target.className)
+    if (event.target.className === "input-1") {
+      this.setState({ minPriceValue: value });
+    } else {
+      this.setState({ maxPriceValue: value });
+    }
+  }
+
+  render() {
+    return (
+      <div className="sidebar__price">
+        <div className="sidebar__division-title">
+          <h3>Цена</h3>
+          <div className="opener-down" onClick={this.handleClick}></div>
+        </div>
+        <div className="price-slider">
+          <div className="circle-container">
+            <input type="range" value={this.state.minPriceValue} min='0' max='90000' step='100'
+              onChange={(event) => this.setPrice(event.target.value, event)} />
+            <div className="circle-1"></div>
+            <div className="line-white"></div>
+            <div className="line-colored"></div>
+            <div className="circle-2"></div>
+          </div>
+
+          <div className="counter">
+            <input type="text" className="input-1" value={this.state.minPriceValue}
+              onChange={(event) => this.setPrice(event.target.value, event)} />
+            <div className="input-separator"></div>
+            <input type="text" className="input-2" value={this.state.maxPriceValue}
+              onChange={(event) => this.setPrice(event.target.value, event)} />
+
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
+
+class SideBarColor extends Component {
+  handleClick = (event) => this.props.func(event)
+  render() {
+    return (
+      <div className="sidebar__color">
+        <div className="sidebar__division-title">
+          <h3>Цвет</h3>
+          <div className="opener-down" onClick={this.handleClick}></div>
+        </div>
+        <ul>
+          {sidebarColorData.map(item => <li key={item.colorId}>
+            <NavLink to="/">
+              <div className={`color ${item.color}`}></div>
+              <span className="color-name">{item.colorName}</span>
+            </NavLink>
+          </li>)}
+        </ul>
+      </div>
+
+    )
+  }
+}
+
+class SideBarSize extends Component {
+  handleClick = (event) => this.props.func(event)
+  render() {
+    return (
+      <div className="sidebar__size">
+        <div className="sidebar__division-title">
+          <h3>Размер</h3>
+          <div className="opener-down" onClick={this.handleClick}></div>
+        </div>
+        <ul>
+          <div className="list-1">
+            <li>
+              <label>
+                <input type="checkbox" className="checkbox" name="checkbox-31" />
+                <span className="checkbox-custom"></span>
+                <span className="label">31</span>
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" className="checkbox" name="checkbox-33" />
+                <span className="checkbox-custom"></span>
+                <span className="label">33</span>
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" className="checkbox" name="checkbox-35" />
+                <span className="checkbox-custom"></span>
+                <span className="label">35</span>
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" className="checkbox" name="checkbox-37" />
+                <span className="checkbox-custom"></span>
+                <span className="label">37</span>
+              </label>
+            </li>
+            <li>
+              <label>
+                <input type="checkbox" className="checkbox" name="checkbox-39" />
+                <span className="checkbox-custom"></span>
+                <span className="label">39</span>
+              </label>
+            </li>
+          </div>
+
+          <div className="list-2">
+            <li><label><input type="checkbox" className="checkbox" name="checkbox-32" />
+              <span className="checkbox-custom"></span>
+              <span className="label">32</span>
+            </label>
+            </li>
+            <li><label><input type="checkbox" className="checkbox" name="checkbox-34" />
+              <span className="checkbox-custom"></span>
+              <span className="label">34</span>
+            </label>
+            </li>
+            <li><label><input type="checkbox" className="checkbox" name="checkbox-36" />
+              <span className="checkbox-custom"></span>
+              <span className="label">36</span>
+            </label>
+            </li>
+            <li><label><input type="checkbox" className="checkbox" name="checkbox-38" />
+              <span className="checkbox-custom"></span>
+              <span className="label">38</span>
+            </label>
+            </li>
+            <li><label><input type="checkbox" className="checkbox" name="checkbox-40" />
+              <span className="checkbox-custom"></span>
+              <span className="label">40</span>
+            </label>
+            </li>
+          </div>
+        </ul>
+      </div>
+    )
+  }
+}
+
+class SideBarHeelSize extends Component {
+  handleClick = (event) => this.props.func(event)
+  render() {
+    return (
+      <div className="sidebar__heel-height">
+        <div className="sidebar__division-title">
+          <h3>Размер каблука</h3>
+          <div className="opener-up" onClick={this.handleClick}></div>
+        </div>
+      </div>
+    )
+  }
+}
+
+class SideBarOcassion extends Component {
+  handleClick = (event) => this.props.func(event)
+  render() {
+    return (
+      <div className="sidebar__occasion">
+        <div className="sidebar__division-title">
+          <h3>Повод</h3>
+          <div className="opener-down" onClick={this.handleClick}></div>
+        </div>
+        <ul>
+          {sidebarOccasionData.map((item, index) => <li key={index}><NavLink to="/">{item}</NavLink></li>)}
+        </ul>
+      </div>
+    )
+  }
+}
+
+class SideBarSeason extends Component {
+  handleClick = (event) => this.props.func(event)
+  render() {
+    return (
+      <div className="sidebar__season">
+        <div className="sidebar__division-title">
+          <h3>Сезон</h3>
+          <div className="opener-up" onClick={this.handleClick}></div>
+        </div>
+      </div>
+    )
+  }
+}
+
+class SideBarBrand extends Component {
+  render() {
+    return (
+      <div className="sidebar__brand">
+        <h3>Бренд</h3>
+        <form action="post" className="brand-search">
+          <input type="search"
+            className="brand-search"
+            id="brand-search"
+            placeholder="Поиск" />
+          <input type="submit" name=""
+            value="" className="submit" />
+        </form>
+      </div>
     )
   }
 }

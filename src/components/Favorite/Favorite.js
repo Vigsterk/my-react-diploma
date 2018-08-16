@@ -62,7 +62,7 @@ class Favorite extends Component {
       return five;
     }
     number %= 10;
-    if (number == 1) {
+    if (number === 1) {
       return one;
     }
     if (number >= 2 && number <= 4) {

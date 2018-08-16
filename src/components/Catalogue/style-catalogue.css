@@ -762,16 +762,16 @@ span.color-name:hover {
   background: #FFFFFF;
 }
 
-.shocking-blue {
-  background: #ACC7E8;
+.transparent {
+  background: transparent;
 }
 
-.yellow {
-  background: #EDD972;
+.pink {
+  background: #f442ce
 }
 
-.king-crimson {
-  background: #FF748B;
+.red {
+  background: #f21f1f
 }
 
 .deep-purple {
@@ -780,6 +780,50 @@ span.color-name:hover {
 
 .black-sabbath {
   background: #000000;
+}
+
+.dark-green {
+  background: #02910c;
+}
+
+.orange{
+  background: #ff8800;
+}
+
+.bezh {
+  background: #E5DBC5;
+}
+
+.gray{
+  background: #b7b7b7;
+}
+
+.blue {
+  background: #41baea;
+}
+
+.metal {
+  background:linear-gradient(45deg, #babbbc, #858687);
+}
+
+.colorful {
+  background: linear-gradient(145deg, #f21f1f ,#f21f1f 10%,#ff8800, #ff8800 40% ,#02910c,#5aa1e8);;
+}
+
+.sivler {
+  background: silver;
+}
+
+.white-black {
+ background: linear-gradient(45deg,  #ffffff,#ffffff,#0c0c0c,#0c0c0c);
+}
+
+.bardo {
+  background: #7a1919;
+}
+
+.brown {
+  background: brown;
 }
 
 .sidebar__color .opener-down {
