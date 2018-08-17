@@ -550,13 +550,17 @@ span.producer {
   padding-bottom: 30px;
 }
 
+.hidden{
+  display: none
+}
+
 .sidebar__division-title {
   position: relative;
   margin: 0;
 }
 
 /*Списки в сайдбаре*/
-.sidebar ul {
+.sidebar-ul {
   width: 240px;
   margin: -3px auto;
   display: flex;
@@ -564,7 +568,7 @@ span.producer {
   background: #F4F4F4;
 }
 
-.sidebar ul li {
+.sidebar-ul-li {
   padding-left: 19px;
   list-style: none;
   font-family: 'Roboto', sans-serif;
@@ -601,7 +605,7 @@ span.producer {
   padding-bottom: 16px;
 }
 
-.sidebar__catalogue-list ul {
+.sidebar__catalogue-list-ul {
   height: 206px;
   display: flex;
   flex-direction: column;
@@ -609,7 +613,7 @@ span.producer {
   overflow: auto;
 }
 
-.sidebar__catalogue-list ul li {
+.sidebar__catalogue-list-ul-li {
   padding-top: 12px;
 }
 
@@ -811,7 +815,7 @@ span.color-name:hover {
 }
 
 .sivler {
-  background: silver;
+  background: #c9c9c9;
 }
 
 .white-black {
