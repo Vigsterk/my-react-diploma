@@ -32,7 +32,7 @@ class TopMenu extends Component {
     }
   }
   componentDidMount() {
-    fetch("https://neto-api.herokuapp.com/bosa-noga/categories", {
+    fetch("https://api-neto.herokuapp.com/bosa-noga/categories", {
       method: "GET"
     })
       .then(response => {
@@ -183,7 +183,7 @@ class ProductList extends Component {
   loadCartData = () => {
     let cartData = this.props.cart.id ? this.props.cart.id : this.state.cartIDJson.id;
     console.log("CartID", cartData)
-    fetch(`https://neto-api.herokuapp.com/bosa-noga/cart/${cartData}`, {
+    fetch(`https://api-neto.herokuapp.com/bosa-noga/cart/${cartData}`, {
       headers: {
         "Content-type": "application/json"
       },
@@ -215,7 +215,7 @@ class ProductList extends Component {
   }
 
   loadItemData = (cartProps) => {
-    fetch(`https://neto-api.herokuapp.com/bosa-noga/products/${cartProps.id}`, {
+    fetch(`https://api-neto.herokuapp.com/bosa-noga/products/${cartProps.id}`, {
     })
       .then(response => {
         if (200 <= response.status && response.status < 300) {
@@ -255,7 +255,7 @@ class ProductList extends Component {
     }
     const serialCartItemProps = JSON.stringify(cartItemProps)
 
-    fetch(`https://neto-api.herokuapp.com/bosa-noga/cart/${cartData}`, {
+    fetch(`https://api-neto.herokuapp.com/bosa-noga/cart/${cartData}`, {
       method: "POST",
       headers: {
         "Content-type": "application/json"

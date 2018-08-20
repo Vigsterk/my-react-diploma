@@ -3,16 +3,28 @@ import React, { Component } from 'react';
 class Pagination extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      changePage: this.props.func,
+      pagesArr: this.getPages(),
+      activeIndex: 0
+    }
+  }
+
+  getPages = () => {
+    console.log("hop hey")
     let arrItems = []
     for (var i = 1; i < this.props.pages + 1 && i < 6; i++) {
       arrItems.push(i)
     }
-    this.state = {
-      page: this.props.page,
-      pages: this.props.pages,
-      changePage: this.props.func,
-      pagesArr: arrItems,
-      activeIndex: 0
+    return arrItems
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.pages !== prevProps.pages) {
+      console.log("now:", this.props.pages, "prev:", prevProps.pages, "getPages is done")
+      this.setState({
+        pagesArr: this.getPages(this.props.pages)
+      })
     }
   }
 
@@ -35,7 +47,7 @@ class Pagination extends Component {
     let item = this.props.page
     item++
     this.state.changePage(item)
-    if (this.state.pages > 4 && item === this.state.pagesArr.length) {
+    if (this.state.pagesArr.length > 4 && item === this.state.pagesArr.length) {
       let pageAdd = this.state.pagesArr.length + 1
       this.setState({
         pagesArr: this.state.pagesArr.concat(pageAdd),
@@ -47,12 +59,13 @@ class Pagination extends Component {
   }
 
   changeEvent = index => {
-    console.log(index)
     this.setState({
       activeIndex: index
     })
     this.state.changePage(index + 1)
   }
+
+  handleClick = () => this.changeEvent(this.state.pagesArr.length - 1)
 
   render() {
     return (
@@ -67,7 +80,7 @@ class Pagination extends Component {
               item={item}
             />)}
             <li className="disable-pagination-li">...</li>
-            <li className="disable-pagination-li"><button className="pagination-page" onClick={this.changeEvent}>{this.state.pagesArr.length}</button></li>
+            <li className="disable-pagination-li"><button className="pagination-page" onClick={this.handleClick}>{this.state.pagesArr.length}</button></li>
           </ul>
           <div className="angle-forward"><button className="angle-forward_button" onClick={this.forwardButton} /></div>
         </div>

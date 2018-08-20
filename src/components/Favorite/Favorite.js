@@ -7,6 +7,8 @@ import Pagination from '../Pagination/Pagination';
 class Favorite extends Component {
   constructor(props) {
     super(props)
+    const favoriteKeyData = localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [];
+    console.log(favoriteKeyData)
     this.state = {
       sitepath: [
         {
@@ -17,40 +19,32 @@ class Favorite extends Component {
           to: "/",
           title: "Избранное"
         }],
-      favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [],
+      favoriteData: favoriteKeyData,
       page: 1,
-      pages: "",
+      pages: Math.ceil(favoriteKeyData.length / 12)
     }
-
   }
+
   componentDidMount() {
     this.props.func(false)
   }
 
   favoriteRemove = (event, itemID) => {
     event.preventDefault()
-    let favoriteFilter = this.state.favoriteKeyData.filter((item) => itemID === item.id);
-    let tempFavoriteKeyData = [...this.state.favoriteKeyData]
+    let favoriteFilter = this.state.favoriteData.filter((item) => itemID === item.id);
+    let tempfavoriteData = [...this.state.favoriteData]
     if (favoriteFilter.length > 0 && favoriteFilter[0].id === itemID) {
-      let removeData = this.state.favoriteKeyData.indexOf(favoriteFilter[0])
-      tempFavoriteKeyData.splice(removeData, 1)
+      let removeData = this.state.favoriteData.indexOf(favoriteFilter[0])
+      tempfavoriteData.splice(removeData, 1)
       this.setState({
-        favoriteKeyData: tempFavoriteKeyData,
-        isActive: false
+        favoriteData: tempfavoriteData,
+        isActive: false,
+        pages: Math.ceil(tempfavoriteData.length / 12)
       })
-      console.log("Удалён")
-      const serialTempData = JSON.stringify(tempFavoriteKeyData);
+      const serialTempData = JSON.stringify(tempfavoriteData);
       localStorage.setItem("favoriteKey", serialTempData);
     }
   }
-
-  changePage = (page) => {
-    let loadPage = page;
-    this.setState({
-      page: loadPage
-    })
-  }
-
 
   GetNoun = (number, one, two, five, none) => {
     number = Math.abs(number);
@@ -71,8 +65,13 @@ class Favorite extends Component {
     return five;
   }
 
+  changePage = (page) => {
+    this.setState({
+      page: page
+    })
+  }
+
   render() {
-    console.log(this.state.favoriteKeyData)
     return (
       <div className="wrapper wrapper_favorite">
         <SitePath pathprops={this.state.sitepath} />
@@ -80,12 +79,12 @@ class Favorite extends Component {
           <section className="product-catalogue__head product-catalogue__head_favorite">
             <div className="product-catalogue__section-title">
               <h2 className="section-name">В вашем избранном</h2>
-              <span className="amount amount_favorite">{this.state.favoriteKeyData.length > 0 && this.state.favoriteKeyData.length} {this.GetNoun(this.state.favoriteKeyData.length, 'товар', 'товара', 'товаров', 'нет товаров')}</span>
+              <span className="amount amount_favorite">{this.state.favoriteData.length > 0 && this.state.favoriteData.length} {this.GetNoun(this.state.favoriteData.length, 'товар', 'товара', 'товаров', 'нет товаров')}</span>
             </div>
             <SortBy />
           </section>
           <section className="product-catalogue__item-list product-catalogue__item-list_favorite">
-            {this.state.favoriteKeyData.length > 0 && this.state.favoriteKeyData.map(items =>
+            {this.state.favoriteData.length > 0 && this.state.favoriteData.slice((this.state.page - 1) * 12, this.state.page * 12).map(items =>
               <ListItem key={items.id}
                 id={items.id}
                 title={items.title}

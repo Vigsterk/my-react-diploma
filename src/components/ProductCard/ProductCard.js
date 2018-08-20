@@ -22,7 +22,7 @@ class ProductCard extends Component {
 
   componentDidMount() {
     this.props.func(false)
-    fetch(`https://neto-api.herokuapp.com/bosa-noga/products/${this.state.id}`, {
+    fetch(`https://api-neto.herokuapp.com/bosa-noga/products/${this.state.id}`, {
       method: "GET"
     })
       .then(response => {
@@ -158,7 +158,7 @@ class ProductCard extends Component {
       console.log("empty cart", link)
     }
 
-    fetch(`https://neto-api.herokuapp.com/bosa-noga/${link}`, {
+    fetch(`https://api-neto.herokuapp.com/bosa-noga/${link}`, {
       method: "POST",
       headers: {
         "Content-type": "application/json"

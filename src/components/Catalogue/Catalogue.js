@@ -8,7 +8,6 @@ import { sidebarColorData, sidebarOccasionData, sidebarDivisionData, sidebarSize
 class Catalogue extends Component {
   constructor(props) {
     super(props)
-    console.log(localStorage)
     this.state = {
       sitepath: [
         {
@@ -34,7 +33,7 @@ class Catalogue extends Component {
 
   componentDidMount() {
     this.props.func(false)
-    fetch(`https://neto-api.herokuapp.com/bosa-noga/products?page=${this.state.page}`, {
+    fetch(`https://api-neto.herokuapp.com/bosa-noga/products?page=${this.state.page}`, {
       method: "GET"
     })
       .then(response => {
@@ -45,7 +44,6 @@ class Catalogue extends Component {
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data)
         this.setState({
           data: data.data,
           pages: data.pages,
@@ -74,7 +72,7 @@ class Catalogue extends Component {
   }
 
   reloadCatalogue = (loadPage) => {
-    fetch(`https://neto-api.herokuapp.com/bosa-noga/products?page=${loadPage}`, {
+    fetch(`https://api-neto.herokuapp.com/bosa-noga/products?page=${loadPage}`, {
       method: "GET"
     })
       .then(response => {
@@ -85,7 +83,6 @@ class Catalogue extends Component {
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data)
         this.setState({
           data: data.data,
           dataVault: this.state.dataVault.concat(data)
@@ -106,12 +103,10 @@ class Catalogue extends Component {
       this.setState({
         favoriteKeyData: tempFavoriteKeyData
       })
-      console.log("Удалён")
       const serialTempData = JSON.stringify(tempFavoriteKeyData)
       localStorage.setItem("favoriteKey", serialTempData);
     } else {
       tempFavoriteKeyData.push(this.state.data.find((el) => itemID === el.id))
-      console.log("Добавлен", tempFavoriteKeyData)
       this.setState({
         favoriteKeyData: tempFavoriteKeyData,
       })
@@ -239,13 +234,10 @@ class SideBar extends Component {
   }
 
   openerButton = (filterName) => {
-    console.log("opener use", filterName)
 
     let filterIndex = this.state.hiddenFilters.findIndex((filter) => {
       return filter === filterName;
     });
-
-    console.log(filterIndex)
 
     if (filterIndex === -1) {
       this.setState({
@@ -343,7 +335,6 @@ class SideBar extends Component {
 class SideBarCatalogueList extends Component {
   handleClick = () => this.props.func('CatalogueList')
   render() {
-    console.log(this.props)
     return (
       <div className="sidebar__catalogue-list">
         <div className="sidebar__division-title">
@@ -369,7 +360,6 @@ class SideBarPrice extends Component {
   handleClick = () => this.props.func('Price')
 
   setPrice = (value, event) => {
-    console.log(event.target.className)
     if (event.target.className === "input-1") {
       this.setState({ minPriceValue: value });
     } else {
@@ -378,7 +368,6 @@ class SideBarPrice extends Component {
   }
 
   render() {
-    console.log(this.props)
     return (
       <div className="sidebar__price">
         <div className="sidebar__division-title">
@@ -412,15 +401,14 @@ class SideBarPrice extends Component {
 class SideBarColor extends Component {
   handleClick = () => this.props.func('Color')
   render() {
-    console.log(this.props)
     return (
       <div className="sidebar__color">
         <div className="sidebar__division-title">
           <h3>Цвет</h3>
           <div className={this.props.hiddenFilters.includes('Color') ? 'opener-up' : 'opener-down'} onClick={this.handleClick}></div>
         </div>
-        <ul className={this.props.hiddenFilters.includes('Color') ? 'hidden' : 'sidebar-ul sidebar__catalogue-list-ul'}>
-          {sidebarColorData.map(item => <li className={this.props.hiddenFilters.includes('Color') ? 'hidden' : "sidebar-ul-li sidebar__catalogue-list-ul-li"} key={item.colorId}>
+        <ul className={this.props.hiddenFilters.includes('Color') ? 'hidden' : 'sidebar-ul sidebar__color-list-ul'}>
+          {sidebarColorData.map(item => <li className={this.props.hiddenFilters.includes('Color') ? 'hidden' : "sidebar-ul-li sidebar__color-list-ul-li"} key={item.colorId}>
             <NavLink to="/">
               <div className={`color ${item.color}`}></div>
               <span className="color-name">{item.colorName}</span>
@@ -436,17 +424,15 @@ class SideBarColor extends Component {
 class SideBarSize extends Component {
   handleClick = () => this.props.func('Size')
   render() {
-    console.log(this.props)
     return (
       <div className="sidebar__size">
         <div className="sidebar__division-title">
           <h3>Размер</h3>
           <div className={this.props.hiddenFilters.includes('Size') ? 'opener-up' : 'opener-down'} onClick={this.handleClick}></div>
         </div>
-        <ul
-          className={this.props.hiddenFilters.includes('Size') ? 'hidden' : "sidebar-ul sidebar__catalogue-list-ul"}>
+        <ul className={this.props.hiddenFilters.includes('Size') ? 'hidden' : "sidebar-ul sidebar__size-list-ul"}>
           {sidebarSizesData.map((size, index) =>
-            <li className={this.props.hiddenFilters.includes('Size') ? 'hidden' : "sidebar-ul-li sidebar__catalogue-list-ul-li"} key={`${size}${index}`}>
+            <li className={this.props.hiddenFilters.includes('Size') ? 'hidden' : "sidebar-ul-li sidebar__size-list-ul-li"} key={`${size}${index}`}>
               <label>
                 <input type="checkbox" className="checkbox" name={`checkbox-size-${size}`} />
                 <span className="checkbox-custom"></span>
@@ -463,12 +449,22 @@ class SideBarSize extends Component {
 class SideBarHeelSize extends Component {
   handleClick = () => this.props.func('HeelSize')
   render() {
-    console.log(this.props)
     return (
       <div className="sidebar__heel-height">
         <div className="sidebar__division-title">
           <h3>Размер каблука</h3>
           <div className={this.props.hiddenFilters.includes('HeelSize') ? 'opener-up' : 'opener-down'} onClick={this.handleClick}></div>
+          <ul className={this.props.hiddenFilters.includes('HeelSize') ? 'hidden' : "sidebar-ul sidebar__heelSize-list-ul"}>
+            {sidebarHeelSizesData.map((size, index) =>
+              <li className={this.props.hiddenFilters.includes('HeelSize') ? 'hidden' : "sidebar-ul-li sidebar__heelSize-list-ul-li"} key={`${size}${index}`}>
+                <label>
+                  <input type="checkbox" className="checkbox" name={`checkbox-size-${size}`} />
+                  <span className="checkbox-custom"></span>
+                  <span className="label">{size}</span>
+                </label>
+              </li>
+            )}
+          </ul>
         </div>
       </div>
     )
@@ -478,15 +474,14 @@ class SideBarHeelSize extends Component {
 class SideBarOcassion extends Component {
   handleClick = () => this.props.func('Ocassion')
   render() {
-    console.log(this.props)
     return (
       <div className="sidebar__occasion">
         <div className="sidebar__division-title">
           <h3>Повод</h3>
           <div className={this.props.hiddenFilters.includes('Ocassion') ? 'opener-up' : 'opener-down'} onClick={this.handleClick}></div>
         </div>
-        <ul>
-          {sidebarOccasionData.map((item, index) => <li key={index}><NavLink to="/">{item}</NavLink></li>)}
+        <ul className={this.props.hiddenFilters.includes('Ocassion') ? 'hidden' : "sidebar-ul sidebar__ocassion-list-ul"}>
+          {sidebarOccasionData.map((item, index) => <li className={this.props.hiddenFilters.includes('Ocassion') ? 'hidden' : "sidebar-ul-li sidebar__ocassion-list-ul-li"} key={index}><NavLink to="/">{item}</NavLink></li>)}
         </ul>
       </div>
     )
@@ -496,12 +491,14 @@ class SideBarOcassion extends Component {
 class SideBarSeason extends Component {
   handleClick = () => this.props.func('Season')
   render() {
-    console.log(this.props)
     return (
       <div className="sidebar__season">
         <div className="sidebar__division-title">
           <h3>Сезон</h3>
           <div className={this.props.hiddenFilters.includes('Season') ? 'opener-up' : 'opener-down'} onClick={this.handleClick}></div>
+          <ul className={this.props.hiddenFilters.includes('Season') ? 'hidden' : "sidebar-ul sidebar__season-list-ul"} >
+            {sidebarSeasonsData.map((item, index) => <li className={this.props.hiddenFilters.includes('Season') ? 'hidden' : "sidebar-ul-li sidebar__season-list-ul-li"} key={index}><NavLink to="/">{item}</NavLink></li>)}
+          </ul>
         </div>
       </div>
     )

@@ -332,7 +332,7 @@ span.producer {
 .product-catalogue__pagination {
   display: block;
   width: 892px;
-  margin: 20px 0 25px 22px;
+  margin:6px auto 71px;
 }
 
 .page-nav-wrapper {
@@ -613,8 +613,20 @@ span.producer {
   overflow: auto;
 }
 
+.sidebar__catalogue-list-ul_size{
+  flex-wrap: wrap;
+  overflow: auto;
+  padding-top:10px;
+}
+
 .sidebar__catalogue-list-ul-li {
   padding-top: 12px;
+}
+.sidebar__catalogue-list-ul-li_size {
+  padding-left: 19px;
+  width: 50%;
+  position: relative;
+  margin-bottom: 7px;
 }
 
 
@@ -727,7 +739,7 @@ span.producer {
   padding-bottom: 15px;
 }
 
-.sidebar__color ul {
+.sidebar__color-list-ul {
   width: 242px;
   height: 140px;
   flex-direction: column;
@@ -735,7 +747,7 @@ span.producer {
   overflow: auto;
 }
 
-.sidebar__color ul li {
+ .sidebar__color-list-ul-li {
   padding-top: 8px;
 }
 
@@ -841,10 +853,19 @@ span.color-name:hover {
   padding-left: 22px;
 }
 
-.sidebar__size ul {
+.sidebar__size-list-ul {
+  flex-wrap: wrap;
+  padding-top: 10px;
+  padding-left: 1px;
   height: 95px;
   padding-left: 1px;
   overflow: auto;
+}
+
+.sidebar__size-list-ul-li {
+  width: 50%;
+  position: relative;
+  margin-bottom: 7px;
 }
 
 .sidebar__size .opener-down {
@@ -859,33 +880,19 @@ span.color-name:hover {
 }
 
 .checkbox-custom {
-  position: relative;
-  bottom: 15px;
   width: 20px;
   height: 20px;
   background: #ffffff;
+
 }
 
-.list-1 .checkbox-custom,
-.list-1 .label {
+.checkbox-custom,.label {
   position: relative;
-  top: 10px;
-  margin-top: 7px;
   display: inline-block;
   vertical-align: middle;
 }
 
-.list-2 .checkbox-custom,
-.list-2 .label {
-  position: relative;
-  top: 10px;
-  right: -35px;
-  margin-top: 7px;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.list-2 .label {
+.label {
   padding-left: 1px;
 }
 
@@ -902,7 +909,23 @@ span.color-name:hover {
 /*Размер каблука*/
 .sidebar__heel-height h3 {
   padding-top: 37px;
+  padding-bottom: 13px;
   padding-left: 22px;
+}
+
+.sidebar__heelSize-list-ul {
+  flex-wrap: wrap;
+  padding-top: 10px;
+  padding-left: 1px;
+  height: 95px;
+  padding-left: 1px;
+  overflow: auto;
+}
+
+.sidebar__heelSize-list-ul-li {
+  width: 50%;
+  position: relative;
+  margin-bottom: 7px;
 }
 
 .sidebar__heel-height .opener-up {
@@ -918,17 +941,15 @@ span.color-name:hover {
   padding-bottom: 15px;
 }
 
-.sidebar__occasion ul {
+.sidebar__ocassion-list-ul {
   width: 240px;
-  height: 143px;
+  height: 100px;
   flex-direction: column;
   flex-wrap: nowrap;
-  overflow: auto;
-
+  overflow: auto; 
 }
-
-.sidebar__occasion ul li {
-  padding-top: 12px;
+.sidebar__ocassion-list-ul-li {
+padding-top: 12px;
 }
 
 .sidebar__occasion .opener-down {
@@ -942,6 +963,18 @@ span.color-name:hover {
   padding-top: 24px;
   padding-left: 22px;
   padding-bottom: 10px;
+}
+
+.sidebar__season-list-ul {
+  width: 240px;
+  height: 70px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  overflow: auto; 
+}
+
+.sidebar__season-list-ul-li {
+  padding-top: 12px;
 }
 
 .sidebar__season .opener-up {

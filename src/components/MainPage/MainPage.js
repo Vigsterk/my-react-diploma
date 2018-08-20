@@ -9,6 +9,7 @@ class MainPage extends Component {
       button = f.getElementsByClassName('slider__circles')[0].getElementsByClassName('slider__circle'),
       arrows = f.getElementsByClassName('slider__arrow');
     slider(f, a, button, '4000', '1000', arrows);
+    this.props.func(true)
   }
 
   render() {
@@ -71,7 +72,7 @@ class NewDeals extends Component {
     }
   }
   componentDidMount() {
-    fetch("https://neto-api.herokuapp.com/bosa-noga/featured", {
+    fetch("https://api-neto.herokuapp.com/bosa-noga/featured", {
       method: "GET"
     })
       .then(response => {
