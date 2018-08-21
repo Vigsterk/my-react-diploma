@@ -27,7 +27,8 @@ class Catalogue extends Component {
       page: 1,
       pages: "",
       goods: "",
-      favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : []
+      favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [],
+      sortParam: "price"
     }
   }
 
@@ -56,6 +57,15 @@ class Catalogue extends Component {
       });
   }
 
+  setSortByFilter = (event) => {
+    const sortValue = event.currentTarget.value
+    console.log(sortValue)
+    this.setState({
+      sortParam: `${sortValue}`
+    });
+    this.reloadCatalogue(`sortBy=${sortValue}`)
+  }
+
   changePage = (page) => {
     let loadPage = page;
     this.setState({
@@ -67,12 +77,12 @@ class Catalogue extends Component {
         data: dataVaultFilter[0].data
       })
     } else {
-      this.reloadCatalogue(loadPage)
+      this.reloadCatalogue(`page=${loadPage}`)
     }
   }
 
-  reloadCatalogue = (loadPage) => {
-    fetch(`https://api-neto.herokuapp.com/bosa-noga/products?page=${loadPage}`, {
+  reloadCatalogue = (pageProps) => {
+    fetch(`https://api-neto.herokuapp.com/bosa-noga/products?${pageProps}`, {
       method: "GET"
     })
       .then(response => {
@@ -133,14 +143,19 @@ class Catalogue extends Component {
                 <h2 className="section-name">Женская обувь</h2>
                 <span className="amount">{this.state.goods}</span>
               </div>
+
               <div className="product-catalogue__sort-by">
                 <p className="sort-by">Сортировать</p>
-                <select name="" id="sorting">
-                  <option value="">по популярности</option>
-                  <option value="">по размеру</option>
-                  <option value="">по производителю</option>
+                <select
+                  name="sortBy"
+                  value={this.state.sortParam}
+                  onChange={this.setSortByFilter}
+                  id="sorting">
+                  <option value="popularity">по популярности</option>
+                  <option value="price">по цене</option>
                 </select>
               </div>
+
             </section>
             <section className="product-catalogue__item-list">
               {this.state.data.length > 0 && this.state.data.map(items =>
@@ -234,7 +249,6 @@ class SideBar extends Component {
   }
 
   openerButton = (filterName) => {
-
     let filterIndex = this.state.hiddenFilters.findIndex((filter) => {
       return filter === filterName;
     });

@@ -83,7 +83,7 @@ class ProductCard extends Component {
       localStorage.setItem("favoriteKey", serialTempData);
 
     } else {
-      tempFavoriteKeyData.push(this.state.data.find((el) => this.state.data.id === el.id))
+      tempFavoriteKeyData.push(this.state.data)
       console.log("Добавлен", tempFavoriteKeyData)
       this.setState({
         favoriteKeyData: tempFavoriteKeyData,
@@ -144,18 +144,13 @@ class ProductCard extends Component {
       size: this.state.productCartActiveSize.size,
       amount: this.state.productCartCount
     }
-
     const serialCartItemProps = JSON.stringify(cartItemProps)
     const cartIDJson = localStorage.postCartIDKey ? JSON.parse(localStorage.postCartIDKey) : []
-    console.log(cartIDJson)
     let link = ``;
     if (cartIDJson.products) {
       link = `cart/${cartIDJson.id}`
-      console.log("not empty cart ID", link)
-      console.log(localStorage.postCartIDKey)
     } else {
       link = `cart/`
-      console.log("empty cart", link)
     }
 
     fetch(`https://api-neto.herokuapp.com/bosa-noga/${link}`, {

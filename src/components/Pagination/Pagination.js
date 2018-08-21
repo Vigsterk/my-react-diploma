@@ -11,7 +11,6 @@ class Pagination extends Component {
   }
 
   getPages = () => {
-    console.log("hop hey")
     let arrItems = []
     for (var i = 1; i < this.props.pages + 1 && i < 6; i++) {
       arrItems.push(i)
@@ -21,7 +20,6 @@ class Pagination extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.pages !== prevProps.pages) {
-      console.log("now:", this.props.pages, "prev:", prevProps.pages, "getPages is done")
       this.setState({
         pagesArr: this.getPages(this.props.pages)
       })

@@ -16,17 +16,41 @@ class Favorite extends Component {
           title: "Главная"
         },
         {
-          to: "/",
+          to: "/favorite",
           title: "Избранное"
         }],
       favoriteData: favoriteKeyData,
       page: 1,
-      pages: Math.ceil(favoriteKeyData.length / 12)
+      pages: Math.ceil(favoriteKeyData.length / 12),
+      sortParam: 'date'
     }
   }
 
   componentDidMount() {
     this.props.func(false)
+  }
+
+  setSortByFilter = (event) => {
+    const sortValue = event.currentTarget.value
+    console.log(sortValue)
+    this.setState({
+      sortParam: `${sortValue}`
+    });
+    if (sortValue === "price") {
+      const sortedItems = [...this.state.favoriteData].sort((a, b) => a.price - b.price)
+      this.setState({
+        favoriteData: sortedItems
+      })
+    } else if (sortValue === "brand") {
+      const sortedItems = [...this.state.favoriteData].sort((a, b) => a.brand - b.brand)
+      this.setState({
+        favoriteData: sortedItems
+      })
+    } else {
+      this.setState({
+        favoriteData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : []
+      })
+    }
   }
 
   favoriteRemove = (event, itemID) => {
@@ -81,7 +105,7 @@ class Favorite extends Component {
               <h2 className="section-name">В вашем избранном</h2>
               <span className="amount amount_favorite">{this.state.favoriteData.length > 0 && this.state.favoriteData.length} {this.GetNoun(this.state.favoriteData.length, 'товар', 'товара', 'товаров', 'нет товаров')}</span>
             </div>
-            <SortBy />
+            <SortBy param={this.state.sortParam} func={this.setSortByFilter} />
           </section>
           <section className="product-catalogue__item-list product-catalogue__item-list_favorite">
             {this.state.favoriteData.length > 0 && this.state.favoriteData.slice((this.state.page - 1) * 12, this.state.page * 12).map(items =>
@@ -136,10 +160,14 @@ class SortBy extends Component {
     return (
       <div className="product-catalogue__sort-by">
         <p className="sort-by">Сортировать</p>
-        <select id="sorting" name="">
-          <option value="">по дате добавления</option>
-          <option value="">по размеру</option>
-          <option value="">по производителю</option>
+        <select
+          name="sortBy"
+          value={this.props.param}
+          onChange={this.props.func}
+          id="sorting">
+          <option value="price">по цене</option>
+          <option value="brand">по производителю</option>
+          <option value="date">по дате добавления</option>
         </select>
       </div>
     )
