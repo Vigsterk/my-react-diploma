@@ -17,11 +17,12 @@ class ProductCard extends Component {
       productCartPrice: "",
       productCartDefaultPrice: "",
       productCartActiveSize: "",
+      overlookedData: sessionStorage.overlookedKey ? sessionStorage.overlookedKey : []
     }
+    this.props.func(false)
   }
 
   componentDidMount() {
-    this.props.func(false)
     fetch(`https://api-neto.herokuapp.com/bosa-noga/products/${this.state.id}`, {
       method: "GET"
     })
@@ -33,11 +34,16 @@ class ProductCard extends Component {
       })
       .then(response => response.json())
       .then(data => {
+        console.log(data)
+        const overlookedTempData = [...this.state.overlookedData]
+        overlookedTempData.push(data.data)
+        sessionStorage.setItem("overlookedKey", overlookedTempData)
         this.setState({
           data: data.data,
           selectedImage: data.data.images[0],
           productCartDefaultPrice: data.data.price,
           productCartPrice: data.data.price,
+          overlookedData: overlookedTempData,
           sitepath: [
             {
               to: "/",
@@ -54,6 +60,7 @@ class ProductCard extends Component {
           ],
         })
         this.checkActiveId(this.state.data.id)
+        console.log(overlookedTempData)
       })
       .catch(error => {
         console.log(error)
@@ -168,7 +175,6 @@ class ProductCard extends Component {
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data)
         const serialTempData = JSON.stringify(data.data);
         localStorage.setItem("favoriteKey", serialTempData);
         this.props.cartUploader(data.data)
@@ -177,8 +183,6 @@ class ProductCard extends Component {
         console.log(error)
       });
   }
-
-
 
   render() {
     return (
@@ -253,8 +257,8 @@ class ProductCard extends Component {
             </section>
           </section>
         </main>
-        <OverlookedSlider />
-        <SimilarSlider />
+        {this.state.overlookedData.length > 0 && <OverlookedSlider data={this.state.overlookedData} />}
+        {this.state.data.categoryId && <SimilarSlider category={this.state.data.categoryId} />}
       </div>
     )
   }
@@ -335,13 +339,16 @@ const LastImg = (props) => {
 
 class OverlookedSlider extends Component {
   render() {
+    console.log(this.props.data)
     return (
       <section className="product-card__overlooked-slider">
         <h3>Вы смотрели:</h3>
         <div className="overlooked-slider">
           <div className="overlooked-slider__arrow overlooked-slider__arrow_left arrow" />
-          {overlookedData.map(item => <div className={`overlooked-slider__item overlooked-slider__item-${item.classNum}`}>
-            <NavLink to={item.href}></NavLink>
+          {this.props.data.map(item => <div className={`overlooked-slider__item`}>
+            <NavLink to={`productCard/${item.id}`}>
+              <img src={item.images[0]} className={`overlooked-slider__item-pic`} alt="overlookedPic" />
+            </NavLink>
           </div>)}
           <div className="overlooked-slider__arrow overlooked-slider__arrow_right arrow" />
         </div>
@@ -350,82 +357,161 @@ class OverlookedSlider extends Component {
   }
 }
 
-const overlookedData = [
-  {
-    classNum: 1,
-    href: '/productCard'
-  },
-  {
-    classNum: 2,
-    href: '/productCard'
-  },
-  {
-    classNum: 3,
-    href: '/productCard'
-  },
-  {
-    classNum: 4,
-    href: '/productCard'
-  },
-  {
-    classNum: 5,
-    href: '/productCard'
-  }
-];
-
 class SimilarSlider extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      similarData: [],
+      first: null,
+      active: null,
+      last: null,
+      info: null
+    }
+  }
+
+  componentDidMount() {
+    console.log('similarCategoryfetch run', this.props.category)
+    fetch(`https://api-neto.herokuapp.com/bosa-noga/products?categoryId=${this.props.category}`, {
+      method: "GET"
+    })
+      .then(response => {
+        if (200 <= response.status && response.status < 300) {
+          return response;
+        }
+        throw new Error(response.statusText);
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        this.setState({
+          similarData: data.data,
+          first: data.data[0],
+          active: data.data[1],
+          last: data.data[2],
+        })
+      })
+      .catch(error => {
+        console.log(error)
+      });
+  }
+
+  moveLeft = () => {
+    const tempDataArr = [...this.state.similarData]
+    let tempDataIndex = tempDataArr.indexOf(this.state.active)
+    let tempDataIndexFirst = tempDataArr.indexOf(this.state.first)
+    let tempDataIndexLast = tempDataArr.indexOf(this.state.last)
+    tempDataIndex > 0 ? tempDataIndex-- : tempDataIndex = tempDataArr.length - 1
+    tempDataIndexFirst > 0 ? tempDataIndexFirst-- : tempDataIndexFirst = tempDataArr.length - 1
+    tempDataIndexLast > 0 ? tempDataIndexLast-- : tempDataIndexLast = tempDataArr.length - 1
+    let tempDataActive = tempDataArr[tempDataIndex]
+    let tempDataFirst = tempDataArr[tempDataIndexFirst]
+    let tempDataLast = tempDataArr[tempDataIndexLast]
+    this.setState({
+      first: tempDataFirst,
+      active: tempDataActive,
+      last: tempDataLast
+    })
+  }
+
+  moveRight = () => {
+    const tempDataArr = [...this.state.similarData]
+    let tempDataIndex = tempDataArr.indexOf(this.state.active)
+    let tempDataIndexFirst = tempDataArr.indexOf(this.state.first)
+    let tempDataIndexLast = tempDataArr.indexOf(this.state.last)
+    tempDataIndex < (tempDataArr.length - 1) ? tempDataIndex++ : tempDataIndex = 0
+    tempDataIndexFirst < (tempDataArr.length - 1) ? tempDataIndexFirst++ : tempDataIndexFirst = 0
+    tempDataIndexLast < (tempDataArr.length - 1) ? tempDataIndexLast++ : tempDataIndexLast = 0
+    let tempDataActive = tempDataArr[tempDataIndex]
+    let tempDataFirst = tempDataArr[tempDataIndexFirst]
+    let tempDataLast = tempDataArr[tempDataIndexLast]
+    this.setState({
+      first: tempDataFirst,
+      active: tempDataActive,
+      last: tempDataLast
+    })
+  }
+
   render() {
+    console.log(this.state.active, this.state.first, this.state.last)
     return (
-      <section className="product-card__similar-products-slider">
+      this.state.similarData.length > 0 && <section className="product-card__similar-products-slider" >
         <h3>Похожие товары:</h3>
         <div className="similar-products-slider">
-          <div className="similar-products-slider__arrow similar-products-slider__arrow_left arrow"></div>
-          {similarData.map(item =>
-            <div className="similar-products-slider__item-list__item-card item">
-              <div className="similar-products-slider__item">
-                <NavLink to={item.href}>
-                  <img src={item.src} className={`similar-products-slider__item-pic-${item.classNum}`} alt={item.name} />
-                </NavLink>
-              </div>
-              <div className="similar-products-slider__item-desc">
-                <h4 className="similar-products-slider__item-name">{item.name}</h4>
-                <p className="similar-products-slider__item-producer">Производитель: <span className="producer">{item.producer}</span></p>
-                <p className="similar-products-slider__item-price">{item.price}</p>
-              </div>
-            </div>
-          )}
-          <div className="similar-products-slider__arrow similar-products-slider__arrow_right arrow"></div>
+          <div className="similar-products-slider__arrow similar-products-slider__arrow_left arrow" onClick={this.moveLeft}></div>
+          <ProductFirst data={this.state.first} />
+          <ProductActive data={this.state.active} />
+          <ProductLast data={this.state.last} />
+          <div className="similar-products-slider__arrow similar-products-slider__arrow_right arrow" onClick={this.moveRight}></div>
         </div>
       </section>
     )
   }
 }
 
-const similarData = [
-  {
-    href: '/productCard',
-    src: 'img/product-card-pics/product-card__similar-products-slider-item-1.png',
-    name: 'Ботинки женские',
-    price: 23150,
-    producer: 'Norma J.Baker',
-    classNum: 1
-  },
-  {
-    href: '/productCard',
-    src: 'img/product-card-pics/product-card__similar-products-slider-item-2.png',
-    name: 'Полуботинки женские',
-    price: 4670,
-    producer: 'Shoes Market',
-    classNum: 2
-  },
-  {
-    href: '/productCard',
-    src: 'img/product-card-pics/product-card__similar-products-slider-item-3.png',
-    name: 'Ботинки женские',
-    price: 6370,
-    producer: 'Menghi Shoes',
-    classNum: 3
+class ProductFirst extends Component {
+  render() {
+    const { data } = this.props
+    console.log(data)
+    return (
+      <div className="similar-products-slider__item-list__item-card item">
+        <div className="similar-products-slider__item">
+          <NavLink to={`productCard/${data.id}`}>
+            <img src={data.images[0]} className={`similar-products-slider__item-pic`} alt="firstPic" />
+          </NavLink>
+        </div>
+        <ProductInfo data={this.props.data} />
+      </div>
+    )
   }
-];
+}
+
+class ProductActive extends Component {
+  render() {
+    const { data } = this.props
+    console.log(data)
+    return (
+      <div className="similar-products-slider__item-list__item-card item">
+        <div className="similar-products-slider__item">
+          <NavLink to={`productCard/${data.id}`}>
+            <img src={data.images[0]} className={`similar-products-slider__item-pic`} alt="activePic" />
+          </NavLink>
+        </div>
+        <ProductInfo data={this.props.data} />
+      </div>
+    )
+  }
+}
+
+class ProductLast extends Component {
+  render() {
+    const { data } = this.props
+    console.log(data)
+    return (
+      <div className="similar-products-slider__item-list__item-card item">
+        <div className="similar-products-slider__item">
+          <NavLink to={`productCard/${data.id}`}>
+            <img src={data.images[0]} className={`similar-products-slider__item-pic`} alt="lastPic" />
+          </NavLink>
+        </div>
+        <ProductInfo data={this.props.data} />
+      </div>
+    )
+  }
+}
+
+class ProductInfo extends Component {
+  render() {
+    const { data } = this.props
+    console.log(data)
+    return (
+      <div className="similar-products-slider__item-desc">
+        <h4 className="similar-products-slider__item-name">{data.title}</h4>
+        <p className="similar-products-slider__item-producer">Производитель: <span className="producer">{data.brand}</span></p>
+        <p className="similar-products-slider__item-price">{data.price}</p>
+      </div>
+    )
+  }
+}
+
 
 export default ProductCard
