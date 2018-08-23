@@ -17,13 +17,29 @@ class ProductCard extends Component {
       productCartPrice: "",
       productCartDefaultPrice: "",
       productCartActiveSize: "",
-      overlookedData: sessionStorage.overlookedKey ? sessionStorage.overlookedKey : []
+      overlookedData: sessionStorage.overlookedKey ? JSON.parse(sessionStorage.overlookedKey) : []
     }
+    this.componentDidMount(this.state.id)
     this.props.func(false)
   }
 
-  componentDidMount() {
-    fetch(`https://api-neto.herokuapp.com/bosa-noga/products/${this.state.id}`, {
+
+  componentDidUpdate(prevProps) {
+    console.log("prev", prevProps.match.params.id)
+    console.log("now", this.props.match.params.id)
+    if (this.props.match.params.id !== prevProps.match.params.id) {
+      this.setState({
+        id: this.props.match.params.id,
+      })
+      this.componentDidMount(this.props.match.params.id)
+    }
+  }
+
+
+  componentDidMount(id) {
+    console.log("didMount", id)
+
+    fetch(`https://api-neto.herokuapp.com/bosa-noga/products/${id}`, {
       method: "GET"
     })
       .then(response => {
@@ -34,16 +50,13 @@ class ProductCard extends Component {
       })
       .then(response => response.json())
       .then(data => {
+        this.overlookedAdd(data.data)
         console.log(data)
-        const overlookedTempData = [...this.state.overlookedData]
-        overlookedTempData.push(data.data)
-        sessionStorage.setItem("overlookedKey", overlookedTempData)
         this.setState({
           data: data.data,
           selectedImage: data.data.images[0],
           productCartDefaultPrice: data.data.price,
           productCartPrice: data.data.price,
-          overlookedData: overlookedTempData,
           sitepath: [
             {
               to: "/",
@@ -60,7 +73,6 @@ class ProductCard extends Component {
           ],
         })
         this.checkActiveId(this.state.data.id)
-        console.log(overlookedTempData)
       })
       .catch(error => {
         console.log(error)
@@ -72,6 +84,24 @@ class ProductCard extends Component {
     this.setState({
       selectedImage: selectedImage
     })
+  }
+
+  overlookedAdd = (itemData) => {
+    const { overlookedData } = this.state
+    const overlookedTempData = [...overlookedData]
+    console.log("overlookedData", overlookedData)
+    let overlookedFilter = overlookedData.find((item) => itemData.id === item.id);
+    console.log("overlookedFilter", overlookedFilter)
+    if (!overlookedFilter) {
+      overlookedTempData.push(itemData)
+      console.log("add overlookedTempData", overlookedTempData)
+      this.setState({
+        overlookedData: overlookedTempData
+      })
+      const serialTempData = JSON.stringify(overlookedTempData);
+      sessionStorage.setItem("overlookedKey", serialTempData)
+    };
+
   }
 
   favoriteAdd = (event) => {
@@ -258,7 +288,7 @@ class ProductCard extends Component {
           </section>
         </main>
         {this.state.overlookedData.length > 0 && <OverlookedSlider data={this.state.overlookedData} />}
-        {this.state.data.categoryId && <SimilarSlider category={this.state.data.categoryId} />}
+        {this.state.data.categoryId && <SimilarSlider category={this.state.data.categoryId} id={this.state.id} />}
       </div>
     )
   }
@@ -338,30 +368,152 @@ const LastImg = (props) => {
 }
 
 class OverlookedSlider extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      overlookedData: this.props.data,
+      item1: this.props.data[0],
+      item2: this.props.data[1],
+      item3: this.props.data[2],
+      item4: this.props.data[3],
+      item5: this.props.data[4]
+    }
+  }
+
+  moveLeft = () => {
+    const { item1, item2, item3, item4, item5 } = this.state
+    const tempDataArr = [...this.state.overlookedData]
+    let tempDataIndex1 = tempDataArr.indexOf(item1)
+    let tempDataIndex2 = tempDataArr.indexOf(item2)
+    let tempDataIndex3 = tempDataArr.indexOf(item3)
+    let tempDataIndex4 = tempDataArr.indexOf(item4)
+    let tempDataIndex5 = tempDataArr.indexOf(item5)
+
+    tempDataIndex1 > 0 ? tempDataIndex1-- : tempDataIndex1 = tempDataArr.length - 1
+    tempDataIndex2 > 0 ? tempDataIndex2-- : tempDataIndex2 = tempDataArr.length - 1
+    tempDataIndex3 > 0 ? tempDataIndex3-- : tempDataIndex3 = tempDataArr.length - 1
+    tempDataIndex4 > 0 ? tempDataIndex4-- : tempDataIndex4 = tempDataArr.length - 1
+    tempDataIndex5 > 0 ? tempDataIndex5-- : tempDataIndex5 = tempDataArr.length - 1
+
+    let tempData1 = tempDataArr[tempDataIndex1]
+    let tempData2 = tempDataArr[tempDataIndex2]
+    let tempData3 = tempDataArr[tempDataIndex3]
+    let tempData4 = tempDataArr[tempDataIndex4]
+    let tempData5 = tempDataArr[tempDataIndex5]
+
+    this.setState({
+      item1: tempData1,
+      item2: tempData2,
+      item3: tempData3,
+      item4: tempData4,
+      item5: tempData5
+    })
+  }
+
+  moveRight = () => {
+    const { item1, item2, item3, item4, item5 } = this.state
+    const tempDataArr = [...this.state.overlookedData]
+
+    let tempDataIndex1 = tempDataArr.indexOf(item1)
+    let tempDataIndex2 = tempDataArr.indexOf(item2)
+    let tempDataIndex3 = tempDataArr.indexOf(item3)
+    let tempDataIndex4 = tempDataArr.indexOf(item4)
+    let tempDataIndex5 = tempDataArr.indexOf(item5)
+
+    tempDataIndex1 < (tempDataArr.length - 1) ? tempDataIndex1++ : tempDataIndex1 = 0
+    tempDataIndex2 < (tempDataArr.length - 1) ? tempDataIndex2++ : tempDataIndex2 = 0
+    tempDataIndex3 < (tempDataArr.length - 1) ? tempDataIndex3++ : tempDataIndex3 = 0
+    tempDataIndex4 < (tempDataArr.length - 1) ? tempDataIndex4++ : tempDataIndex4 = 0
+    tempDataIndex5 < (tempDataArr.length - 1) ? tempDataIndex5++ : tempDataIndex5 = 0
+
+    let tempData1 = tempDataArr[tempDataIndex1]
+    let tempData2 = tempDataArr[tempDataIndex2]
+    let tempData3 = tempDataArr[tempDataIndex3]
+    let tempData4 = tempDataArr[tempDataIndex4]
+    let tempData5 = tempDataArr[tempDataIndex5]
+
+    this.setState({
+      item1: tempData1,
+      item2: tempData2,
+      item3: tempData3,
+      item4: tempData4,
+      item5: tempData5
+    })
+  }
+
+
+
   render() {
-    console.log(this.props.data)
+    const { item1, item2, item3, item4, item5 } = this.state
     return (
       <section className="product-card__overlooked-slider">
         <h3>Вы смотрели:</h3>
         <div className="overlooked-slider">
-          <div className="overlooked-slider__arrow overlooked-slider__arrow_left arrow" />
-          {this.props.data.map(item => <div className={`overlooked-slider__item`}>
-            <NavLink to={`productCard/${item.id}`}>
-              <img src={item.images[0]} className={`overlooked-slider__item-pic`} alt="overlookedPic" />
-            </NavLink>
-          </div>)}
-          <div className="overlooked-slider__arrow overlooked-slider__arrow_right arrow" />
+          <div className="overlooked-slider__arrow overlooked-slider__arrow_left arrow" onClick={this.moveleft} />
+          <OverlookedItem1 data={item1} />
+          <OverlookedItem2 data={item2} />
+          <OverlookedItem3 data={item3} />
+          <OverlookedItem4 data={item4} />
+          <OverlookedItem5 data={item5} />
+          <div className="overlooked-slider__arrow overlooked-slider__arrow_right arrow" onClick={this.moveRight} />
         </div>
       </section>
     )
   }
 }
 
+const OverlookedItem1 = (props) => {
+  return (
+    <div className={`overlooked-slider__item`}>
+      <NavLink className={`overlooked-slider__item-link`} to={`/productCard/${props.data.id}`}>
+        <img src={props.data.images[0]} className={`overlooked-slider__item-pic`} alt="overlookedPic" />
+      </NavLink>
+    </div>
+  )
+}
+
+const OverlookedItem2 = (props) => {
+  return (
+    <div className={`overlooked-slider__item`}>
+      <NavLink className={`overlooked-slider__item-link`} to={`/productCard/${props.data.id}`}>
+        <img src={props.data.images[0]} className={`overlooked-slider__item-pic`} alt="overlookedPic" />
+      </NavLink>
+    </div>
+  )
+}
+const OverlookedItem3 = (props) => {
+  return (
+    <div className={`overlooked-slider__item`}>
+      <NavLink className={`overlooked-slider__item-link`} to={`/productCard/${props.data.id}`}>
+        <img src={props.data.images[0]} className={`overlooked-slider__item-pic`} alt="overlookedPic" />
+      </NavLink>
+    </div>
+  )
+}
+const OverlookedItem4 = (props) => {
+  return (
+    <div className={`overlooked-slider__item`}>
+      <NavLink className={`overlooked-slider__item-link`} to={`/productCard/${props.data.id}`}>
+        <img src={props.data.images[0]} className={`overlooked-slider__item-pic`} alt="overlookedPic" />
+      </NavLink>
+    </div>
+  )
+}
+const OverlookedItem5 = (props) => {
+  return (
+    <div className={`overlooked-slider__item`}>
+      <NavLink className={`overlooked-slider__item-link`} to={`/productCard/${props.data.id}`}>
+        <img src={props.data.images[0]} className={`overlooked-slider__item-pic`} alt="overlookedPic" />
+      </NavLink>
+    </div>
+  )
+}
+
 class SimilarSlider extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      similarData: [],
+      similarData: null,
       first: null,
       active: null,
       last: null,
@@ -370,7 +522,6 @@ class SimilarSlider extends Component {
   }
 
   componentDidMount() {
-    console.log('similarCategoryfetch run', this.props.category)
     fetch(`https://api-neto.herokuapp.com/bosa-noga/products?categoryId=${this.props.category}`, {
       method: "GET"
     })
@@ -382,17 +533,29 @@ class SimilarSlider extends Component {
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data)
         this.setState({
           similarData: data.data,
-          first: data.data[0],
-          active: data.data[1],
-          last: data.data[2],
         })
+        this.state.similarData && this.checkSimilarId(+this.props.id)
       })
       .catch(error => {
         console.log(error)
       });
+  }
+
+  //Проверка на совпадение товара из карточки с товарами одной категории, функция убирает совпавший элемент
+  checkSimilarId = (itemId) => {
+    const { similarData } = this.state
+    let matchId = similarData.find((item) => itemId === item.id)
+    let tempSimilarData = [...similarData]
+    let removeMatch = similarData.indexOf(matchId)
+    tempSimilarData.splice(removeMatch, 1)
+    this.setState({
+      similarData: tempSimilarData,
+      first: tempSimilarData[0],
+      active: tempSimilarData[1],
+      last: tempSimilarData[2],
+    })
   }
 
   moveLeft = () => {
@@ -432,15 +595,14 @@ class SimilarSlider extends Component {
   }
 
   render() {
-    console.log(this.state.active, this.state.first, this.state.last)
     return (
-      this.state.similarData.length > 0 && <section className="product-card__similar-products-slider" >
+      this.state.similarData && <section className="product-card__similar-products-slider" >
         <h3>Похожие товары:</h3>
         <div className="similar-products-slider">
           <div className="similar-products-slider__arrow similar-products-slider__arrow_left arrow" onClick={this.moveLeft}></div>
-          <ProductFirst data={this.state.first} />
-          <ProductActive data={this.state.active} />
-          <ProductLast data={this.state.last} />
+          {this.state.first && <ProductFirst data={this.state.first} />}
+          {this.state.active && <ProductActive data={this.state.active} />}
+          {this.state.last && <ProductLast data={this.state.last} />}
           <div className="similar-products-slider__arrow similar-products-slider__arrow_right arrow" onClick={this.moveRight}></div>
         </div>
       </section>
@@ -451,7 +613,6 @@ class SimilarSlider extends Component {
 class ProductFirst extends Component {
   render() {
     const { data } = this.props
-    console.log(data)
     return (
       <div className="similar-products-slider__item-list__item-card item">
         <div className="similar-products-slider__item">
@@ -468,7 +629,6 @@ class ProductFirst extends Component {
 class ProductActive extends Component {
   render() {
     const { data } = this.props
-    console.log(data)
     return (
       <div className="similar-products-slider__item-list__item-card item">
         <div className="similar-products-slider__item">
@@ -485,7 +645,6 @@ class ProductActive extends Component {
 class ProductLast extends Component {
   render() {
     const { data } = this.props
-    console.log(data)
     return (
       <div className="similar-products-slider__item-list__item-card item">
         <div className="similar-products-slider__item">
@@ -502,7 +661,6 @@ class ProductLast extends Component {
 class ProductInfo extends Component {
   render() {
     const { data } = this.props
-    console.log(data)
     return (
       <div className="similar-products-slider__item-desc">
         <h4 className="similar-products-slider__item-name">{data.title}</h4>

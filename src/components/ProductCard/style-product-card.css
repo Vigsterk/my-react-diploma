@@ -479,12 +479,16 @@ li.active {
   background-size: contain;
   overflow: hidden;
 }
+.overlooked-slider__item-pic{
+  height: 99%;
+  width: 99%;
+}
 
 .overlooked-slider__item:hover {
   opacity: 0.6;
 }
 
-.overlooked-slider__item a {
+.overlooked-slider__item-link{
   display: inline-block;
   height: 100%;
   width: 100%;
