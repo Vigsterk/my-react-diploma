@@ -22,23 +22,23 @@ function slider(f, img, button, V, Vo, arrows) {
         button[i].style.opacity = "0.5";
       }
       img[iii].style.zIndex = "1";
-      iii = ((iii != (img.length - 1)) ? (iii + 1) : 0);
+      iii = ((iii !== (img.length - 1)) ? (iii + 1) : 0);
       img[iii].style.zIndex = "2";
       img[iii].style.opacity = "0";
       button[iii].style.opacity = "1";
-    } else if (img[iii].style.opacity != "") {
+    } else if (img[iii].style.opacity !== "") {
       img[iii].style.opacity = ((progress / Vo < 1) ? (progress / Vo) : 1);
     }
-    if (clear != "0" && progress > Vo) { } else {
+    if (clear !== "0" && progress > Vo) { } else {
       requestAnimationFrame(step);
     }
   }
   requestAnimationFrame(step);
   f.onmouseenter = function () {
-    if (clear == "0") clear = "1";
+    if (clear === "0") clear = "1";
   } // при наведении на слайдер
   f.onmouseleave = function () {
-    if (clear == "1") {
+    if (clear === "1") {
       clear = "0";
       requestAnimationFrame(step);
     }
@@ -53,6 +53,7 @@ function slider(f, img, button, V, Vo, arrows) {
       img[this.value].style.zIndex = "2";
       button[this.value].style.opacity = "1";
     }
+
     arrows[0].onclick = function () {
       img[iii].style.zIndex = "0";
       button[iii].style.opacity = "0.5";
@@ -71,7 +72,5 @@ function slider(f, img, button, V, Vo, arrows) {
     }
   }
 }
-
-
 
 export default slider;

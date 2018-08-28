@@ -13,12 +13,13 @@ class MainPage extends Component {
   }
 
   render() {
+    console.log("props",this.props.categories)
     return (
       <div className='main-page'>
         <section className="slider">
           <Slider />
         </section>
-        <NewDeals />
+        <NewDeals data={this.props.categories} />
         <section className="sales-and-news wave-bottom">
           <h2 className="h2">акции и новости</h2>
           <Sales />
@@ -100,10 +101,11 @@ class NewDeals extends Component {
     })
   }
   render() {
+    console.log("props666",this.props.data)
     return (
       <section className="new-deals wave-bottom">
         <h2 className="h2">Новинки</h2>
-        <NewDealsMenu />
+        <NewDealsMenu data={this.props.data} />
         {this.state.check && <DealsSlider img={this.state.data} infoFunc={this.loadProductInfo} />}
         {this.state.check && <ProductInfo info={this.state.productInfo} />}
       </section>
@@ -115,24 +117,27 @@ class NewDealsMenu extends NewDeals {
   constructor(props) {
     super(props)
     this.state = {
-      activeIndex: ""
+      activeIndex: "",
+      newDealsData: this.props.data
     }
   }
 
   handleClick = index => {
     this.setState({
-      activeIndex: index
+      activeIndex: index,     
     })
   }
   render() {
+    const {activeIndex, newDealsData} = this.state
+    console.log("props999",this.props.data)
     return (
       <div className="new-deals__menu">
         <ul className="new-deals__menu-items">
-          {newDealsData.map((item, index) => <ListItem key={item.id}
+          {newDealsData && newDealsData.map((item, index) => <ListItem key={item.id}
             url={item.url}
             func={this.handleClick}
             title={item.title}
-            isActive={this.state.activeIndex === index}
+            isActive={activeIndex === index}
             idx={index} />)}
         </ul>
       </div>
@@ -149,29 +154,6 @@ class ListItem extends Component {
       </li>)
   }
 }
-
-const newDealsData = [
-  {
-    title: "Женская обувь",
-    id: 1
-  },
-  {
-    title: "Мужская обувь",
-    id: 2
-  },
-  {
-    title: "Детская обувь",
-    id: 3
-  },
-  {
-    title: "аксессуары",
-    id: 4
-  },
-  {
-    title: "для дома",
-    id: 5
-  }
-]
 
 class DealsSlider extends Component {
   constructor(props) {

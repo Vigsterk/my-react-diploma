@@ -16,11 +16,15 @@ class ProductCard extends Component {
       productCartCount: 1,
       productCartPrice: "",
       productCartDefaultPrice: "",
-      productCartActiveSize: "",
+      productCartActiveSize: {
+        idx: 0,
+        size: ""
+      },
       overlookedData: sessionStorage.overlookedKey ? JSON.parse(sessionStorage.overlookedKey) : []
+    }  
+    if(this.props.status === true){
+      this.props.func(false)
     }
-    this.componentDidMount(this.state.id)
-    this.props.func(false)
   }
 
   componentDidUpdate(prevProps) {
@@ -33,7 +37,8 @@ class ProductCard extends Component {
   }
 
   componentDidMount(id) {
-    fetch(`https://api-neto.herokuapp.com/bosa-noga/products/${id}`, {
+    let preloadId = this.state.id
+    fetch(`https://api-neto.herokuapp.com/bosa-noga/products/${id?id:preloadId}`, {
       method: "GET"
     })
       .then(response => {
@@ -60,12 +65,12 @@ class ProductCard extends Component {
               title: data.data.type
             },
             {
-              to: `/productCard/${this.state.id}`,
+              to: `/productCard/${id}`,
               title: data.data.title
             }
           ],
         })
-        this.checkActiveId(this.state.data.id)
+        this.checkActiveId(id)
       })
       .catch(error => {
         console.log(error)
@@ -90,7 +95,6 @@ class ProductCard extends Component {
       const serialTempData = JSON.stringify(overlookedTempData);
       sessionStorage.setItem("overlookedKey", serialTempData)
     };
-
   }
 
   favoriteAdd = (event) => {
@@ -104,13 +108,10 @@ class ProductCard extends Component {
         favoriteKeyData: tempFavoriteKeyData,
         isActive: false
       })
-      console.log("Удалён")
       const serialTempData = JSON.stringify(tempFavoriteKeyData);
       localStorage.setItem("favoriteKey", serialTempData);
-
     } else {
       tempFavoriteKeyData.push(this.state.data)
-      console.log("Добавлен", tempFavoriteKeyData)
       this.setState({
         favoriteKeyData: tempFavoriteKeyData,
         isActive: true
@@ -325,6 +326,13 @@ class FavoriteSlider extends Component {
     this.state.func(tempDataArr)
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      favorite: nextProps.data,
+      favoriteImage: nextProps.data.images,
+    });
+  }
+
   render() {
     const { favoriteImage, favorite } = this.state
     return (
@@ -472,12 +480,21 @@ class SimilarSlider extends Component {
     super(props)
     this.state = {
       similarData: null,
-      info: null
+      info: null,
+      categoryId: this.props.category
     }
   }
 
-  componentDidMount() {
-    fetch(`https://api-neto.herokuapp.com/bosa-noga/products?categoryId=${this.props.category}`, {
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      categoryId: nextProps.category
+    });
+    this.componentDidMount(nextProps.category)
+  }
+
+  componentDidMount(id) {
+    let preloadId = this.state.categoryId
+    fetch(`https://api-neto.herokuapp.com/bosa-noga/products?categoryId=${id?id:preloadId}`, {
       method: "GET"
     })
       .then(response => {
@@ -498,7 +515,6 @@ class SimilarSlider extends Component {
       });
   }
 
-  //Проверка на совпадение товара из карточки с товарами одной категории, функция убирает совпавший элемент
   checkSimilarId = (itemId) => {
     const { similarData } = this.state
     let matchId = similarData.find((item) => itemId === item.id)
@@ -517,9 +533,6 @@ class SimilarSlider extends Component {
     this.setState({
       similarData: tempDataArr,
     })
-    this.setState({
-
-    })
   }
 
   moveRight = () => {
@@ -528,9 +541,6 @@ class SimilarSlider extends Component {
     tempDataArr.unshift(lastItem)
     this.setState({
       similarData: tempDataArr,
-    })
-    this.setState({
-
     })
   }
 
@@ -611,6 +621,5 @@ class ProductInfo extends Component {
     )
   }
 }
-
 
 export default ProductCard

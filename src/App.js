@@ -8,19 +8,50 @@ class App extends Component {
     super(props)
     this.state = {
       productCartItems: "",
-      activeStatus: true
+      activeStatus: true,
+      mainCategories: null
     }
-    this.CarryedMainPage = this.bindProps(MainPage, { func: this.reloadCategories });
-    this.CarryedCatalogue = this.bindProps(Catalogue, { func: this.reloadCategories });
-    this.CarryedFavorite = this.bindProps(Favorite, { func: this.reloadCategories });
-    this.CarryedOrder = this.bindProps(Order, { func: this.reloadCategories });
-    this.CarryedOrderEnd = this.bindProps(OrderEnd, { func: this.reloadCategories });
-    this.CarryedProductCard = this.bindProps(ProductCard, { func: this.reloadCategories, cartUploader: this.cartItemUploader });
+    this.CarryedMainPage = this.bindProps(MainPage, {
+      func: this.reloadCategories,
+      status:this.state.activeStatus,
+      categories: this.state.mainCategories
+    });
+
+    this.CarryedCatalogue = this.bindProps(Catalogue, {
+      func: this.reloadCategories,
+      status:this.state.activeStatus
+    });
+
+    this.CarryedFavorite = this.bindProps(Favorite, {
+      func: this.reloadCategories,
+      status:this.state.activeStatus
+    });
+
+    this.CarryedOrder = this.bindProps(Order, {
+      func: this.reloadCategories,
+      status:this.state.activeStatus
+    });
+
+    this.CarryedOrderEnd = this.bindProps(OrderEnd, {
+      func: this.reloadCategories,
+      status:this.state.activeStatus
+    });
+
+    this.CarryedProductCard = this.bindProps(ProductCard, {
+      func: this.reloadCategories,
+      cartUploader: this.cartItemUploader,
+      status:this.state.activeStatus
+    });
   }
 
   cartItemUploader = (data) => {
     this.setState({ productCartItems: data })
-    console.log(data)
+  }
+
+  getCategories = (data) => {
+  this.setState({
+    mainCategories: data
+  })
   }
 
   reloadCategories = (response) => {
@@ -36,7 +67,7 @@ class App extends Component {
     return (
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <div className='container'>
-          <Header status={this.state.activeStatus} cart={this.state.productCartItems} />
+          <Header status={this.state.activeStatus} cart={this.state.productCartItems} func={this.getCategories}/>
           <Route path='/' exact component={CarryedMainPage} />
           <Route path='/catalogue/' exact component={CarryedCatalogue} />
           <Route path='/favorite' exact component={CarryedFavorite} />

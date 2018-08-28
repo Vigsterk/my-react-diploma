@@ -13,7 +13,7 @@ class Header extends Component {
   render() {
     return (
       <header className="header">
-        <TopMenu bool={this.props.status} />
+        <TopMenu bool={this.props.status} func={this.props.func} />
         <HeaderMain cart={this.props.cart} />
         <MainMenu />
         <DroppedMenu />
@@ -44,9 +44,10 @@ class TopMenu extends Component {
       .then(response => response.json())
       .then(data => {
         this.setState({
-          isActive: this.props.bool,
           data: data.data,
         })
+        console.log(this.props.func)
+        this.props.func(data.data)
       })
       .catch(error => {
         console.log(error)
