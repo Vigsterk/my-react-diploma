@@ -13,13 +13,12 @@ class MainPage extends Component {
   }
 
   render() {
-    console.log("props",this.props.categories)
     return (
       <div className='main-page'>
         <section className="slider">
           <Slider />
         </section>
-        <NewDeals data={this.props.categories} />
+        <NewDeals categories={this.props.categories} />
         <section className="sales-and-news wave-bottom">
           <h2 className="h2">акции и новости</h2>
           <Sales />
@@ -66,6 +65,7 @@ const Slider = () => {
 class NewDeals extends Component {
   constructor(props) {
     super(props)
+    console.log(props)
     this.state = {
       data: [],
       productInfo: "",
@@ -101,11 +101,10 @@ class NewDeals extends Component {
     })
   }
   render() {
-    console.log("props666",this.props.data)
     return (
       <section className="new-deals wave-bottom">
         <h2 className="h2">Новинки</h2>
-        <NewDealsMenu data={this.props.data} />
+        <NewDealsMenu categories={this.props.categories} />
         {this.state.check && <DealsSlider img={this.state.data} infoFunc={this.loadProductInfo} />}
         {this.state.check && <ProductInfo info={this.state.productInfo} />}
       </section>
@@ -118,18 +117,17 @@ class NewDealsMenu extends NewDeals {
     super(props)
     this.state = {
       activeIndex: "",
-      newDealsData: this.props.data
+      newDealsData: this.props.categories
     }
   }
 
   handleClick = index => {
     this.setState({
-      activeIndex: index,     
+      activeIndex: index,
     })
   }
   render() {
-    const {activeIndex, newDealsData} = this.state
-    console.log("props999",this.props.data)
+    const { activeIndex, newDealsData } = this.state
     return (
       <div className="new-deals__menu">
         <ul className="new-deals__menu-items">

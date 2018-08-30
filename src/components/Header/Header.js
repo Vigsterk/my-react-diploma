@@ -13,7 +13,7 @@ class Header extends Component {
   render() {
     return (
       <header className="header">
-        <TopMenu bool={this.props.status} func={this.props.func} />
+        <TopMenu bool={this.props.status} categories={this.props.categories} />
         <HeaderMain cart={this.props.cart} />
         <MainMenu />
         <DroppedMenu />
@@ -26,39 +26,29 @@ class TopMenu extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: [],
+      data: this.props.categories ? this.props.categories : [],
       dataVault: topMenuData,
       isActive: true
     }
+    console.log(props)
   }
-  componentDidMount() {
-    fetch("https://api-neto.herokuapp.com/bosa-noga/categories", {
-      method: "GET"
-    })
-      .then(response => {
-        if (200 <= response.status && response.status < 300) {
-          return response;
-        }
-        throw new Error(response.statusText);
-      })
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          data: data.data,
-        })
-        console.log(this.props.func)
-        this.props.func(data.data)
-      })
-      .catch(error => {
-        console.log(error)
+
+  componentDidUpdate(prevProps) {
+    console.log(prevProps)
+    console.log(this.props)
+    if (this.props.categories !== prevProps.categories) {
+      this.setState({
+        data: this.props.categories,
       });
+    }
   }
+
   render() {
     return (
       <div className="top-menu">
         <div className="wrapper">
           <ul className="top-menu__items">
-            {(this.state.isActive ? this.state.data : this.state.dataVault).map(item =>
+            {(this.state.isActive && this.state.data ? this.state.data : this.state.dataVault).map(item =>
               <li key={item.id} className="top-menu__item">
                 <NavLink to={`catalogue/${item.id}`}>{item.title}</NavLink>
               </li>)}
@@ -149,6 +139,7 @@ class DroppedMenu extends Component {
     for (let item of mainMenuItems) {
       item.onclick = mainSubmenuVisibility;
     }
+
   }
   render() {
     return (

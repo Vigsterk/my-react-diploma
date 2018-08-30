@@ -17,12 +17,12 @@ class ProductCard extends Component {
       productCartPrice: "",
       productCartDefaultPrice: "",
       productCartActiveSize: {
-        idx: 0,
+        idx: "",
         size: ""
       },
       overlookedData: sessionStorage.overlookedKey ? JSON.parse(sessionStorage.overlookedKey) : []
-    }  
-    if(this.props.status === true){
+    }
+    if (this.props.status === true) {
       this.props.func(false)
     }
   }
@@ -38,7 +38,7 @@ class ProductCard extends Component {
 
   componentDidMount(id) {
     let preloadId = this.state.id
-    fetch(`https://api-neto.herokuapp.com/bosa-noga/products/${id?id:preloadId}`, {
+    fetch(`https://api-neto.herokuapp.com/bosa-noga/products/${id ? id : preloadId}`, {
       method: "GET"
     })
       .then(response => {
@@ -49,12 +49,17 @@ class ProductCard extends Component {
       })
       .then(response => response.json())
       .then(data => {
+        console.log(data.data.sizes[0])
         this.overlookedAdd(data.data)
         this.setState({
           data: data.data,
           selectedImage: data.data.images[0],
           productCartDefaultPrice: data.data.price,
           productCartPrice: data.data.price,
+          productCartActiveSize: {
+            idx: 0,
+            size: data.data.sizes[0].size
+          },
           sitepath: [
             {
               to: "/",
@@ -494,7 +499,7 @@ class SimilarSlider extends Component {
 
   componentDidMount(id) {
     let preloadId = this.state.categoryId
-    fetch(`https://api-neto.herokuapp.com/bosa-noga/products?categoryId=${id?id:preloadId}`, {
+    fetch(`https://api-neto.herokuapp.com/bosa-noga/products?categoryId=${id ? id : preloadId}`, {
       method: "GET"
     })
       .then(response => {
