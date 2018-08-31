@@ -30,12 +30,9 @@ class TopMenu extends Component {
       dataVault: topMenuData,
       isActive: true
     }
-    console.log(props)
   }
 
   componentDidUpdate(prevProps) {
-    console.log(prevProps)
-    console.log(this.props)
     if (this.props.categories !== prevProps.categories) {
       this.setState({
         data: this.props.categories,

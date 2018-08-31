@@ -46,6 +46,31 @@ class App extends Component {
       cartUploader: this.cartItemUploader,
       status: this.state.activeStatus
     });
+
+  }
+
+  componentDidMount() {
+    let filters = dataLoader('filters')
+    let categories = dataLoader('categories')
+    Promise.all([filters, categories]).then(([filters, categories]) => {
+
+      this.CarryedMainPage = this.bindProps(MainPage, {
+        func: this.reloadCategories,
+        status: this.state.activeStatus,
+        categories: categories
+      });
+      {
+        this.setState(
+          (categories, filters) => ({
+            categories: categories,
+            filters: filters
+          }),
+        );
+      }
+
+    }, reason => {
+      console.log(reason)
+    });
   }
 
   cartItemUploader = (data) => {
@@ -62,7 +87,6 @@ class App extends Component {
 
   render() {
     const { CarryedMainPage, CarryedCatalogue, CarryedFavorite, CarryedOrder, CarryedOrderEnd, CarryedProductCard } = this;
-    console.log(this.state.categories)
     return (
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <div className='container'>

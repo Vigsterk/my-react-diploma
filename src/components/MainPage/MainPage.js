@@ -13,6 +13,7 @@ class MainPage extends Component {
   }
 
   render() {
+    console.log(this.props.categories)
     return (
       <div className='main-page'>
         <section className="slider">
@@ -65,13 +66,13 @@ const Slider = () => {
 class NewDeals extends Component {
   constructor(props) {
     super(props)
-    console.log(props)
     this.state = {
       data: [],
       productInfo: "",
       check: false
     }
   }
+
   componentDidMount() {
     fetch("https://api-neto.herokuapp.com/bosa-noga/featured", {
       method: "GET"
@@ -117,7 +118,7 @@ class NewDealsMenu extends NewDeals {
     super(props)
     this.state = {
       activeIndex: "",
-      newDealsData: this.props.categories
+      newDealsData: this.props.categories ? this.props.categories : [],
     }
   }
 
