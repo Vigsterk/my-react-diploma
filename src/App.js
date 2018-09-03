@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Catalogue, Favorite, Footer, Header, Order, OrderEnd, MainPage, ProductCard } from './components'
 import './App.css';
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route} from 'react-router-dom'
 import dataLoader from "./components/Fetch/Fetch"
 
 class App extends Component {

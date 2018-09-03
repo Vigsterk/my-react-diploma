@@ -26,10 +26,6 @@ class Favorite extends Component {
     }
   }
 
-  componentDidMount() {
-    this.props.func(false)
-  }
-
   setSortByFilter = (event) => {
     const sortValue = event.currentTarget.value
     console.log(sortValue)

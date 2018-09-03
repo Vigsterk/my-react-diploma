@@ -7,7 +7,7 @@ import {
 } from "../js/script";
 import topMenuData from "./HeaderData"
 import header_logo from '../img/header-logo.png';
-import { NavLink } from "react-router-dom"
+import { NavLink, withRouter } from "react-router-dom"
 
 class Header extends Component {
   render() {
@@ -141,14 +141,9 @@ class DroppedMenu extends Component {
     } else {
       return filters[type].map((item, index) => (
         <li key={index} className="dropped-menu__item">
-          <a onClick={this.sendParamsToCatalogue({ type, item })} >{item}</a>
+        <NavLink to={`/catalogue/`}>{item}</NavLink>
         </li>));
     }
-  }
-
-  sendParamsToCatalogue = ({ type, item }) => (event) => {
-    console.log("go to", type, item)
-
   }
 
   render() {
