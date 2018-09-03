@@ -322,12 +322,6 @@ span.producer {
   font-weight: normal;
 }
 
-#size{
-  position: absolute;
-  top: 94px;
-  left: 0px;
-}
-
 /*Пагинация в каталоге*/
 .product-catalogue__pagination {
   display: block;

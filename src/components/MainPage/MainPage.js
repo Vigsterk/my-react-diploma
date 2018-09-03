@@ -12,13 +12,12 @@ class MainPage extends Component {
   }
 
   render() {
-    console.log(this.props.categories)
     return (
       <div className='main-page'>
         <section className="slider">
           <Slider />
         </section>
-        {this.props.categories && <NewDeals categories={this.props.categories} />}
+        <NewDeals categories={this.props.categories} />
         <section className="sales-and-news wave-bottom">
           <h2 className="h2">акции и новости</h2>
           <Sales />
@@ -158,9 +157,6 @@ class DealsSlider extends Component {
     this.state = {
       data: this.props.img,
       favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [],
-      first: this.props.img[0],
-      active: this.props.img[1],
-      last: this.props.img[2],
       func: this.props.infoFunc
     }
     this.moveLeft = this.moveLeft.bind(this)
@@ -191,42 +187,27 @@ class DealsSlider extends Component {
     }
   }
 
-  moveLeft() {
+  moveLeft = () => {
     const tempDataArr = [...this.state.data]
-    let tempDataIndex = tempDataArr.indexOf(this.state.active)
-    let tempDataIndexFirst = tempDataArr.indexOf(this.state.first)
-    let tempDataIndexLast = tempDataArr.indexOf(this.state.last)
-    tempDataIndex > 0 ? tempDataIndex-- : tempDataIndex = tempDataArr.length - 1
-    tempDataIndexFirst > 0 ? tempDataIndexFirst-- : tempDataIndexFirst = tempDataArr.length - 1
-    tempDataIndexLast > 0 ? tempDataIndexLast-- : tempDataIndexLast = tempDataArr.length - 1
-    let tempDataActive = tempDataArr[tempDataIndex]
-    let tempDataFirst = tempDataArr[tempDataIndexFirst]
-    let tempDataLast = tempDataArr[tempDataIndexLast]
+    let firstItem = tempDataArr.shift()
+    tempDataArr.push(firstItem)
     this.setState({
-      first: tempDataFirst,
-      active: tempDataActive,
-      last: tempDataLast
+      data: tempDataArr,
     })
-    this.state.func(tempDataActive)
+    console.log(tempDataArr[1])
+    this.state.func(tempDataArr[1])
   }
 
-  moveRight() {
+
+  moveRight = () => {
     const tempDataArr = [...this.state.data]
-    let tempDataIndex = tempDataArr.indexOf(this.state.active)
-    let tempDataIndexFirst = tempDataArr.indexOf(this.state.first)
-    let tempDataIndexLast = tempDataArr.indexOf(this.state.last)
-    tempDataIndex < (tempDataArr.length - 1) ? tempDataIndex++ : tempDataIndex = 0
-    tempDataIndexFirst < (tempDataArr.length - 1) ? tempDataIndexFirst++ : tempDataIndexFirst = 0
-    tempDataIndexLast < (tempDataArr.length - 1) ? tempDataIndexLast++ : tempDataIndexLast = 0
-    let tempDataActive = tempDataArr[tempDataIndex]
-    let tempDataFirst = tempDataArr[tempDataIndexFirst]
-    let tempDataLast = tempDataArr[tempDataIndexLast]
+    let lastItem = tempDataArr.pop()
+    tempDataArr.unshift(lastItem)
     this.setState({
-      first: tempDataFirst,
-      active: tempDataActive,
-      last: tempDataLast
+      data: tempDataArr,
     })
-    this.state.func(tempDataActive)
+    console.log(tempDataArr[1])
+    this.state.func(tempDataArr[1])
   }
 
   checkActiveId(itemID) {
@@ -239,14 +220,14 @@ class DealsSlider extends Component {
     return (
       <div className="new-deals__slider">
         <div className="new-deals__arrow new-deals__arrow_left arrow" onClick={this.moveLeft}></div>
-        <ProductFirst images={this.state.first.images[0]} />
+        <ProductFirst images={this.state.data[0].images[0]} />
         <ProductActive
-          images={this.state.active.images[0]}
+          images={this.state.data[1].images[0]}
           func={this.favoriteAdd}
-          id={this.state.active.id}
-          isActive={this.checkActiveId(this.state.active.id)}
+          id={this.state.data[1].id}
+          isActive={this.checkActiveId(this.state.data[1].id)}
         />
-        <ProductLast images={this.state.last.images[0]} />
+        <ProductLast images={this.state.data[2].images[0]} />
         <div className="new-deals__arrow new-deals__arrow_right arrow" onClick={this.moveRight}></div>
       </div>
     )

@@ -9,7 +9,6 @@ function headerHiddenPanelProfileVisibility() {
     document.querySelector('.header-main__hidden-panel').classList.toggle('header-main__hidden-panel_visible');
     document.querySelector('.header-main__pic_profile_menu').classList.toggle('header-main__pic_profile_menu_is-active');
   }
-
 }
 
 function headerHiddenPanelBasketVisibility() {
@@ -22,35 +21,28 @@ function headerHiddenPanelBasketVisibility() {
     document.querySelector('.header-main__hidden-panel').classList.toggle('header-main__hidden-panel_visible');
     document.querySelector('.header-main__pic_basket_menu').classList.toggle('header-main__pic_basket_menu_is-active');
   }
-
 }
-
-
 
 //Функция видимости меню поиска в шапке
 function headerMainSearchVisibility() {
   document.querySelector('.header-main__search').classList.toggle('header-main__search_active');
   document.querySelector('.header-main__pic_search').classList.toggle('header-main__pic_search_is-hidden');
-
 }
 
-
-
 //Выпадающее меню главного меню (пока с общим списком для всех пунктов)
-function mainSubmenuVisibility() {
-  console.log(this.className);
-  if (this.className.split(' ')[this.className.split(' ').length - 1] === ('main-menu__item_active')) {
+function mainSubmenuVisibility(event) {
+  const target = event.currentTarget;
+  if (target.className.split(' ')[target.className.split(' ').length - 1] === ('main-menu__item_active')) {
     document.querySelector('.dropped-menu').classList.remove('dropped-menu_visible')
-    this.classList.remove('main-menu__item_active');
+    target.classList.remove('main-menu__item_active');
   } else {
     if (document.querySelector('.main-menu__item_active')) {
       document.querySelector('.main-menu__item_active').classList.toggle('main-menu__item_active');
     }
     document.querySelector('.dropped-menu').classList.add('dropped-menu_visible');
-    this.classList.toggle('main-menu__item_active');
+    target.classList.toggle('main-menu__item_active');
   }
 
 }
-
 
 export { headerHiddenPanelProfileVisibility, headerHiddenPanelBasketVisibility, headerMainSearchVisibility, mainSubmenuVisibility }

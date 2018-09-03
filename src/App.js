@@ -9,36 +9,21 @@ class App extends Component {
     super(props)
     this.state = {
       productCartItems: "",
-      activeStatus: true,
       filters: [],
       categories: [],
     }
 
     this.CarryedMainPage = this.bindProps(MainPage, {
-      func: this.reloadCategories,
-      status: this.state.activeStatus,
       categories: this.state.categories
     });
 
-    this.CarryedCatalogue = this.bindProps(Catalogue, {
-      func: this.reloadCategories,
-      status: this.state.activeStatus
-    });
+    this.CarryedCatalogue = this.bindProps(Catalogue, {});
 
-    this.CarryedFavorite = this.bindProps(Favorite, {
-      func: this.reloadCategories,
-      status: this.state.activeStatus
-    });
+    this.CarryedFavorite = this.bindProps(Favorite, {});
 
-    this.CarryedOrder = this.bindProps(Order, {
-      func: this.reloadCategories,
-      status: this.state.activeStatus
-    });
+    this.CarryedOrder = this.bindProps(Order, {});
 
-    this.CarryedOrderEnd = this.bindProps(OrderEnd, {
-      func: this.reloadCategories,
-      status: this.state.activeStatus
-    });
+    this.CarryedOrderEnd = this.bindProps(OrderEnd, {});
 
     this.CarryedProductCard = this.bindProps(ProductCard, {
       func: this.reloadCategories,
@@ -70,12 +55,6 @@ class App extends Component {
     this.setState({ productCartItems: data })
   }
 
-  reloadCategories = (response) => {
-    this.state.activeStatus === true && this.setState({
-      activeStatus: response
-    })
-  }
-
   bindProps = (Component, bindingProps) => (selfProps) => <Component {...bindingProps}{...selfProps} />;
 
   render() {
@@ -83,9 +62,9 @@ class App extends Component {
     return (
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <div className='container'>
-          <Header status={this.state.activeStatus} cart={this.state.productCartItems} categories={this.state.categories} filters={this.state.filters} />
+          <Header cart={this.state.productCartItems} categories={this.state.categories} filters={this.state.filters} />
           <Route path='/' exact component={CarryedMainPage} />
-          <Route path='/catalogue/' exact component={CarryedCatalogue} />
+          <Route path='/catalogue/' exact component={CarryedCatalogue} filters={this.state.filters} />
           <Route path='/favorite' exact component={CarryedFavorite} />
           <Route path='/order' exact component={CarryedOrder} />
           <Route path='/orderEnd' exact component={CarryedOrderEnd} />

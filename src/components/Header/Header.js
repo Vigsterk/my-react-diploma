@@ -5,7 +5,7 @@ import {
   headerMainSearchVisibility,
   mainSubmenuVisibility
 } from "../js/script";
-import { mainMenuItems, droppedMenuItems, topMenuData } from "./HeaderData"
+import topMenuData from "./HeaderData"
 import header_logo from '../img/header-logo.png';
 import { NavLink } from "react-router-dom"
 
@@ -13,41 +13,24 @@ class Header extends Component {
   render() {
     return (
       <header className="header">
-        <TopMenu bool={this.props.status} categories={this.props.categories} />
+        <TopMenu />
         <HeaderMain cart={this.props.cart} />
-        <MainMenu />
-        <DroppedMenu />
+        <MainMenu categories={this.props.categories} />
+        <DroppedMenu filters={this.props.filters} />
       </header>
     )
   }
 }
 
 class TopMenu extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      data: this.props.categories ? this.props.categories : [],
-      dataVault: topMenuData,
-      isActive: true
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.categories !== prevProps.categories) {
-      this.setState({
-        data: this.props.categories,
-      });
-    }
-  }
-
   render() {
     return (
       <div className="top-menu">
         <div className="wrapper">
           <ul className="top-menu__items">
-            {(this.state.isActive && this.state.data ? this.state.data : this.state.dataVault).map(item =>
+            {topMenuData.map(item =>
               <li key={item.id} className="top-menu__item">
-                <NavLink to={`catalogue/${item.id}`}>{item.title}</NavLink>
+                <NavLink to="/">{item.title}</NavLink>
               </li>)}
           </ul>
         </div>
@@ -100,28 +83,47 @@ class HeaderMain extends Component {
               <i className="fa fa-heart-o" aria-hidden="true"></i>Избранное</NavLink>
             <NavLink to="/">Выйти</NavLink>
           </div>
-          <div className="hidden-panel__basket basket-dropped">
-            <div className="basket-dropped__title">
-              В вашей корзине:
-            </div>
-            <ProductList cart={this.props.cart} />
-            <NavLink className="basket-dropped__order-button" to="/order">Оформить заказ</NavLink>
-          </div>
+          {this.props.cart ?
+            <div className="hidden-panel__basket basket-dropped">
+              <div className="basket-dropped__title">
+                В вашей корзине:
+                  </div>
+              <ProductList cart={this.props.cart} />
+              <NavLink className="basket-dropped__order-button" to="/order">Оформить заказ</NavLink>
+            </div> : <div className="hidden-panel__basket basket-dropped">
+              <div className="basket-dropped__title">В корзине пока ничего нет. Не знаете, с чего начать? Посмотрите наши новинки!</div>
+            </div>}
         </div>
       </div>
     )
   }
 }
 
+
 class MainMenu extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      data: this.props.categories ? this.props.categories : [],
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.categories !== prevProps.categories) {
+      this.setState({
+        data: this.props.categories,
+      });
+    }
+  }
+
   render() {
     return (
       <nav className="main-menu">
         <div className="wrapper">
           <ul className="main-menu__items">
-            {mainMenuItems.map(item =>
-              <li key={item.id} className={`main-menu__item main-menu__item_${item.className}`} >
-                {<button className="main-menu__item_button">{item.title}</button>}
+            {this.state.data.map(item =>
+              <li key={item.id} className="main-menu__item" onClick={mainSubmenuVisibility}>
+                {<button className="main-menu__item_button" >{item.title}</button>}
               </li>)}
           </ul>
         </div>
@@ -131,27 +133,52 @@ class MainMenu extends Component {
 }
 
 class DroppedMenu extends Component {
-  componentDidMount() {
-    let mainMenuItems = document.querySelectorAll(".main-menu__item");
-    for (let item of mainMenuItems) {
-      item.onclick = mainSubmenuVisibility;
+  getMenuItems = (type) => {
+    const { filters } = this.props
+    console.log(filters)
+    if (!filters || !filters[type]) {
+      return null;
+    } else {
+      return filters[type].map((item, index) => (
+        <li key={index} className="dropped-menu__item">
+          <a onClick={this.sendParamsToCatalogue({ type, item })} >{item}</a>
+        </li>));
     }
+  }
+
+  sendParamsToCatalogue = ({ type, item }) => (event) => {
+    console.log("go to", type, item)
 
   }
+
   render() {
     return (
       <div className="dropped-menu">
         <div className="wrapper">
-          {droppedMenuItems.map(item =>
-            <div key={item.columnID} className={`dropped-menu__lists dropped-menu__${item.classNamePath}`}>
-              <h3 className="dropped-menu__list-title">{item.title}</h3>
-              <ul className="dropped-menu__list">
-                {item.data.map(item => <li key={item.id} className="dropped-menu__item">
-                  <a href={item.url}>{item.title}</a>
-                </li>)}
-              </ul>
-            </div>
-          )}
+          <div className="dropped-menu__lists dropped-menu__lists_women">
+            <h3 className="dropped-menu__list-title">Повод:</h3>
+            <ul className="dropped-menu__list">
+              {this.getMenuItems('reason')}
+            </ul>
+          </div>
+          <div className="dropped-menu__lists">
+            <h3 className="dropped-menu__list-title">Категории:</h3>
+            <ul className="dropped-menu__list">
+              {this.getMenuItems('type')}
+            </ul>
+          </div>
+          <div className="dropped-menu__lists">
+            <h3 className="dropped-menu__list-title">Сезон:</h3>
+            <ul className="dropped-menu__list">
+              {this.getMenuItems('season')}
+            </ul>
+          </div>
+          <div className="dropped-menu__lists dropped-menu__lists_three-coloumns">
+            <h3 className="dropped-menu__list-title">Бренды:</h3>
+            <ul className="dropped-menu__list">
+              {this.getMenuItems('brand')}
+            </ul>
+          </div>
         </div>
       </div>
     )

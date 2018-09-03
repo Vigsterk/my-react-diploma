@@ -287,7 +287,7 @@ li a:hover {
   font-weight: bold;
   color: #A1B3BF;
 }
-.header .main-menu__item a:hover, .main-menu__item_button:hover {
+.header .main-menu__item li:hover, .main-menu__item_button:hover {
   color: #000000;
   text-decoration: underline;
 }
@@ -297,13 +297,13 @@ li a:hover {
   background-position: center bottom;
   background-size: 100% 4px;
 }
-.header .main-menu__item_active a,.main-menu__item_button {
+.header .main-menu__item_active li,.main-menu__item_button {
   font-weight: bold;
   color: #333333;
 }
 .dropped-menu {
   display: none;
-  height: 295px;
+  height: 445px;
   margin-bottom: 24px;
   padding: 32px 0 60px;
   background: #EEEEEE;

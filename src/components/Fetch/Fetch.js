@@ -16,7 +16,7 @@ const dataLoader = (param) => {
         resolve(data.data)
       })
       .catch(error => {
-        console.log(error)
+        reject(error)
       });
   })
 }

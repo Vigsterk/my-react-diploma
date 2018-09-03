@@ -120,7 +120,7 @@ class Favorite extends Component {
               />)}
           </section>
         </main>
-        {this.state.pages && <Pagination page={this.state.page} pages={this.state.pages} func={this.changePage} />}
+        {this.state.pages > 1 && <Pagination page={this.state.page} pages={this.state.pages} func={this.changePage} />}
       </div>
     )
   }
@@ -145,10 +145,6 @@ class ListItem extends Component {
           <p className="item-producer">Производитель: <span className="producer">{this.props.brand}</span></p>
           <p className="item-price">{this.props.price}</p>
           {this.props.oldPrice && <p className="item-price old-price"><s>{this.props.oldPrice}</s></p>}
-          <div className="sizes" id="size">
-            <p className="sizes__title">Размеры в наличии:</p>
-            <p className="sizes__avalible">36, 37, 38, 39, 40, 41, 42</p>
-          </div>
         </div>
       </NavLink>
     )
