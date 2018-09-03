@@ -7,12 +7,11 @@ import dataLoader from "./components/Fetch/Fetch"
 class App extends Component {
   constructor(props) {
     super(props)
-
     this.state = {
       productCartItems: "",
       activeStatus: true,
       filters: [],
-      categories: []
+      categories: [],
     }
 
     this.CarryedMainPage = this.bindProps(MainPage, {
@@ -46,31 +45,25 @@ class App extends Component {
       cartUploader: this.cartItemUploader,
       status: this.state.activeStatus
     });
-
   }
 
   componentDidMount() {
     let filters = dataLoader('filters')
     let categories = dataLoader('categories')
     Promise.all([filters, categories]).then(([filters, categories]) => {
-
       this.CarryedMainPage = this.bindProps(MainPage, {
         func: this.reloadCategories,
         status: this.state.activeStatus,
         categories: categories
       });
-      {
-        this.setState(
-          (categories, filters) => ({
-            categories: categories,
-            filters: filters
-          }),
-        );
-      }
-
-    }, reason => {
-      console.log(reason)
-    });
+      this.setState({
+        categories: categories,
+        filters: filters
+      })
+    },
+      reason => {
+        console.log(reason)
+      });
   }
 
   cartItemUploader = (data) => {

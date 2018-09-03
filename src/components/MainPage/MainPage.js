@@ -9,7 +9,6 @@ class MainPage extends Component {
       button = f.getElementsByClassName('slider__circles')[0].getElementsByClassName('slider__circle'),
       arrows = f.getElementsByClassName('slider__arrow');
     slider(f, a, button, '4000', '1000', arrows);
-    this.props.func(true)
   }
 
   render() {
@@ -19,7 +18,7 @@ class MainPage extends Component {
         <section className="slider">
           <Slider />
         </section>
-        <NewDeals categories={this.props.categories} />
+        {this.props.categories && <NewDeals categories={this.props.categories} />}
         <section className="sales-and-news wave-bottom">
           <h2 className="h2">акции и новости</h2>
           <Sales />
@@ -72,7 +71,6 @@ class NewDeals extends Component {
       check: false
     }
   }
-
   componentDidMount() {
     fetch("https://api-neto.herokuapp.com/bosa-noga/featured", {
       method: "GET"
