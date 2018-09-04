@@ -7,6 +7,7 @@ import OrderEnd from '../OrderEnd/OrderEnd';
 class Order extends Component {
   constructor(props) {
     super(props)
+    console.log("props.cartItems", props.cartItems)
     this.state = {
       sitepath: [
         {
@@ -24,13 +25,11 @@ class Order extends Component {
       orderDetails: {
         name: '',
         phone: '',
-        adress: '',
-      }
+        adress: ''
+      },
+      totalPrice: 666
     }
     this.handleChange = this.handleChange.bind(this);
-  }
-  componentDidMount() {
-    this.props.func(false)
   }
 
   handleChange(value) {
@@ -38,6 +37,7 @@ class Order extends Component {
   };
 
   render() {
+    const { cartItems } = this.props
     return (
       <div className="wrapper order-wrapper">
         <SitePath pathprops={this.state.sitepath} />
@@ -46,9 +46,17 @@ class Order extends Component {
           <div className="order-process__basket order-basket">
             <div className="order-basket__title">в вашей корзине:</div>
             <div className="order-basket__item-list">
-              <BasketItem />
+              {cartItems && cartItems.map((item, index) => {
+                <BasketItem
+                  key={index}
+                  products={item.products}
+                  count={item.count}
+                  size={item.size}
+                />
+                console.log(item)
+              })}
             </div>
-            <div className="order-basket__summ">Итого:<span>12 050 <i className="fa fa-rub" aria-hidden="true"></i></span></div>
+            <div className="order-basket__summ">Итого:<span>{this.state.totalPrice}<i className="fa fa-rub" aria-hidden="true"></i></span></div>
           </div>
           <div className="order-process__confirmed">
             <form action="#">
@@ -102,26 +110,27 @@ class Order extends Component {
 
 class BasketItem extends Component {
   render() {
+    console.log(this.props)
+    const { products, size, count } = this.props
     return (
       <div className="basket-item">
-        <div className="basket-item__pic"><img src="img/catalogue-pics/product-catalogue__item-1.png" alt="product_1" /></div>
+        <div className="basket-item__pic"><img src={products.images[0]} alt={products.title} /></div>
         <div className="basket-item__product">
-          <div className="basket-item__product-name"><NavLink to="/productCard">Босоножки женские</NavLink></div>
+          <div className="basket-item__product-name"><NavLink to={`productCard/${products.id}`}>{products.title}</NavLink></div>
           <div className="basket-item__product-features">
-            <div className="basket-item__size">Размер: <span>37</span></div>
-            <div className="basket-item__producer">Производитель: <span>Albano</span></div>
-            <div className="basket-item__color">Цвет: <span>Черный</span></div>
+            <div className="basket-item__size">Размер: <span>{size}</span></div>
+            <div className="basket-item__producer">Производитель: <span>{products.brand}</span></div>
+            <div className="basket-item__color">Цвет: <span>{products.color}</span></div>
           </div>
         </div>
         <div className="basket-item__quantity">
           <div className="basket-item__quantity-change basket-item-list__quantity-change_minus">-</div>1
           <div className="basket-item__quantity-change basket-item-list__quantity-change_plus">+</div>
         </div>
-        <div className="basket-item__price">5 950 <i className="fa fa-rub" aria-hidden="true"></i></div>
+        <div className="basket-item__price">{products.price}<i className="fa fa-rub" aria-hidden="true"></i></div>
       </div>
     )
   }
 }
-
 
 export default Order;

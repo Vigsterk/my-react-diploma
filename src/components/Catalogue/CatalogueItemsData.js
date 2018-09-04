@@ -98,14 +98,8 @@ const sidebarSeasonsData = ["Лето", "Осень"];
 
 const sidebarHeelSizesData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-const brands = ["ALBUM DI FAMIGLIA", "ALCHIMIA DI BALLIN", "ALDO", "ALEXANDER MCQUEEN", "ASOS", "BALENCIAGA", "Chanel",
-  "Christian Louboutin", "DOLCE & GABBANA", "Dior", "Dolce & Gabbana", "Estro", "GIANVITO ROSSI", "GIVENCHY", "GUCCI",
-  "GUIDI", "Hunter", "JACQUEMUS", "JIMMY CHOO", "KAT MACONIE", "MANSUR GAVRIEL", "MARC ELLIS", "MARNI", "MICHEL VIVIEN",
-  "Manolo Blahnik", "NIKE", "New Balance", "Nº21", "OFF-WHITE", "PAUL ANDREW", "REIKE NEN", "Reebok", "SERGIO ROSSI",
-  "SWEAR", "TORY BURCH", "Timberland", "Vans", "Zanotti"]
-
-
 const sidebarOccasionData = ["Спорт", "Высокая мода", "Прогулка"]
 const sidebarDivisionData = ["Балетки", "Босоножки и сандалии", "Ботильоны", "Ботинки", "Ботфорты", "Галоши", "Тапочки", "Туфли", "Сапоги"]
+
 
 export { sidebarColorData, sidebarOccasionData, sidebarDivisionData, sidebarSizesData, sidebarSeasonsData, sidebarHeelSizesData }

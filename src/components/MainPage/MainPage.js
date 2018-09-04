@@ -3,21 +3,52 @@ import slider from '../js/slider';
 import { NavLink } from 'react-router-dom'
 
 class MainPage extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      data: null,
+      productInfo: null,
+      check: false
+    }
+  }
   componentDidMount() {
     var f = document.querySelector('.slider__pictures'),
       a = f.getElementsByClassName('slider__image'),
       button = f.getElementsByClassName('slider__circles')[0].getElementsByClassName('slider__circle'),
       arrows = f.getElementsByClassName('slider__arrow');
     slider(f, a, button, '4000', '1000', arrows);
+
+    fetch("https://api-neto.herokuapp.com/bosa-noga/featured", {
+      method: "GET"
+    })
+      .then(response => {
+        if (200 <= response.status && response.status < 300) {
+          return response;
+        }
+        throw new Error(response.statusText);
+      })
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          data: data.data,
+          productInfo: data.data[1],
+          check: true,
+        })
+      })
+      .catch(error => {
+        console.log(error)
+      });
+
   }
 
   render() {
+    const { data, productInfo } = this.state
     return (
       <div className='main-page'>
         <section className="slider">
           <Slider />
         </section>
-        <NewDeals categories={this.props.categories} />
+        {this.state.check && <NewDeals categories={this.props.categories} data={data} info={productInfo} />}
         <section className="sales-and-news wave-bottom">
           <h2 className="h2">акции и новости</h2>
           <Sales />
@@ -65,32 +96,10 @@ class NewDeals extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: [],
-      productInfo: "",
-      check: false
+      data: this.props.data,
+      productInfo: this.props.info,
+      categories: this.props.categories
     }
-  }
-  componentDidMount() {
-    fetch("https://api-neto.herokuapp.com/bosa-noga/featured", {
-      method: "GET"
-    })
-      .then(response => {
-        if (200 <= response.status && response.status < 300) {
-          return response;
-        }
-        throw new Error(response.statusText);
-      })
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          data: data.data,
-          productInfo: data.data[1],
-          check: true
-        })
-      })
-      .catch(error => {
-        console.log(error)
-      });
   }
 
   loadProductInfo = (param) => {
@@ -98,13 +107,14 @@ class NewDeals extends Component {
       productInfo: param
     })
   }
+
   render() {
     return (
       <section className="new-deals wave-bottom">
         <h2 className="h2">Новинки</h2>
-        <NewDealsMenu categories={this.props.categories} />
-        {this.state.check && <DealsSlider img={this.state.data} infoFunc={this.loadProductInfo} />}
-        {this.state.check && <ProductInfo info={this.state.productInfo} />}
+        <NewDealsMenu categories={this.state.categories} />
+        <DealsSlider img={this.state.data} infoFunc={this.loadProductInfo} />
+        <ProductInfo info={this.state.productInfo} />
       </section>
     )
   }
@@ -115,21 +125,20 @@ class NewDealsMenu extends NewDeals {
     super(props)
     this.state = {
       activeIndex: "",
-      newDealsData: this.props.categories ? this.props.categories : [],
     }
   }
-
   handleClick = index => {
     this.setState({
       activeIndex: index,
     })
   }
   render() {
-    const { activeIndex, newDealsData } = this.state
+    const { activeIndex } = this.state
+    const { categories } = this.props
     return (
       <div className="new-deals__menu">
         <ul className="new-deals__menu-items">
-          {newDealsData && newDealsData.map((item, index) => <ListItem key={item.id}
+          {categories && categories.map((item, index) => <ListItem key={item.id}
             url={item.url}
             func={this.handleClick}
             title={item.title}
@@ -194,7 +203,6 @@ class DealsSlider extends Component {
     this.setState({
       data: tempDataArr,
     })
-    console.log(tempDataArr[1])
     this.state.func(tempDataArr[1])
   }
 
@@ -206,14 +214,15 @@ class DealsSlider extends Component {
     this.setState({
       data: tempDataArr,
     })
-    console.log(tempDataArr[1])
     this.state.func(tempDataArr[1])
   }
 
   checkActiveId(itemID) {
     let favoriteData = this.state.favoriteKeyData && this.state.favoriteKeyData
-    let result = favoriteData.find((el) => itemID === el.id)
-    return result
+    if (favoriteData.length > 0) {
+      let result = favoriteData.find((el) => itemID === el.id)
+      return result
+    }
   }
 
   render() {

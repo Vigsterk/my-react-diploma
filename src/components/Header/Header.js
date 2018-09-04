@@ -7,14 +7,14 @@ import {
 } from "../js/script";
 import topMenuData from "./HeaderData"
 import header_logo from '../img/header-logo.png';
-import { NavLink, withRouter } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 
 class Header extends Component {
   render() {
     return (
       <header className="header">
         <TopMenu />
-        <HeaderMain cart={this.props.cart} />
+        <HeaderMain cart={this.props.cart} func={this.props.func} />
         <MainMenu categories={this.props.categories} />
         <DroppedMenu filters={this.props.filters} />
       </header>
@@ -40,6 +40,22 @@ class TopMenu extends Component {
 }
 
 class HeaderMain extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      itemsToOrder: null
+    }
+  }
+  sendCartItemsToOrder = () => {
+    console.log("LoadedCartItems", this.state.itemsToOrder)
+    this.props.func(this.state.itemsToOrder)
+  }
+
+  downloadCartData = (data) => {
+    this.setState({
+      itemsToOrder: data
+    })
+  }
   render() {
     return (
       <div className="header-main">
@@ -83,13 +99,13 @@ class HeaderMain extends Component {
               <i className="fa fa-heart-o" aria-hidden="true"></i>Избранное</NavLink>
             <NavLink to="/">Выйти</NavLink>
           </div>
-          {this.props.cart ?
+          {localStorage.postCartIDKey ?
             <div className="hidden-panel__basket basket-dropped">
               <div className="basket-dropped__title">
                 В вашей корзине:
                   </div>
-              <ProductList cart={this.props.cart} />
-              <NavLink className="basket-dropped__order-button" to="/order">Оформить заказ</NavLink>
+              <ProductList cart={this.props.cart} func={this.downloadCartData} />
+              <NavLink className="basket-dropped__order-button" to="/order" onClick={this.sendCartItemsToOrder}>Оформить заказ</NavLink>
             </div> : <div className="hidden-panel__basket basket-dropped">
               <div className="basket-dropped__title">В корзине пока ничего нет. Не знаете, с чего начать? Посмотрите наши новинки!</div>
             </div>}
@@ -135,13 +151,12 @@ class MainMenu extends Component {
 class DroppedMenu extends Component {
   getMenuItems = (type) => {
     const { filters } = this.props
-    console.log(filters)
     if (!filters || !filters[type]) {
       return null;
     } else {
       return filters[type].map((item, index) => (
         <li key={index} className="dropped-menu__item">
-        <NavLink to={`/catalogue/`}>{item}</NavLink>
+          <NavLink to={`/catalogue/`}>{item}</NavLink>
         </li>));
     }
   }
@@ -188,12 +203,10 @@ class ProductList extends Component {
       cartDataStorage: [],
       loadedCartItems: [],
     }
-    this.props.cart.id && this.loadCartData()
+    localStorage.postCartIDKey && this.loadCartData()
   }
-
   loadCartData = () => {
-    let cartData = this.props.cart.id ? this.props.cart.id : this.state.cartIDJson.id;
-    console.log("CartID", cartData)
+    let cartData = this.props.cart ? this.props.cart.id : this.state.cartIDJson.id;
     fetch(`https://api-neto.herokuapp.com/bosa-noga/cart/${cartData}`, {
       headers: {
         "Content-type": "application/json"
@@ -218,7 +231,6 @@ class ProductList extends Component {
         console.log(error)
       });
   }
-
   componentDidUpdate(prevProps) {
     if (this.props.cart !== prevProps.cart) {
       this.loadCartData(this.props.cart);
@@ -239,11 +251,13 @@ class ProductList extends Component {
         let tempData = [...this.state.loadedCartItems]
         tempData.push({
           products: data.data,
-          amount: cartProps.amount
+          amount: cartProps.amount,
+          size: cartProps.size
         })
         this.setState({
           loadedCartItems: tempData
         })
+        this.props.func(tempData)
       })
       .catch(error => {
         console.log(error)
@@ -251,7 +265,7 @@ class ProductList extends Component {
   }
 
   removeItem = (itemID) => {
-    let cartData = this.props.cart.id ? this.props.cart.id : this.state.cartIDJson.id;
+    let cartData = this.props.cart ? this.props.cart.id : this.state.cartIDJson.id;
     if (!cartData.products) {
       localStorage.removeItem("postCartIDKey")
       this.setState({

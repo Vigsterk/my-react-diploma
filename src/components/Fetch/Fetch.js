@@ -1,6 +1,5 @@
 
 const dataLoader = (param) => {
-  console.log(param)
   return new Promise((resolve, reject) => {
     fetch(`https://api-neto.herokuapp.com/bosa-noga/${param}`, {
       method: "GET"

@@ -4,6 +4,7 @@ import SitePath from '../SitePath/SitePath'
 import Pagination from '../Pagination/Pagination';
 import { NavLink } from 'react-router-dom'
 import { sidebarColorData, sidebarOccasionData, sidebarDivisionData, sidebarSizesData, sidebarSeasonsData, sidebarHeelSizesData } from "./CatalogueItemsData"
+import OverlookedSlider from "../ProductCard/OverlookedSlider"
 
 class Catalogue extends Component {
   constructor(props) {
@@ -29,7 +30,8 @@ class Catalogue extends Component {
       goods: "",
       favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [],
       activeFilter: "season=Лето",
-      sortParam: "price"
+      sortParam: "price",
+      overlookedData: sessionStorage.overlookedKey ? JSON.parse(sessionStorage.overlookedKey) : []
     }
   }
 
@@ -127,10 +129,12 @@ class Catalogue extends Component {
 
   checkActiveId(itemID) {
     let favoriteData = this.state.favoriteKeyData && this.state.favoriteKeyData
-    let result = favoriteData.find((el) => itemID === el.id)
-    return result
+    if (favoriteData.length > 0) {
+      let result = favoriteData.find((el) => itemID === el.id)
+      return result
+    }
   }
-  // SideBar и OverlookedSlider, вынести в отдельные файлы 
+  // SideBar вынести в отдельные файлы 
   render() {
     return (
       <div>
@@ -170,7 +174,7 @@ class Catalogue extends Component {
                   isActive={this.checkActiveId(items.id)}
                 />
               )}
-              <OverlookedSlider />
+              {this.state.overlookedData.length > 0 && <OverlookedSlider data={this.state.overlookedData} />}
             </section>
             {this.state.pages && <Pagination page={this.state.page} pages={this.state.pages} func={this.changePage} />}
           </section>
@@ -184,7 +188,7 @@ class ListItem extends Component {
   handleClick = (event) => this.props.func(event, this.props.id)
   render() {
     return (
-      <NavLink key={this.props.id} className="item-list__item-card item" to={`productCard/${this.props.id}`}>
+      <NavLink key={this.props.id} className="item-list__item-card item" to={`/productCard/${this.props.id}`}>
         <div className="item-pic">
           {this.props.images && this.props.images.map((item, index) =>
             <img key={index} className="item-pic" src={item} alt={this.props.title} />)}
@@ -204,37 +208,6 @@ class ListItem extends Component {
     )
   }
 }
-
-
-class OverlookedSlider extends Component {
-  render() {
-    return (
-      <section className="product-catalogue__overlooked-slider">
-        <h3>Вы смотрели:</h3>
-        <div className="overlooked-slider">
-          <div className="overlooked-slider__arrow overlooked-slider__arrow_left arrow"></div>
-          <div className="overlooked-slider__item overlooked-slider__item-1">
-            <NavLink to="/productCard"></NavLink>
-          </div>
-          <div className="overlooked-slider__item overlooked-slider__item-2">
-            <NavLink to="/productCard"></NavLink>
-          </div>
-          <div className="overlooked-slider__item overlooked-slider__item-3">
-            <NavLink to="/productCard"></NavLink>
-          </div>
-          <div className="overlooked-slider__item overlooked-slider__item-4">
-            <NavLink to="/productCard"></NavLink>
-          </div>
-          <div className="overlooked-slider__item overlooked-slider__item-5">
-            <NavLink to="/productCard"></NavLink>
-          </div>
-          <div className="overlooked-slider__arrow overlooked-slider__arrow_right arrow"></div>
-        </div>
-      </section>
-    )
-  }
-}
-
 
 class SideBar extends Component {
   constructor(props) {
