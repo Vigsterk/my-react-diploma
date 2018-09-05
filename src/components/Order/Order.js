@@ -64,6 +64,46 @@ class Order extends Component {
     })
   }
 
+  // addToCart = () => {
+  //   const cartItemProps = {
+  //     id: this.state.data.id,
+  //     size: this.state.productCartActiveSize.size,
+  //     amount: this.state.productCartCount
+  //   }
+  //   const serialCartItemProps = JSON.stringify(cartItemProps)
+  //   const cartIDJson = localStorage.postCartIDKey ? JSON.parse(localStorage.postCartIDKey) : ""
+  //   let link = ``;
+  //   console.log(" cartIDJson", cartIDJson)
+  //   if (cartIDJson.id) {
+  //     link = `cart/${cartIDJson.id}`
+  //   } else {
+  //     link = `cart/`
+  //   }
+
+  //   fetch(`https://api-neto.herokuapp.com/bosa-noga/${link}`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-type": "application/json"
+  //     },
+  //     body: serialCartItemProps
+  //   })
+  //     .then(response => {
+  //       if (200 <= response.status && response.status < 300) {
+  //         return response;
+  //       }
+  //       throw new Error(response.statusText);
+  //     })
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       const serialTempData = JSON.stringify(data.data);
+  //       localStorage.setItem("postCartIDKey", serialTempData);
+  //       this.props.cartUploader(data.data)
+  //     })
+  //     .catch(error => {
+  //       console.log(error)
+  //     });
+  // }
+
   handleChange = (value) => {
     this.setState({ name: value });
   };
