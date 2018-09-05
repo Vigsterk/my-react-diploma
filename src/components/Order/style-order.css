@@ -207,7 +207,8 @@ a:hover {
   outline: solid #EBE5E9 0.5px;
 }
 .basket-item__pic img {
-  width: 100%;
+  width: 99%;
+  height: 79%;
   margin: auto;
 }
 .basket-item__product {

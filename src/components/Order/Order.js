@@ -7,7 +7,6 @@ import OrderEnd from '../OrderEnd/OrderEnd';
 class Order extends Component {
   constructor(props) {
     super(props)
-    console.log("props.cartItems", props.cartItems)
     this.state = {
       sitepath: [
         {
@@ -27,34 +26,69 @@ class Order extends Component {
         phone: '',
         adress: ''
       },
-      totalPrice: 666
+      totalPrice: null,
+      cartItems: this.props.cartItems
     }
-    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(value) {
+  componentDidMount() {
+    this.props.cartItems && this.getTotalPrice()
+  }
+
+  getTotalPrice = (num, idx) => {
+    let tempCartItem = [...this.state.cartItems]
+    if (num) {
+      tempCartItem[idx].amount = num
+    }
+    let totalPrice = ""
+    let priceArr = []
+    tempCartItem.forEach((item) => {
+      priceArr.push(item.products.price * item.amount)
+      totalPrice = priceArr.reduce((a, b) => {
+        return a + b
+      })
+    })
+    this.setState({
+      totalPrice: totalPrice
+    })
+  }
+
+  deleteItem = (idx) => {
+    console.log(idx)
+    let tempCartItem = [...this.state.cartItems]
+    console.log(tempCartItem)
+    tempCartItem.splice(idx, 1)
+    console.log(tempCartItem)
+    this.setState({
+      cartItems: tempCartItem
+    })
+  }
+
+  handleChange = (value) => {
     this.setState({ name: value });
   };
 
   render() {
-    const { cartItems } = this.props
+    const { cartItems } = this.state
     return (
       <div className="wrapper order-wrapper">
         <SitePath pathprops={this.state.sitepath} />
         <section className="order-process">
           <h2 className="order-process__title">Оформление заказа</h2>
           <div className="order-process__basket order-basket">
-            <div className="order-basket__title">в вашей корзине:</div>
+            <div className="order-basket__title">в вашей корзине: {cartItems && cartItems.length}</div>
             <div className="order-basket__item-list">
-              {cartItems && cartItems.map((item, index) => {
+              {cartItems && cartItems.map((item, index) =>
                 <BasketItem
                   key={index}
+                  idx={index}
                   products={item.products}
-                  count={item.count}
+                  amount={item.amount}
                   size={item.size}
+                  func={this.getTotalPrice}
+                  deleteFunc={this.deleteItem}
                 />
-                console.log(item)
-              })}
+              )}
             </div>
             <div className="order-basket__summ">Итого:<span>{this.state.totalPrice}<i className="fa fa-rub" aria-hidden="true"></i></span></div>
           </div>
@@ -109,9 +143,48 @@ class Order extends Component {
 }
 
 class BasketItem extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      amount: this.props.amount,
+      price: this.props.products.price * this.props.amount
+    }
+  }
+
+  incrementCount = () => {
+    const { amount, price } = this.state
+    let tempCount = amount
+    tempCount += 1;
+    let tempPrice = price + this.props.products.price;
+    this.setState({
+      amount: tempCount,
+      price: tempPrice
+    });
+    this.props.func(tempCount, this.props.idx)
+  };
+
+  decrementCount = () => {
+    const { amount, price } = this.state
+    let tempCount = amount;
+    let tempPrice = price
+    tempCount -= 1
+    if (tempCount === 0) {
+      this.props.deleteFunc(this.props.idx)
+    }
+
+    if (tempPrice > this.props.products.price) {
+      tempPrice -= this.props.products.price
+    }
+    this.setState({
+      amount: tempCount,
+      price: tempPrice
+    });
+    this.props.func(tempCount, this.props.idx)
+  };
+
   render() {
-    console.log(this.props)
-    const { products, size, count } = this.props
+    const { products, size } = this.props
+    const { amount, price } = this.state
     return (
       <div className="basket-item">
         <div className="basket-item__pic"><img src={products.images[0]} alt={products.title} /></div>
@@ -124,10 +197,11 @@ class BasketItem extends Component {
           </div>
         </div>
         <div className="basket-item__quantity">
-          <div className="basket-item__quantity-change basket-item-list__quantity-change_minus">-</div>1
-          <div className="basket-item__quantity-change basket-item-list__quantity-change_plus">+</div>
+          <div className="basket-item__quantity-change basket-item-list__quantity-change_minus" onClick={this.decrementCount}>-</div>
+          {amount}
+          <div className="basket-item__quantity-change basket-item-list__quantity-change_plus" onClick={this.incrementCount}>+</div>
         </div>
-        <div className="basket-item__price">{products.price}<i className="fa fa-rub" aria-hidden="true"></i></div>
+        <div className="basket-item__price">{price}<i className="fa fa-rub" aria-hidden="true"></i></div>
       </div>
     )
   }
