@@ -11,7 +11,9 @@ class App extends Component {
       productCartItems: null,
       filters: null,
       categories: null,
-      orderItems: null
+      orderItems: null,
+      cartId: null,
+      orderDetails: null
     }
 
     this.CarryedMainPage = this.bindProps(MainPage, {
@@ -25,16 +27,20 @@ class App extends Component {
 
     this.CarryedFavorite = this.bindProps(Favorite, {});
 
-    this.CarryedOrderEnd = this.bindProps(OrderEnd, {});
+    this.CarryedOrderEnd = this.bindProps(OrderEnd, {
+      orderDetails: this.state.orderDetails
+    });
 
     this.CarryedOrder = this.bindProps(Order, {
-      cartItems: this.state.orderItems
+      cartItems: this.state.orderItems,
+      cartId: this.state.cartId,
+      cartUploader: this.cartItemUploader,
+      orderDone: this.orderDoneLoader
     });
 
     this.CarryedProductCard = this.bindProps(ProductCard, {
       func: this.reloadCategories,
       cartUploader: this.cartItemUploader,
-      status: this.state.activeStatus
     });
   }
 
@@ -58,15 +64,31 @@ class App extends Component {
   orderLoader = (data) => {
     console.log("orderLoader", data)
     this.CarryedOrder = this.bindProps(Order, {
-      cartItems: data
+      cartItems: data,
+      cartId: this.state.cartId,
+      cartUploader: this.cartItemUploader,
+      orderDone: this.orderDoneLoader
     });
     this.setState({
       orderItems: data
     })
   }
 
+  orderDoneLoader = (param) => {
+    console.log(param)
+    this.CarryedOrderEnd = this.bindProps(OrderEnd, {
+      orderDetails: param
+    });
+    this.setState({
+      orderDetails: param
+    })
+  }
+
   cartItemUploader = (data) => {
-    this.setState({ productCartItems: data })
+    this.setState({
+      productCartItems: data,
+      cartId: data.id
+    })
   }
 
   bindProps = (Component, bindingProps) => (selfProps) => <Component {...bindingProps}{...selfProps} />;
