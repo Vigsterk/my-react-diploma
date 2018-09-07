@@ -6,6 +6,7 @@ import SitePath from '../SitePath/SitePath';
 class Order extends Component {
   constructor(props) {
     super(props)
+    console.log(this.props)
     this.state = {
       sitepath: [
         {
@@ -50,7 +51,6 @@ class Order extends Component {
   }
 
   deleteItem = (idx) => {
-    console.log(idx)
     let tempCartItem = [...this.state.cartItems]
     tempCartItem.splice(idx, 1)
     this.reloadCart(idx, 0)

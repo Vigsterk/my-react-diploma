@@ -174,10 +174,11 @@ class ProductCard extends Component {
   }
 
   addToCart = () => {
+    const { data, productCartActiveSize, productCartCount } = this.state
     const cartItemProps = {
-      id: this.state.data.id,
-      size: this.state.productCartActiveSize.size,
-      amount: this.state.productCartCount
+      id: data.id,
+      size: productCartActiveSize[productCartActiveSize.idx].size,
+      amount: productCartCount
     }
     const serialCartItemProps = JSON.stringify(cartItemProps)
     const cartIDJson = localStorage.postCartIDKey ? JSON.parse(localStorage.postCartIDKey) : ""
@@ -214,21 +215,22 @@ class ProductCard extends Component {
   }
 
   render() {
+    const { data, selectedImage, sitepath, productCartActiveSize, isActive, productCartPrice, productCartCount, overlookedData, id } = this.state
     return (
       <div>
-        <SitePath pathprops={this.state.sitepath} />
+        <SitePath pathprops={sitepath} />
         <main className="product-card">
           <section className="product-card-content">
-            {this.state.data.title && <h2 className="section-name">{this.state.data.title}</h2>}
+            {data.title && <h2 className="section-name">{data.title}</h2>}
             <section className="product-card-content__main-screen">
-              {this.state.data.images && <FavoriteSlider data={this.state.data} func={this.changeImage} />}
+              {data.images && <FavoriteSlider data={data} func={this.changeImage} />}
               <div className="main-screen__favourite-product-pic">
-                {this.state.data.images && <img src={this.state.selectedImage} alt={this.state.data.title} />}
+                {data.images && <img src={selectedImage} alt={data.title} />}
                 <NavLink to="/" className="main-screen__favourite-product-pic__zoom" />
               </div>
               <div className="main-screen__product-info">
                 <div className="product-info-title">
-                  <h2>{this.state.data.title}</h2>
+                  <h2>{data.title}</h2>
                   <div className="in-stock">В наличии</div>
                 </div>
                 <div className="product-features">
@@ -236,60 +238,60 @@ class ProductCard extends Component {
                     <tbody>
                       <tr>
                         <td className="left-col">Артикул:</td>
-                        <td className="right-col">{this.state.data.sku}</td>
+                        <td className="right-col">{data.sku}</td>
                       </tr>
                       <tr>
                         <td className="left-col">Производитель:</td>
-                        <td className="right-col"><NavLink to="/"><span className="producer">{this.state.data.brand}</span></NavLink></td>
+                        <td className="right-col"><NavLink to="/"><span className="producer">{data.brand}</span></NavLink></td>
                       </tr>
                       <tr>
                         <td className="left-col">Цвет:</td>
-                        <td className="right-col">{this.state.data.color}</td>
+                        <td className="right-col">{data.color}</td>
                       </tr>
                       <tr>
                         <td className="left-col">Материалы:</td>
-                        <td className="right-col">{this.state.data.material}</td>
+                        <td className="right-col">{data.material}</td>
                       </tr>
                       <tr>
                         <td className="left-col">Сезон:</td>
-                        <td className="right-col">{this.state.data.season}</td>
+                        <td className="right-col">{data.season}</td>
                       </tr>
                       <tr>
                         <td className="left-col">Повод:</td>
-                        <td className="right-col">{this.state.data.reason}</td>
+                        <td className="right-col">{data.reason}</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
                 <p className="size">Размер</p>
                 <ul className="sizes">
-                  {this.state.data.sizes && this.state.data.sizes.map((item, index) => <ListItem
+                  {data.sizes && data.sizes.map((item, index) => <ListItem
                     key={index}
                     size={item.size}
                     idx={index}
                     func={this.setProductSize}
-                    isActive={this.state.productCartActiveSize.idx === index}
+                    isActive={productCartActiveSize.idx === index}
                   />)}
                 </ul>
                 <div className="size-wrapper">
                   <NavLink to="/"><span className="size-rule"></span><p className="size-table">Таблица размеров</p></NavLink>
                 </div>
                 <div className="in-favourites-wrapper" onClick={this.favoriteAdd}>
-                  <div className={this.state.isActive ? 'favourite-active' : 'favourite'}></div>
-                  {this.state.isActive ? <p className="in-favourites">В избранном</p> : <p className="in-favourites">В избранное</p>}
+                  <div className={isActive ? 'favourite-active' : 'favourite'}></div>
+                  {isActive ? <p className="in-favourites">В избранном</p> : <p className="in-favourites">В избранное</p>}
                 </div>
                 <div className="basket-item__quantity">
-                  <div className="basket-item__quantity-change basket-item-list__quantity-change_minus" onClick={this.decrementCount}>-</div>{this.state.productCartCount}
+                  <div className="basket-item__quantity-change basket-item-list__quantity-change_minus" onClick={this.decrementCount}>-</div>{productCartCount}
                   <div className="basket-item__quantity-change basket-item-list__quantity-change_plus" onClick={this.incrementCount}>+</div>
                 </div>
-                <div className="price">{this.state.productCartPrice}₽</div>
+                <div className="price">{productCartPrice}₽</div>
                 <button className="in-basket in-basket-click" onClick={this.addToCart}>В корзину</button>
               </div>
             </section>
           </section>
         </main>
-        {this.state.overlookedData.length > 0 && <OverlookedSlider data={this.state.overlookedData} />}
-        {this.state.data.categoryId && <SimilarSlider category={this.state.data.categoryId} id={this.state.id} />}
+        {overlookedData.length > 0 && <OverlookedSlider data={overlookedData} />}
+        {data.categoryId && <SimilarSlider category={data.categoryId} id={id} />}
       </div>
     )
   }

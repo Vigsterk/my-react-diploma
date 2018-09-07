@@ -61,7 +61,6 @@ class MainPage extends Component {
   }
 }
 
-//Перебрать button и slider image
 const Slider = () => {
   return (
     <div className="wrapper">
@@ -98,7 +97,8 @@ class NewDeals extends Component {
     this.state = {
       data: this.props.data,
       productInfo: this.props.info,
-      categories: this.props.categories
+      categories: this.props.categories,
+      activeData: null
     }
   }
 
@@ -108,12 +108,23 @@ class NewDeals extends Component {
     })
   }
 
+  setActiveCategory = (idx) => {
+    const { categories, data } = this.state
+    let activeCategoryFilter = data.filter((item) =>
+      categories[idx].id === item.categoryId
+    )
+    if (activeCategoryFilter.length > 0) {
+      this.setState({
+        activeData: activeCategoryFilter
+      })
+    }
+  }
   render() {
     return (
       <section className="new-deals wave-bottom">
         <h2 className="h2">Новинки</h2>
-        <NewDealsMenu categories={this.state.categories} />
-        <DealsSlider img={this.state.data} infoFunc={this.loadProductInfo} />
+        <NewDealsMenu categories={this.state.categories} func={this.setActiveCategory} />
+        <DealsSlider data={this.state.activeData ? this.state.activeData : this.state.data} infoFunc={this.loadProductInfo} />
         <ProductInfo info={this.state.productInfo} />
       </section>
     )
@@ -127,7 +138,8 @@ class NewDealsMenu extends NewDeals {
       activeIndex: "",
     }
   }
-  handleClick = index => {
+  handleClick = (index) => {
+    this.props.func(index)
     this.setState({
       activeIndex: index,
     })
@@ -164,12 +176,18 @@ class DealsSlider extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: this.props.img,
+      data: this.props.data,
       favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [],
-      func: this.props.infoFunc
+      func: this.props.infoFunc,
     }
-    this.moveLeft = this.moveLeft.bind(this)
-    this.moveRight = this.moveRight.bind(this)
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.data !== prevProps.data) {
+      this.setState({
+        data: this.props.data
+      });
+    }
   }
 
   favoriteAdd = (event, itemID) => {
@@ -182,12 +200,10 @@ class DealsSlider extends Component {
       this.setState({
         favoriteKeyData: tempFavoriteKeyData
       })
-      console.log("Удалён")
       const serialTempData = JSON.stringify(tempFavoriteKeyData)
       localStorage.setItem("favoriteKey", serialTempData);
     } else {
       tempFavoriteKeyData.push(this.state.data.find((el) => itemID === el.id))
-      console.log("Добавлен", tempFavoriteKeyData)
       this.setState({
         favoriteKeyData: tempFavoriteKeyData,
       })
@@ -205,7 +221,6 @@ class DealsSlider extends Component {
     })
     this.state.func(tempDataArr[1])
   }
-
 
   moveRight = () => {
     const tempDataArr = [...this.state.data]
@@ -373,9 +388,9 @@ const AboutUs = () => {
           – покупателям бывает трудно сориентироваться во всем многообразии новинок. Наш менеджер по телефону поможет вам
           определиться с товарами, подходящими именно вам.</li>
         <li>Мы периодически проводим распродажи как женских и мужских, так и детских моделей. Вы будете приятно удивлены ценами
-          на аксессуары в мага- зине BosaNoga.</li>
-        <li>У нас всегда есть из чего выбрать. Неважно, какую категорию вы прос- матриваете: осень-зима, или же весна-лето –
-          вы всегда сможете найти ва- рианты, подходящие вам по внешнему виду и цене.</li>
+          на аксессуары в магазине BosaNoga.</li>
+        <li>У нас всегда есть из чего выбрать. Неважно, какую категорию вы просматриваете: осень-зима, или же весна-лето –
+          вы всегда сможете найти варианты, подходящие вам по внешнему виду и цене.</li>
         <li>Мы несем ответственность за все товары.</li>
         <li>Молодые мамы будут рады обширному ассортименту детских моделей.</li>
       </ol>

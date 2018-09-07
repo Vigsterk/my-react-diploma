@@ -16,7 +16,7 @@ class Header extends Component {
         <TopMenu />
         <HeaderMain cart={this.props.cart} func={this.props.func} />
         <MainMenu categories={this.props.categories} />
-        <DroppedMenu filters={this.props.filters} />
+        <DroppedMenu filters={this.props.filters} filterLoader={this.props.filterLoader} />
       </header>
     )
   }
@@ -156,7 +156,7 @@ class DroppedMenu extends Component {
     } else {
       return filters[type].map((item, index) => (
         <li key={index} className="dropped-menu__item">
-          <NavLink to={`/catalogue/`}>{item}</NavLink>
+          <NavLink to={`/catalogue/`} onClick={this.props.filterLoader({ type, item })}>{item}</NavLink>
         </li>));
     }
   }

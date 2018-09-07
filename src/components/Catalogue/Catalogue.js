@@ -29,7 +29,7 @@ class Catalogue extends Component {
       pages: "",
       goods: "",
       favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [],
-      activeFilter: "season=Лето",
+      activeFilter: this.props.filterParam,
       sortParam: "price",
       overlookedData: sessionStorage.overlookedKey ? JSON.parse(sessionStorage.overlookedKey) : []
     }
