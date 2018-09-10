@@ -200,7 +200,6 @@ class ProductList extends Component {
     super(props)
     this.state = {
       cartIDJson: localStorage.postCartIDKey ? JSON.parse(localStorage.postCartIDKey) : [],
-      cartDataStorage: [],
       loadedCartItems: [],
     }
     localStorage.postCartIDKey && this.loadCartData()
@@ -220,7 +219,6 @@ class ProductList extends Component {
       })
       .then(data => {
         this.setState({
-          cartDataStorage: data.data,
           loadedCartItems: []
         })
         data.data.products.forEach(element => {
@@ -231,6 +229,7 @@ class ProductList extends Component {
         console.log(error)
       });
   }
+
   componentDidUpdate(prevProps) {
     if (this.props.cart !== prevProps.cart) {
       this.loadCartData(this.props.cart);
@@ -264,57 +263,68 @@ class ProductList extends Component {
       });
   }
 
-  removeItem = (itemID) => {
-    let cartData = this.props.cart ? this.props.cart.id : this.state.cartIDJson.id;
-    if (!cartData.products) {
+  removeItem = (itemID, itemSize) => {
+    console.log(itemID, itemSize)
+    let cartData = this.props.cart ? this.props.cart : this.state.cartIDJson;
+    console.log(!cartData.products)
+
+    //Если корзина пуста, удаляет её из localStorage
+    if (!cartData.products === true) {
+      console.log("removeCart")
       localStorage.removeItem("postCartIDKey")
       this.setState({
         loadedCartItems: []
       })
-    }
-    let sizeParam = this.state.cartDataStorage.products.find((el) => itemID === el.id)
-    const cartItemProps = {
-      id: itemID,
-      size: sizeParam.size,
-      amount: 0
-    }
-    const serialCartItemProps = JSON.stringify(cartItemProps)
+    } else {
+      const cartItemProps = {
+        id: itemID,
+        size: itemSize,
+        amount: 0
+      }
+      const serialCartItemProps = JSON.stringify(cartItemProps)
 
-    fetch(`https://api-neto.herokuapp.com/bosa-noga/cart/${cartData}`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json"
-      },
-      body: serialCartItemProps
-    })
-      .then(response => {
-        if (200 <= response.status && response.status < 300) {
-          return response;
-        }
-        throw new Error(response.statusText);
+      fetch(`https://api-neto.herokuapp.com/bosa-noga/cart/${cartData.id}`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: serialCartItemProps
       })
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          cartDataStorage: data.data,
-          loadedCartItems: []
+        .then(response => {
+          if (200 <= response.status && response.status < 300) {
+            return response;
+          }
+          throw new Error(response.statusText);
         })
-        data.data.products.forEach(element => {
-          this.loadItemData(element)
+        .then(response => response.json())
+        .then(data => {
+          this.setState({
+            loadedCartItems: []
+          })
+          const serialTempData = JSON.stringify(data.data);
+          localStorage.setItem("postCartIDKey", serialTempData);
+          data.data.products.forEach(element => {
+            this.loadItemData(element)
+          })
         })
-      })
-      .catch(error => {
-        console.log(error)
-      });
+        .catch(error => {
+          console.log(error)
+        });
+    }
+
+
+
   }
 
   render() {
+    const { loadedCartItems } = this.state
     return (
       <div className="basket-dropped__product-list product-list">
-        {this.state.loadedCartItems.length > 0 && this.state.loadedCartItems.map(item =>
+        {loadedCartItems.length > 0 && loadedCartItems.map(item =>
           <ListItem
-            key={item.products.id}
+            key={`${item.products.id}-${item.size}`}
             id={item.products.id}
+            size={item.size}
             title={item.products.title}
             images={item.products.images}
             brand={item.products.brand}
@@ -328,7 +338,7 @@ class ProductList extends Component {
 }
 
 class ListItem extends Component {
-  handleClick = () => this.props.func(this.props.id)
+  handleClick = () => this.props.func(this.props.id, this.props.size)
   render() {
     return (
       <div className="product-list__item">

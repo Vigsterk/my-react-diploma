@@ -244,14 +244,14 @@ class DealsSlider extends Component {
     return (
       <div className="new-deals__slider">
         <div className="new-deals__arrow new-deals__arrow_left arrow" onClick={this.moveLeft}></div>
-        <ProductFirst images={this.state.data[0].images[0]} />
+        <ProductFirst images={this.state.data[0].images[0]} id={this.state.data[0].id} />
         <ProductActive
           images={this.state.data[1].images[0]}
           func={this.favoriteAdd}
           id={this.state.data[1].id}
           isActive={this.checkActiveId(this.state.data[1].id)}
         />
-        <ProductLast images={this.state.data[2].images[0]} />
+        <ProductLast images={this.state.data[2].images[0]} id={this.state.data[2].id} />
         <div className="new-deals__arrow new-deals__arrow_right arrow" onClick={this.moveRight}></div>
       </div>
     )
@@ -261,7 +261,7 @@ class DealsSlider extends Component {
 const ProductFirst = (props) => {
   return (
     <div className="new-deals__product new-deals__product_first">
-      <NavLink className="new-deals__product_link" to="/productCard">
+      <NavLink className="new-deals__product_link" to={`productCard/${props.id}`}>
         <img className="new-deals__product_first_img" src={props.images} alt={"lastProduct"} />
       </NavLink>
     </div>)
@@ -286,7 +286,7 @@ class ProductActive extends Component {
 const ProductLast = (props) => {
   return (
     <div className="new-deals__product new-deals__product_last">
-      <NavLink className="new-deals__product_link" to="/productCard">
+      <NavLink className="new-deals__product_link" to={`productCard/${props.id}`}>
         <img className="new-deals__product_last_img" src={props.images} alt={"LastProduct"} />
       </NavLink>
     </div>)

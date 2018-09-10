@@ -177,13 +177,12 @@ class ProductCard extends Component {
     const { data, productCartActiveSize, productCartCount } = this.state
     const cartItemProps = {
       id: data.id,
-      size: productCartActiveSize[productCartActiveSize.idx].size,
+      size: productCartActiveSize.size,
       amount: productCartCount
     }
     const serialCartItemProps = JSON.stringify(cartItemProps)
     const cartIDJson = localStorage.postCartIDKey ? JSON.parse(localStorage.postCartIDKey) : ""
     let link = ``;
-    console.log(" cartIDJson", cartIDJson)
     if (cartIDJson.id) {
       link = `cart/${cartIDJson.id}`
     } else {
@@ -205,6 +204,7 @@ class ProductCard extends Component {
       })
       .then(response => response.json())
       .then(data => {
+        console.log(data.data)
         const serialTempData = JSON.stringify(data.data);
         localStorage.setItem("postCartIDKey", serialTempData);
         this.props.cartUploader(data.data)
