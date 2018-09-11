@@ -181,11 +181,13 @@ class ProductCard extends Component {
       amount: productCartCount
     }
     const serialCartItemProps = JSON.stringify(cartItemProps)
-    const cartIDJson = localStorage.postCartIDKey ? JSON.parse(localStorage.postCartIDKey) : ""
+    const cartIDJson = localStorage.postCartIDKey && JSON.parse(localStorage.postCartIDKey)
+    console.log("cartIDJson", cartIDJson)
     let link = ``;
-    if (cartIDJson.id) {
+    if (cartIDJson) {
       link = `cart/${cartIDJson.id}`
     } else {
+      console.log("create cart")
       link = `cart/`
     }
 

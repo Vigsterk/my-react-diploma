@@ -10,13 +10,24 @@ import header_logo from '../img/header-logo.png';
 import { NavLink } from "react-router-dom"
 
 class Header extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      activeCategory: null
+    }
+  }
+  getActiveCategory = (param) => {
+    this.setState({
+      activeCategory: param
+    })
+  }
   render() {
     return (
       <header className="header">
         <TopMenu />
         <HeaderMain cart={this.props.cart} func={this.props.func} />
-        <MainMenu categories={this.props.categories} />
-        <DroppedMenu filters={this.props.filters} filterLoader={this.props.filterLoader} />
+        <MainMenu categories={this.props.categories} getActiveCategory={this.getActiveCategory} />
+        <DroppedMenu filters={this.props.filters} filterLoader={this.props.filterLoader} activeCategory={this.state.activeCategory} />
       </header>
     )
   }
@@ -43,20 +54,102 @@ class HeaderMain extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      itemsToOrder: null
+      cartIDJson: localStorage.postCartIDKey && JSON.parse(localStorage.postCartIDKey),
+      loadedCartItems: [],
     }
-  }
-  sendCartItemsToOrder = () => {
-    console.log("LoadedCartItems", this.state.itemsToOrder)
-    this.props.func(this.state.itemsToOrder)
+    localStorage.postCartIDKey && this.loadCartData()
   }
 
-  downloadCartData = (data) => {
-    this.setState({
-      itemsToOrder: data
+  loadCartData = () => {
+    let cartData = this.props.cart ? this.props.cart.id : this.state.cartIDJson.id;
+    fetch(`https://api-neto.herokuapp.com/bosa-noga/cart/${cartData}`, {
+      headers: {
+        "Content-type": "application/json"
+      },
     })
+      .then(response => {
+        if (200 <= response.status && response.status < 300) {
+          return response.json();
+        }
+        throw new Error(response.statusText);
+      })
+      .then(data => {
+        const promises = data.data.products.map(element =>
+          fetch(`https://api-neto.herokuapp.com/bosa-noga/products/${element.id}`, {
+            method: "GET"
+          })
+        )
+        Promise.all(promises)
+          .then(responseArray => {
+            const resJsonPromises = responseArray.map(res => res.json());
+            return Promise.all(resJsonPromises)
+          })
+          .then(dataArr => {
+            let cartItemArr = []
+            data.data.products.map((item, index) =>
+              cartItemArr.push({
+                products: dataArr[index].data,
+                amount: item.amount,
+                size: item.size
+              })
+            )
+            this.setState({
+              loadedCartItems: cartItemArr
+            })
+          })
+          .catch(error => console.log(`Ошибка: ${error.message}`));
+      })
   }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.cart !== prevProps.cart) {
+      this.loadCartData(this.props.cart);
+    }
+  }
+
+  removeItem = (itemID, itemSize) => {
+    let cartData = this.props.cart ? this.props.cart.id : this.state.cartIDJson.id;
+    const cartItemProps = {
+      id: itemID,
+      size: itemSize,
+      amount: 0
+    }
+    const serialCartItemProps = JSON.stringify(cartItemProps)
+    fetch(`https://api-neto.herokuapp.com/bosa-noga/cart/${cartData}`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: serialCartItemProps
+    })
+      .then(response => {
+        if (200 <= response.status && response.status < 300) {
+          return response;
+        }
+        throw new Error(response.statusText);
+      })
+      .then(response => response.json())
+      .then(data => {
+        const serialTempData = JSON.stringify(data.data);
+        localStorage.setItem("postCartIDKey", serialTempData);
+        if (this.props.cart !== cartData) {
+          this.loadCartData(this.props.cart);
+        }
+      })
+      .catch(error => {
+        localStorage.removeItem("postCartIDKey")
+        this.setState({
+          loadedCartItems: []
+        })
+      });
+  }
+
+  sendCartItemsToOrder = () => {
+    this.props.func(this.state.loadedCartItems)
+  }
+
   render() {
+    const { loadedCartItems } = this.state
     return (
       <div className="header-main">
         <div className="header-main__wrapper wrapper">
@@ -104,7 +197,7 @@ class HeaderMain extends Component {
               <div className="basket-dropped__title">
                 В вашей корзине:
                   </div>
-              <ProductList cart={this.props.cart} func={this.downloadCartData} />
+              <ProductList loadedCartItems={loadedCartItems} removeFunc={this.removeItem} />
               <NavLink className="basket-dropped__order-button" to="/order" onClick={this.sendCartItemsToOrder}>Оформить заказ</NavLink>
             </div> : <div className="hidden-panel__basket basket-dropped">
               <div className="basket-dropped__title">В корзине пока ничего нет. Не знаете, с чего начать? Посмотрите наши новинки!</div>
@@ -115,6 +208,49 @@ class HeaderMain extends Component {
   }
 }
 
+class ProductList extends Component {
+  render() {
+    const { loadedCartItems } = this.props
+    return (
+      <div className="basket-dropped__product-list product-list">
+        {loadedCartItems.length > 0 && loadedCartItems.map(item =>
+          <ListItem
+            key={`${item.products.id}-${item.size}`}
+            id={item.products.id}
+            size={item.size}
+            title={item.products.title}
+            images={item.products.images}
+            brand={item.products.brand}
+            price={item.products.price * item.amount}
+            func={this.props.removeFunc}
+          />
+        )}
+      </div>
+    )
+  }
+}
+
+class ListItem extends Component {
+  handleClick = () => this.props.func(this.props.id, this.props.size)
+  render() {
+    return (
+      <div className="product-list__item">
+        <NavLink to={`productCard/${this.props.id}`} className="product-list__pic_wrap">
+          <img className="product-list__pic" src={this.props.images[0]} alt={this.props.title} />
+          <p className="product-list__product">{this.props.title}, {this.props.brand}</p>
+        </NavLink>
+        <div className="product-list__fill"></div>
+        <div className="product-list__price">
+          {this.props.price}
+          <i className="fa fa-rub" aria-hidden="true"></i>
+        </div>
+        <div className="product-list__delete" onClick={this.handleClick}>
+          <i className="fa fa-times" aria-hidden="true"></i>
+        </div>
+      </div>
+    );
+  }
+}
 
 class MainMenu extends Component {
   constructor(props) {
@@ -132,15 +268,19 @@ class MainMenu extends Component {
     }
   }
 
+  setActiveCategory = (param) => {
+    console.log(param)
+    this.props.getActiveCategory(param)
+  }
+
   render() {
     return (
       <nav className="main-menu">
         <div className="wrapper">
           <ul className="main-menu__items">
             {this.state.data.map(item =>
-              <li key={item.id} className="main-menu__item" onClick={mainSubmenuVisibility}>
-                {<button className="main-menu__item_button" >{item.title}</button>}
-              </li>)}
+              <CategoriesList key={item.id} id={item.id} title={item.title} func={this.setActiveCategory} />
+            )}
           </ul>
         </div>
       </nav>
@@ -148,16 +288,28 @@ class MainMenu extends Component {
   }
 }
 
+class CategoriesList extends Component {
+  handleClick = () => this.props.func(this.props.id)
+  render() {
+    return (
+      <li className="main-menu__item" onClick={mainSubmenuVisibility}>
+        {<button className="main-menu__item_button" onClick={this.handleClick}>{this.props.title}</button>}
+      </li>
+    )
+  }
+}
+
 class DroppedMenu extends Component {
   getMenuItems = (type) => {
-    const { filters } = this.props
+    const { filters, activeCategory } = this.props
     if (!filters || !filters[type]) {
       return null;
     } else {
       return filters[type].map((item, index) => (
         <li key={index} className="dropped-menu__item">
-          <NavLink to={`/catalogue/`} onClick={this.props.filterLoader({ type, item })}>{item}</NavLink>
-        </li>));
+          <NavLink to={`/catalogue/`} onClick={this.props.filterLoader({ activeCategory, type, item })}>{item}</NavLink>
+        </li>
+      ));
     }
   }
 
@@ -194,170 +346,5 @@ class DroppedMenu extends Component {
     )
   }
 }
-
-class ProductList extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      cartIDJson: localStorage.postCartIDKey ? JSON.parse(localStorage.postCartIDKey) : [],
-      loadedCartItems: [],
-    }
-    localStorage.postCartIDKey && this.loadCartData()
-  }
-  loadCartData = () => {
-    let cartData = this.props.cart ? this.props.cart.id : this.state.cartIDJson.id;
-    fetch(`https://api-neto.herokuapp.com/bosa-noga/cart/${cartData}`, {
-      headers: {
-        "Content-type": "application/json"
-      },
-    })
-      .then(response => {
-        if (200 <= response.status && response.status < 300) {
-          return response.json();
-        }
-        throw new Error(response.statusText);
-      })
-      .then(data => {
-        this.setState({
-          loadedCartItems: []
-        })
-        data.data.products.forEach(element => {
-          this.loadItemData(element)
-        })
-      })
-      .catch(error => {
-        console.log(error)
-      });
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.cart !== prevProps.cart) {
-      this.loadCartData(this.props.cart);
-    }
-  }
-
-  loadItemData = (cartProps) => {
-    fetch(`https://api-neto.herokuapp.com/bosa-noga/products/${cartProps.id}`, {
-    })
-      .then(response => {
-        if (200 <= response.status && response.status < 300) {
-          return response;
-        }
-        throw new Error(response.statusText);
-      })
-      .then(response => response.json())
-      .then(data => {
-        let tempData = [...this.state.loadedCartItems]
-        tempData.push({
-          products: data.data,
-          amount: cartProps.amount,
-          size: cartProps.size
-        })
-        this.setState({
-          loadedCartItems: tempData
-        })
-        this.props.func(tempData)
-      })
-      .catch(error => {
-        console.log(error)
-      });
-  }
-
-  removeItem = (itemID, itemSize) => {
-    console.log(itemID, itemSize)
-    let cartData = this.props.cart ? this.props.cart : this.state.cartIDJson;
-    console.log(!cartData.products)
-
-    //Если корзина пуста, удаляет её из localStorage
-    if (!cartData.products === true) {
-      console.log("removeCart")
-      localStorage.removeItem("postCartIDKey")
-      this.setState({
-        loadedCartItems: []
-      })
-    } else {
-      const cartItemProps = {
-        id: itemID,
-        size: itemSize,
-        amount: 0
-      }
-      const serialCartItemProps = JSON.stringify(cartItemProps)
-
-      fetch(`https://api-neto.herokuapp.com/bosa-noga/cart/${cartData.id}`, {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json"
-        },
-        body: serialCartItemProps
-      })
-        .then(response => {
-          if (200 <= response.status && response.status < 300) {
-            return response;
-          }
-          throw new Error(response.statusText);
-        })
-        .then(response => response.json())
-        .then(data => {
-          this.setState({
-            loadedCartItems: []
-          })
-          const serialTempData = JSON.stringify(data.data);
-          localStorage.setItem("postCartIDKey", serialTempData);
-          data.data.products.forEach(element => {
-            this.loadItemData(element)
-          })
-        })
-        .catch(error => {
-          console.log(error)
-        });
-    }
-
-
-
-  }
-
-  render() {
-    const { loadedCartItems } = this.state
-    return (
-      <div className="basket-dropped__product-list product-list">
-        {loadedCartItems.length > 0 && loadedCartItems.map(item =>
-          <ListItem
-            key={`${item.products.id}-${item.size}`}
-            id={item.products.id}
-            size={item.size}
-            title={item.products.title}
-            images={item.products.images}
-            brand={item.products.brand}
-            price={item.products.price * item.amount}
-            func={this.removeItem}
-          />
-        )}
-      </div>
-    )
-  }
-}
-
-class ListItem extends Component {
-  handleClick = () => this.props.func(this.props.id, this.props.size)
-  render() {
-    return (
-      <div className="product-list__item">
-        <NavLink to={`productCard/${this.props.id}`} className="product-list__pic_wrap">
-          <img className="product-list__pic" src={this.props.images[0]} alt={this.props.title} />
-          <p className="product-list__product">{this.props.title}, {this.props.brand}</p>
-        </NavLink>
-        <div className="product-list__fill"></div>
-        <div className="product-list__price">
-          {this.props.price}
-          <i className="fa fa-rub" aria-hidden="true"></i>
-        </div>
-        <div className="product-list__delete" onClick={this.handleClick}>
-          <i className="fa fa-times" aria-hidden="true"></i>
-        </div>
-      </div>
-    );
-  }
-}
-
 
 export default Header;

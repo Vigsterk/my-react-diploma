@@ -110,8 +110,10 @@ class App extends Component {
     })
   }
 
-  mainMenuFilterLoader = ({ type, item }) => (event) => {
-    const selectedFilterSearch = `${type}=${item}`;
+  mainMenuFilterLoader = ({ activeCategory, type, item }) => (event) => {
+
+    const selectedFilterSearch = `categoryId=${activeCategory}&${type}=${item}`;
+
     this.CarryedCatalogue = this.bindProps(Catalogue, {
       categories: this.state.categories,
       filters: this.state.filters,
