@@ -14,7 +14,8 @@ class App extends Component {
       orderItems: null,
       cartId: null,
       orderDetails: null,
-      catalogueFilterParam: null
+      catalogueFilterParam: null,
+      catalogueParam: null
     }
 
     this.CarryedMainPage = this.bindProps(MainPage, {
@@ -32,7 +33,8 @@ class App extends Component {
     this.CarryedCatalogue = this.bindProps(Catalogue, {
       categories: this.state.categories,
       filters: this.state.filters,
-      filterParam: this.state.catalogueFilterParam
+      filterParam: this.state.catalogueFilterParam,
+      catalogueParam: this.state.catalogueParam
     });
 
     this.CarryedFavorite = this.bindProps(Favorite, {});
@@ -68,6 +70,13 @@ class App extends Component {
         filters: this.state.filters,
         func: this.orderLoader,
         filterLoader: this.mainMenuFilterLoader
+      });
+
+      this.CarryedCatalogue = this.bindProps(Catalogue, {
+        categories: this.state.categories,
+        filters: filters,
+        filterParam: this.state.catalogueFilterParam,
+        catalogueParam: this.state.catalogueParam
       });
 
       this.setState({
@@ -111,16 +120,16 @@ class App extends Component {
   }
 
   mainMenuFilterLoader = ({ activeCategory, type, item }) => (event) => {
-
-    const selectedFilterSearch = `categoryId=${activeCategory}&${type}=${item}`;
-
+    const selectedFilterSearch = `categoryId=${activeCategory.id}&${type}=${item}`;
     this.CarryedCatalogue = this.bindProps(Catalogue, {
       categories: this.state.categories,
       filters: this.state.filters,
-      filterParam: selectedFilterSearch
+      filterParam: selectedFilterSearch,
+      catalogueParam: activeCategory
     });
     this.setState({
-      catalogueFilterParam: selectedFilterSearch
+      catalogueFilterParam: selectedFilterSearch,
+      catalogueParam: activeCategory
     })
 
   }
@@ -134,7 +143,7 @@ class App extends Component {
         <div className='container'>
           {this.state.categories && <CarryedHeader cart={this.state.productCartItems} categories={this.state.categories} filters={this.state.filters} func={this.orderLoader} />}
           {this.state.categories && <Route path='/' exact component={CarryedMainPage} />}
-          <Route path='/catalogue/' exact component={CarryedCatalogue} />
+          {this.state.filters && <Route path='/catalogue/' exact component={CarryedCatalogue} />}
           <Route path='/favorite' exact component={CarryedFavorite} />
           <Route path='/order' exact component={CarryedOrder} />
           <Route path='/orderEnd' exact component={CarryedOrderEnd} />

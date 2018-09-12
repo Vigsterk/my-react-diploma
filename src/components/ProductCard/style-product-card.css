@@ -471,8 +471,8 @@ li.active {
 }
 
 .overlooked-slider__item {
-  width: 100%;
-  height: 100%;
+  width: 184px;
+  height: 133px;
   border: solid 0.5px rgba(41, 42, 58, 0.25);
   background-repeat: no-repeat;
   background-position: center center;

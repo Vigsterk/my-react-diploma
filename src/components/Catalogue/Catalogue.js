@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import './style-catalogue.css';
+import '../css/normalize.css';
+import '../css/font-awesome.min.css';
+import '../css/style.css';
 import SitePath from '../SitePath/SitePath'
 import Pagination from '../Pagination/Pagination';
 import { NavLink } from 'react-router-dom'
-import { sidebarColorData, sidebarOccasionData, sidebarDivisionData, sidebarSizesData, sidebarSeasonsData, sidebarHeelSizesData } from "./CatalogueItemsData"
+import sidebarColorData from "./CatalogueItemsData"
 import OverlookedSlider from "../ProductCard/OverlookedSlider"
 
 class Catalogue extends Component {
@@ -16,12 +19,8 @@ class Catalogue extends Component {
           title: "Главная"
         },
         {
-          to: "/catalogue",
-          title: "Каталог"
-        },
-        {
-          to: "/",
-          title: "Мужская обувь" //Передать через пропсы когда будет сделан переход по категориям и фильтрам {"id":12,"title":"Мужская обувь"},{"id":13,"title":"Женская обувь"},{"id":14,"title":"Обувь унисекс"},{"id":15,"title":"Детская обувь"}
+          to: this.props.catalogueParam ? `/catalogue/categoryId=${this.props.catalogueParam.id}` : '/catalogue/',
+          title: this.props.catalogueParam ? this.props.catalogueParam.title : 'Каталог'
         }],
       data: [],
       dataVault: [],
@@ -140,14 +139,13 @@ class Catalogue extends Component {
       <div>
         <SitePath pathprops={this.state.sitepath} />
         <main className="product-catalogue">
-          <SideBar />
+          <SideBar reloadCatalogue={this.reloadCatalogue} filters={this.props.filters} />
           <section className="product-catalogue-content">
             <section className="product-catalogue__head">
               <div className="product-catalogue__section-title">
-                <h2 className="section-name">Женская обувь</h2>
+                <h2 className="section-name">{this.props.catalogueParam ? this.props.catalogueParam.title : 'Каталог'}</h2>
                 <span className="amount">{this.state.goods}</span>
               </div>
-
               <div className="product-catalogue__sort-by">
                 <p className="sort-by">Сортировать</p>
                 <select
@@ -159,7 +157,6 @@ class Catalogue extends Component {
                   <option value="price">по цене</option>
                 </select>
               </div>
-
             </section>
             <section className="product-catalogue__item-list">
               {this.state.data.length > 0 && this.state.data.map(items =>
@@ -174,11 +171,12 @@ class Catalogue extends Component {
                   isActive={this.checkActiveId(items.id)}
                 />
               )}
-              {this.state.overlookedData.length > 0 && <OverlookedSlider data={this.state.overlookedData} />}
             </section>
             {this.state.pages && <Pagination page={this.state.page} pages={this.state.pages} func={this.changePage} />}
           </section>
+          <div style={{ clear: 'both' }}></div>
         </main>
+        {this.state.overlookedData.length > 0 && <OverlookedSlider data={this.state.overlookedData} />}
       </div>
     )
   }
@@ -233,7 +231,6 @@ class SideBar extends Component {
     }
   }
 
-
   render() {
     return (
       <section className="sidebar">
@@ -241,6 +238,8 @@ class SideBar extends Component {
           <SideBarCatalogueList
             func={this.openerButton}
             hiddenFilters={this.state.hiddenFilters}
+            reloadCatalogue={this.props.reloadCatalogue}
+            data={this.props.filters.type}
           />
         </section>
 
@@ -249,6 +248,7 @@ class SideBar extends Component {
           <SideBarPrice
             func={this.openerButton}
             hiddenFilters={this.state.hiddenFilters}
+            reloadCatalogue={this.props.reloadCatalogue}
           />
         </section>
 
@@ -257,6 +257,7 @@ class SideBar extends Component {
           <SideBarColor
             func={this.openerButton}
             hiddenFilters={this.state.hiddenFilters}
+            reloadCatalogue={this.props.reloadCatalogue}
           />
         </section>
 
@@ -265,6 +266,8 @@ class SideBar extends Component {
           <SideBarSize
             func={this.openerButton}
             hiddenFilters={this.state.hiddenFilters}
+            reloadCatalogue={this.props.reloadCatalogue}
+            data={this.props.filters.sizes}
           />
         </section>
 
@@ -273,6 +276,8 @@ class SideBar extends Component {
           <SideBarHeelSize
             func={this.openerButton}
             hiddenFilters={this.state.hiddenFilters}
+            reloadCatalogue={this.props.reloadCatalogue}
+            data={this.props.filters.heelSize}
           />
         </section>
 
@@ -281,6 +286,8 @@ class SideBar extends Component {
           <SideBarOcassion
             func={this.openerButton}
             hiddenFilters={this.state.hiddenFilters}
+            reloadCatalogue={this.props.reloadCatalogue}
+            data={this.props.filters.reason}
           />
         </section>
 
@@ -289,12 +296,17 @@ class SideBar extends Component {
           <SideBarSeason
             func={this.openerButton}
             hiddenFilters={this.state.hiddenFilters}
+            reloadCatalogue={this.props.reloadCatalogue}
+            data={this.props.filters.season}
           />
         </section>
 
         <div className="separator-150 separator-150-7"></div>
         <section className="sidebar__division">
-          <SideBarBrand />
+          <SideBarBrand
+            reloadCatalogue={this.props.reloadCatalogue}
+            data={this.props.filters.brand}
+          />
 
           <label>
             <input type="checkbox" className="checkbox" name="checkbox-disc" />
@@ -325,7 +337,7 @@ class SideBarCatalogueList extends Component {
           <div className={this.props.hiddenFilters.includes('CatalogueList') ? 'opener-up' : 'opener-down'} onClick={this.handleClick}></div>
         </div>
         <ul className={this.props.hiddenFilters.includes('CatalogueList') ? 'hidden' : 'sidebar-ul sidebar__catalogue-list-ul'}>
-          {sidebarDivisionData.map((item, index) => <li className={this.props.hiddenFilters.includes('CatalogueList') ? 'hidden' : "sidebar-ul-li sidebar__catalogue-list-ul-li"} key={index}><NavLink to="/">{item}</NavLink></li>)}
+          {this.props.data.map((item, index) => <li className={this.props.hiddenFilters.includes('CatalogueList') ? 'hidden' : "sidebar-ul-li sidebar__catalogue-list-ul-li"} key={index}><NavLink to="/">{item}</NavLink></li>)}
         </ul>
       </div>
     )
@@ -405,6 +417,7 @@ class SideBarColor extends Component {
 }
 
 class SideBarSize extends Component {
+
   handleClick = () => this.props.func('Size')
   render() {
     return (
@@ -414,7 +427,7 @@ class SideBarSize extends Component {
           <div className={this.props.hiddenFilters.includes('Size') ? 'opener-up' : 'opener-down'} onClick={this.handleClick}></div>
         </div>
         <ul className={this.props.hiddenFilters.includes('Size') ? 'hidden' : "sidebar-ul sidebar__size-list-ul"}>
-          {sidebarSizesData.map((size, index) =>
+          {this.props.data.map((size, index) =>
             <li className={this.props.hiddenFilters.includes('Size') ? 'hidden' : "sidebar-ul-li sidebar__size-list-ul-li"} key={`${size}${index}`}>
               <label>
                 <input type="checkbox" className="checkbox" name={`checkbox-size-${size}`} />
@@ -438,7 +451,7 @@ class SideBarHeelSize extends Component {
           <h3>Размер каблука</h3>
           <div className={this.props.hiddenFilters.includes('HeelSize') ? 'opener-up' : 'opener-down'} onClick={this.handleClick}></div>
           <ul className={this.props.hiddenFilters.includes('HeelSize') ? 'hidden' : "sidebar-ul sidebar__heelSize-list-ul"}>
-            {sidebarHeelSizesData.map((size, index) =>
+            {this.props.data.map((size, index) =>
               <li className={this.props.hiddenFilters.includes('HeelSize') ? 'hidden' : "sidebar-ul-li sidebar__heelSize-list-ul-li"} key={`${size}${index}`}>
                 <label>
                   <input type="checkbox" className="checkbox" name={`checkbox-size-${size}`} />
@@ -464,7 +477,7 @@ class SideBarOcassion extends Component {
           <div className={this.props.hiddenFilters.includes('Ocassion') ? 'opener-up' : 'opener-down'} onClick={this.handleClick}></div>
         </div>
         <ul className={this.props.hiddenFilters.includes('Ocassion') ? 'hidden' : "sidebar-ul sidebar__ocassion-list-ul"}>
-          {sidebarOccasionData.map((item, index) => <li className={this.props.hiddenFilters.includes('Ocassion') ? 'hidden' : "sidebar-ul-li sidebar__ocassion-list-ul-li"} key={index}><NavLink to="/">{item}</NavLink></li>)}
+          {this.props.data.map((item, index) => <li className={this.props.hiddenFilters.includes('Ocassion') ? 'hidden' : "sidebar-ul-li sidebar__ocassion-list-ul-li"} key={index}><NavLink to="/">{item}</NavLink></li>)}
         </ul>
       </div>
     )
@@ -480,7 +493,7 @@ class SideBarSeason extends Component {
           <h3>Сезон</h3>
           <div className={this.props.hiddenFilters.includes('Season') ? 'opener-up' : 'opener-down'} onClick={this.handleClick}></div>
           <ul className={this.props.hiddenFilters.includes('Season') ? 'hidden' : "sidebar-ul sidebar__season-list-ul"} >
-            {sidebarSeasonsData.map((item, index) => <li className={this.props.hiddenFilters.includes('Season') ? 'hidden' : "sidebar-ul-li sidebar__season-list-ul-li"} key={index}><NavLink to="/">{item}</NavLink></li>)}
+            {this.props.data.map((item, index) => <li className={this.props.hiddenFilters.includes('Season') ? 'hidden' : "sidebar-ul-li sidebar__season-list-ul-li"} key={index}><NavLink to="/">{item}</NavLink></li>)}
           </ul>
         </div>
       </div>

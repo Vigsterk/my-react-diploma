@@ -16,9 +16,12 @@ class Header extends Component {
       activeCategory: null
     }
   }
-  getActiveCategory = (param) => {
+  getActiveCategory = (id, title) => {
     this.setState({
-      activeCategory: param
+      activeCategory: {
+        id: id,
+        title: title
+      }
     })
   }
   render() {
@@ -268,9 +271,8 @@ class MainMenu extends Component {
     }
   }
 
-  setActiveCategory = (param) => {
-    console.log(param)
-    this.props.getActiveCategory(param)
+  setActiveCategory = (id, title) => {
+    this.props.getActiveCategory(id, title)
   }
 
   render() {
@@ -289,7 +291,7 @@ class MainMenu extends Component {
 }
 
 class CategoriesList extends Component {
-  handleClick = () => this.props.func(this.props.id)
+  handleClick = () => this.props.func(this.props.id, this.props.title)
   render() {
     return (
       <li className="main-menu__item" onClick={mainSubmenuVisibility}>
@@ -300,6 +302,7 @@ class CategoriesList extends Component {
 }
 
 class DroppedMenu extends Component {
+
   getMenuItems = (type) => {
     const { filters, activeCategory } = this.props
     if (!filters || !filters[type]) {

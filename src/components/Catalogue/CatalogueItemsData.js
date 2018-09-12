@@ -92,14 +92,4 @@ const sidebarColorData = [
 ]
 
 
-const sidebarSizesData = [8, 10, 12, 14, 15, 16, 18, 20];
-
-const sidebarSeasonsData = ["Лето", "Осень"];
-
-const sidebarHeelSizesData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-const sidebarOccasionData = ["Спорт", "Высокая мода", "Прогулка"]
-const sidebarDivisionData = ["Балетки", "Босоножки и сандалии", "Ботильоны", "Ботинки", "Ботфорты", "Галоши", "Тапочки", "Туфли", "Сапоги"]
-
-
-export { sidebarColorData, sidebarOccasionData, sidebarDivisionData, sidebarSizesData, sidebarSeasonsData, sidebarHeelSizesData }
+export default sidebarColorData
