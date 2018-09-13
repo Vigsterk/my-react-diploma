@@ -30,7 +30,19 @@ class Catalogue extends Component {
       favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [],
       activeFilter: this.props.filterParam,
       sortParam: "price",
-      overlookedData: sessionStorage.overlookedKey ? JSON.parse(sessionStorage.overlookedKey) : []
+      overlookedData: sessionStorage.overlookedKey ? JSON.parse(sessionStorage.overlookedKey) : [],
+      //filters
+      type: '',
+      color: '',
+      sizes: [],
+      heelSizes: [],
+      minPrice: 0,
+      maxPrice: 60000,
+      reason: '',
+      season: '',
+      brand: '',
+      search: '',
+      discounted: false,
     }
   }
 
@@ -80,6 +92,14 @@ class Catalogue extends Component {
     } else {
       this.reloadCatalogue(`page=${loadPage}`)
     }
+  }
+
+
+  setFilterParam = (param) => (event) => {
+    console.log(param)
+    if (event) event.preventDefault();
+    if (this.state[param.name] === param.value) return;
+    this.setState({ [param.name]: param.value });
   }
 
   reloadCatalogue = (pageProps) => {
@@ -135,22 +155,23 @@ class Catalogue extends Component {
   }
   // SideBar вынести в отдельные файлы 
   render() {
+    const { minPrice, maxPrice, goods, sitepath, sortParam, data, pages, overlookedData, page } = this.state
     return (
       <div>
-        <SitePath pathprops={this.state.sitepath} />
+        <SitePath pathprops={sitepath} />
         <main className="product-catalogue">
-          <SideBar reloadCatalogue={this.reloadCatalogue} filters={this.props.filters} />
+          <SideBar setFilterParam={this.setFilterParam} filters={this.props.filters} maxPrice={maxPrice} minPrice={minPrice} />
           <section className="product-catalogue-content">
             <section className="product-catalogue__head">
               <div className="product-catalogue__section-title">
                 <h2 className="section-name">{this.props.catalogueParam ? this.props.catalogueParam.title : 'Каталог'}</h2>
-                <span className="amount">{this.state.goods}</span>
+                <span className="amount">{goods}</span>
               </div>
               <div className="product-catalogue__sort-by">
                 <p className="sort-by">Сортировать</p>
                 <select
                   name="sortBy"
-                  value={this.state.sortParam}
+                  value={sortParam}
                   onChange={this.setSortByFilter}
                   id="sorting">
                   <option value="popularity">по популярности</option>
@@ -159,7 +180,7 @@ class Catalogue extends Component {
               </div>
             </section>
             <section className="product-catalogue__item-list">
-              {this.state.data.length > 0 && this.state.data.map(items =>
+              {data.length > 0 && data.map(items =>
                 <ListItem key={items.id}
                   id={items.id}
                   title={items.title}
@@ -172,11 +193,11 @@ class Catalogue extends Component {
                 />
               )}
             </section>
-            {this.state.pages && <Pagination page={this.state.page} pages={this.state.pages} func={this.changePage} />}
+            {pages && <Pagination page={page} pages={pages} func={this.changePage} />}
           </section>
           <div style={{ clear: 'both' }}></div>
         </main>
-        {this.state.overlookedData.length > 0 && <OverlookedSlider data={this.state.overlookedData} />}
+        {overlookedData.length > 0 && <OverlookedSlider data={overlookedData} />}
       </div>
     )
   }
@@ -213,6 +234,7 @@ class SideBar extends Component {
     this.state = {
       hiddenFilters: []
     }
+    console.log(this.props)
   }
 
   openerButton = (filterName) => {
@@ -232,14 +254,15 @@ class SideBar extends Component {
   }
 
   render() {
+    const { setFilterParam, minPrice, maxPrice, filters } = this.props
     return (
       <section className="sidebar">
         <section className="sidebar__division">
           <SideBarCatalogueList
             func={this.openerButton}
             hiddenFilters={this.state.hiddenFilters}
-            reloadCatalogue={this.props.reloadCatalogue}
-            data={this.props.filters.type}
+            setFilterParam={setFilterParam}
+            data={filters.type}
           />
         </section>
 
@@ -248,7 +271,9 @@ class SideBar extends Component {
           <SideBarPrice
             func={this.openerButton}
             hiddenFilters={this.state.hiddenFilters}
-            reloadCatalogue={this.props.reloadCatalogue}
+            setFilterParam={setFilterParam}
+            maxPrice={maxPrice}
+            minPrice={minPrice}
           />
         </section>
 
@@ -257,7 +282,7 @@ class SideBar extends Component {
           <SideBarColor
             func={this.openerButton}
             hiddenFilters={this.state.hiddenFilters}
-            reloadCatalogue={this.props.reloadCatalogue}
+            setFilterParam={setFilterParam}
           />
         </section>
 
@@ -266,8 +291,8 @@ class SideBar extends Component {
           <SideBarSize
             func={this.openerButton}
             hiddenFilters={this.state.hiddenFilters}
-            reloadCatalogue={this.props.reloadCatalogue}
-            data={this.props.filters.sizes}
+            setFilterParam={setFilterParam}
+            data={filters.sizes}
           />
         </section>
 
@@ -276,18 +301,18 @@ class SideBar extends Component {
           <SideBarHeelSize
             func={this.openerButton}
             hiddenFilters={this.state.hiddenFilters}
-            reloadCatalogue={this.props.reloadCatalogue}
-            data={this.props.filters.heelSize}
+            setFilterParam={setFilterParam}
+            data={filters.heelSize}
           />
         </section>
 
         <div className="separator-150 separator-150-5"></div>
         <section className="sidebar__division">
-          <SideBarOcassion
+          <SideBarReason
             func={this.openerButton}
             hiddenFilters={this.state.hiddenFilters}
-            reloadCatalogue={this.props.reloadCatalogue}
-            data={this.props.filters.reason}
+            setFilterParam={setFilterParam}
+            data={filters.reason}
           />
         </section>
 
@@ -296,16 +321,16 @@ class SideBar extends Component {
           <SideBarSeason
             func={this.openerButton}
             hiddenFilters={this.state.hiddenFilters}
-            reloadCatalogue={this.props.reloadCatalogue}
-            data={this.props.filters.season}
+            setFilterParam={setFilterParam}
+            data={filters.season}
           />
         </section>
 
         <div className="separator-150 separator-150-7"></div>
         <section className="sidebar__division">
           <SideBarBrand
-            reloadCatalogue={this.props.reloadCatalogue}
-            data={this.props.filters.brand}
+            setFilterParam={setFilterParam}
+            data={filters.brand}
           />
 
           <label>
@@ -328,7 +353,23 @@ class SideBar extends Component {
 }
 
 class SideBarCatalogueList extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isActive: ''
+    }
+  }
+
   handleClick = () => this.props.func('CatalogueList')
+
+  sideBarTypeSettings = (param, idx) => (event) => {
+    event.preventDefault()
+    this.props.setFilterParam(param)
+    this.setState({
+      isActive: idx
+    })
+  }
+
   render() {
     return (
       <div className="sidebar__catalogue-list">
@@ -337,12 +378,33 @@ class SideBarCatalogueList extends Component {
           <div className={this.props.hiddenFilters.includes('CatalogueList') ? 'opener-up' : 'opener-down'} onClick={this.handleClick}></div>
         </div>
         <ul className={this.props.hiddenFilters.includes('CatalogueList') ? 'hidden' : 'sidebar-ul sidebar__catalogue-list-ul'}>
-          {this.props.data.map((item, index) => <li className={this.props.hiddenFilters.includes('CatalogueList') ? 'hidden' : "sidebar-ul-li sidebar__catalogue-list-ul-li"} key={index}><NavLink to="/">{item}</NavLink></li>)}
+          {this.props.data.map((type, index) =>
+            <TypeSideBarListItem
+              key={type}
+              data={type}
+              idx={index}
+              isActive={this.state.isActive === index}
+              func={this.sideBarTypeSettings}
+              hiddenFilters={this.props.hiddenFilters}
+            />
+          )}
         </ul>
       </div>
     )
   }
 }
+
+class TypeSideBarListItem extends Component {
+  render() {
+    const { hiddenFilters, func, isActive, data, idx } = this.props
+    return (
+      <li className={hiddenFilters.includes('CatalogueList') ? 'hidden' : "sidebar-ul-li sidebar__catalogue-list-ul-li"} >
+        <button className={isActive ? 'sidebar-button-active' : 'sidebar-button'} onClick={func({ name: 'type', value: `type=${data}` }, idx)}>{data}</button>
+      </li>
+    )
+  }
+}
+
 
 class SideBarPrice extends Component {
   constructor(props) {
@@ -393,8 +455,25 @@ class SideBarPrice extends Component {
   }
 }
 
+
 class SideBarColor extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isActive: ''
+    }
+  }
+
   handleClick = () => this.props.func('Color')
+
+  sideBarColorSettings = (param, idx) => (event) => {
+    event.preventDefault()
+    this.props.setFilterParam(param)
+    this.setState({
+      isActive: idx
+    })
+  }
+
   render() {
     return (
       <div className="sidebar__color">
@@ -403,12 +482,17 @@ class SideBarColor extends Component {
           <div className={this.props.hiddenFilters.includes('Color') ? 'opener-up' : 'opener-down'} onClick={this.handleClick}></div>
         </div>
         <ul className={this.props.hiddenFilters.includes('Color') ? 'hidden' : 'sidebar-ul sidebar__color-list-ul'}>
-          {sidebarColorData.map(item => <li className={this.props.hiddenFilters.includes('Color') ? 'hidden' : "sidebar-ul-li sidebar__color-list-ul-li"} key={item.colorId}>
-            <NavLink to="/">
-              <div className={`color ${item.color}`}></div>
-              <span className="color-name">{item.colorName}</span>
-            </NavLink>
-          </li>)}
+          {sidebarColorData.map((item, index) =>
+
+            <ColorSideBarListItem
+              key={item.color}
+              data={item}
+              idx={index}
+              isActive={this.state.isActive === index}
+              func={this.sideBarColorSettings}
+              hiddenFilters={this.props.hiddenFilters}
+            />
+          )}
         </ul>
       </div>
 
@@ -416,8 +500,23 @@ class SideBarColor extends Component {
   }
 }
 
-class SideBarSize extends Component {
 
+class ColorSideBarListItem extends Component {
+  render() {
+    const { hiddenFilters, func, isActive, data, idx } = this.props
+    return (
+      <li className={hiddenFilters.includes('Color') ? 'hidden' : "sidebar-ul-li sidebar__color-list-ul-li"} >
+        <button className={isActive ? 'sidebar-button-active' : 'sidebar-button'} onClick={func({ name: 'color', value: `color=${data.color}` }, idx)}>{data.color}
+          <div className={`color ${data.color}`}></div>
+          <span className="color-name">{data.colorName}</span>
+        </button>
+      </li>
+    )
+  }
+}
+
+
+class SideBarSize extends Component {
   handleClick = () => this.props.func('Size')
   render() {
     return (
@@ -428,6 +527,7 @@ class SideBarSize extends Component {
         </div>
         <ul className={this.props.hiddenFilters.includes('Size') ? 'hidden' : "sidebar-ul sidebar__size-list-ul"}>
           {this.props.data.map((size, index) =>
+
             <li className={this.props.hiddenFilters.includes('Size') ? 'hidden' : "sidebar-ul-li sidebar__size-list-ul-li"} key={`${size}${index}`}>
               <label>
                 <input type="checkbox" className="checkbox" name={`checkbox-size-${size}`} />
@@ -467,25 +567,77 @@ class SideBarHeelSize extends Component {
   }
 }
 
-class SideBarOcassion extends Component {
-  handleClick = () => this.props.func('Ocassion')
+class SideBarReason extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isActive: ''
+    }
+  }
+
+  handleClick = () => this.props.func('Reason')
+
+  sideBarReasonSettings = (param, idx) => (event) => {
+    event.preventDefault()
+    this.props.setFilterParam(param)
+    this.setState({
+      isActive: idx
+    })
+  }
+
   render() {
     return (
       <div className="sidebar__occasion">
         <div className="sidebar__division-title">
           <h3>Повод</h3>
-          <div className={this.props.hiddenFilters.includes('Ocassion') ? 'opener-up' : 'opener-down'} onClick={this.handleClick}></div>
+          <div className={this.props.hiddenFilters.includes('Reason') ? 'opener-up' : 'opener-down'} onClick={this.handleClick}></div>
         </div>
-        <ul className={this.props.hiddenFilters.includes('Ocassion') ? 'hidden' : "sidebar-ul sidebar__ocassion-list-ul"}>
-          {this.props.data.map((item, index) => <li className={this.props.hiddenFilters.includes('Ocassion') ? 'hidden' : "sidebar-ul-li sidebar__ocassion-list-ul-li"} key={index}><NavLink to="/">{item}</NavLink></li>)}
+        <ul className={this.props.hiddenFilters.includes('Reason') ? 'hidden' : "sidebar-ul sidebar__ocassion-list-ul"}>
+          {this.props.data.map((reason, index) =>
+            <ReasonSideBarListItem
+              key={reason}
+              data={reason}
+              idx={index}
+              isActive={this.state.isActive === index}
+              func={this.sideBarReasonSettings}
+              hiddenFilters={this.props.hiddenFilters}
+            />
+          )}
         </ul>
       </div>
     )
   }
 }
 
+class ReasonSideBarListItem extends Component {
+  render() {
+    const { hiddenFilters, func, isActive, data, idx } = this.props
+    return (
+      <li className={hiddenFilters.includes('Reason') ? 'hidden' : "sidebar-ul-li sidebar__ocassion-list-ul-li"} >
+        <button className={isActive ? 'sidebar-button-active' : 'sidebar-button'} onClick={func({ name: 'reason', value: `reason=${data}` }, idx)}>{data}</button>
+      </li>
+    )
+  }
+}
+
 class SideBarSeason extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isActive: ''
+    }
+  }
+
   handleClick = () => this.props.func('Season')
+
+  sideBarSeasonSettings = (param, idx) => (event) => {
+    event.preventDefault()
+    this.props.setFilterParam(param)
+    this.setState({
+      isActive: idx
+    })
+  }
+
   render() {
     return (
       <div className="sidebar__season">
@@ -493,13 +645,35 @@ class SideBarSeason extends Component {
           <h3>Сезон</h3>
           <div className={this.props.hiddenFilters.includes('Season') ? 'opener-up' : 'opener-down'} onClick={this.handleClick}></div>
           <ul className={this.props.hiddenFilters.includes('Season') ? 'hidden' : "sidebar-ul sidebar__season-list-ul"} >
-            {this.props.data.map((item, index) => <li className={this.props.hiddenFilters.includes('Season') ? 'hidden' : "sidebar-ul-li sidebar__season-list-ul-li"} key={index}><NavLink to="/">{item}</NavLink></li>)}
+            {this.props.data.map((season, index) =>
+              <SeasonSideBarListItem
+                key={season}
+                data={season}
+                idx={index}
+                isActive={this.state.isActive === index}
+                func={this.sideBarSeasonSettings}
+                hiddenFilters={this.props.hiddenFilters}
+              />
+            )}
           </ul>
         </div>
       </div>
     )
   }
 }
+
+class SeasonSideBarListItem extends Component {
+  render() {
+    const { hiddenFilters, func, isActive, data, idx } = this.props
+    return (
+      <li className={hiddenFilters.includes('Season') ? 'hidden' : "sidebar-ul-li sidebar__season-list-ul-li"} >
+        <button className={isActive ? 'sidebar-button-active' : 'sidebar-button'} onClick={func({ name: 'season', value: `season=${data}` }, idx)}>{data}</button>
+      </li>
+    )
+  }
+}
+
+
 
 class SideBarBrand extends Component {
   render() {

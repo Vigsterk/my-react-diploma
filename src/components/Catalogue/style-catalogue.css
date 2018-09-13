@@ -571,6 +571,19 @@ span.producer {
   text-align: left;
 }
 
+.sidebar-button{
+  border: none;
+  outline: none;
+  background: none;
+}
+.sidebar-button-active{
+  border: 1px solid gray;
+  border-radius: 8px;
+  outline: none;
+  background: none;
+}
+
+
 /*Стрелочка напротив заголовка отдельной секции сайдбара*/
 .opener-up,
 .opener-down {
@@ -587,7 +600,6 @@ span.producer {
 .opener-down {
   background-position: -55px -155px;
 }
-
 
 /*Разделы сайдбара*/
 
