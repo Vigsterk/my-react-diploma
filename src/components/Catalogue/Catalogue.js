@@ -95,15 +95,44 @@ class Catalogue extends Component {
   }
 
 
-  setFilterParam = (param) => (event) => {
+  setFilterParam = (param) => {
     console.log(param)
-    if (event) event.preventDefault();
     if (this.state[param.name] === param.value) return;
     this.setState({ [param.name]: param.value });
+    this.catalogueUrlConfigurator()
   }
 
-  reloadCatalogue = (pageProps) => {
-    fetch(`https://api-neto.herokuapp.com/bosa-noga/products?${pageProps}`, {
+  catalogueUrlConfigurator = () => {
+
+    console.log('run')
+    const { type, color, sizes, heelSizes, minPrice, maxPrice, reason, season, brand, search, discounted } = this.state
+
+    const sizeParam = sizes.reduce((param, size) => {
+      return param + `size[]=${size}&`;
+    }, '');
+
+    const heelSizeParam = heelSizes.reduce((param, heelSize) => {
+      return param + `heelSize[]=${heelSize}&`;
+    }, '');
+
+    const categoryIdParam = this.props.catalogueParam.id ? `categoryId=${this.props.catalogueParam.id}&` : '';
+    const typeParam = type ? `type=${type}&` : '';
+    const colorParam = color ? `color=${color}&` : '';
+    const reasonParam = reason ? `reason=${reason}&` : '';
+    const seasonParam = season ? `season=${season}&` : '';
+    const brandParam = brand ? `brand=${brand}&` : '';
+    const minPriceParam = minPrice ? `minPrice=${minPrice}&` : '';
+    const maxPriceParam = maxPrice ? `maxPrice=${maxPrice}&` : '';
+    const searchParam = search ? `search=${search}&` : '';
+    const discountedParam = discounted ? `discounted=${discounted}&` : '';
+
+    let urlParam = categoryIdParam + typeParam + colorParam + sizeParam + heelSizeParam + minPriceParam + maxPriceParam + reasonParam + seasonParam + brandParam + searchParam + discountedParam
+    this.reloadCatalogue(urlParam)
+  }
+
+
+  reloadCatalogue = (urlProps) => {
+    fetch(`https://api-neto.herokuapp.com/bosa-noga/products?${urlProps}`, {
       method: "GET"
     })
       .then(response => {
@@ -234,7 +263,6 @@ class SideBar extends Component {
     this.state = {
       hiddenFilters: []
     }
-    console.log(this.props)
   }
 
   openerButton = (filterName) => {
@@ -364,6 +392,7 @@ class SideBarCatalogueList extends Component {
 
   sideBarTypeSettings = (param, idx) => (event) => {
     event.preventDefault()
+    console.log('click')
     this.props.setFilterParam(param)
     this.setState({
       isActive: idx
@@ -399,7 +428,7 @@ class TypeSideBarListItem extends Component {
     const { hiddenFilters, func, isActive, data, idx } = this.props
     return (
       <li className={hiddenFilters.includes('CatalogueList') ? 'hidden' : "sidebar-ul-li sidebar__catalogue-list-ul-li"} >
-        <button className={isActive ? 'sidebar-button-active' : 'sidebar-button'} onClick={func({ name: 'type', value: `type=${data}` }, idx)}>{data}</button>
+        <button className={isActive ? 'sidebar-button-active' : 'sidebar-button'} onClick={func({ name: 'type', value: `${data}` }, idx)}>{data}</button>
       </li>
     )
   }
@@ -483,7 +512,6 @@ class SideBarColor extends Component {
         </div>
         <ul className={this.props.hiddenFilters.includes('Color') ? 'hidden' : 'sidebar-ul sidebar__color-list-ul'}>
           {sidebarColorData.map((item, index) =>
-
             <ColorSideBarListItem
               key={item.color}
               data={item}
@@ -495,7 +523,6 @@ class SideBarColor extends Component {
           )}
         </ul>
       </div>
-
     )
   }
 }
@@ -506,7 +533,7 @@ class ColorSideBarListItem extends Component {
     const { hiddenFilters, func, isActive, data, idx } = this.props
     return (
       <li className={hiddenFilters.includes('Color') ? 'hidden' : "sidebar-ul-li sidebar__color-list-ul-li"} >
-        <button className={isActive ? 'sidebar-button-active' : 'sidebar-button'} onClick={func({ name: 'color', value: `color=${data.color}` }, idx)}>{data.color}
+        <button className={isActive ? 'sidebar-button-active' : 'sidebar-button'} onClick={func({ name: 'color', value: `color=${data.color}` }, idx)}>
           <div className={`color ${data.color}`}></div>
           <span className="color-name">{data.colorName}</span>
         </button>

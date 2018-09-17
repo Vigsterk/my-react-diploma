@@ -6,7 +6,7 @@ class MainPage extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: null,
+      featuredData: null,
       productInfo: null,
       check: false
     }
@@ -30,7 +30,7 @@ class MainPage extends Component {
       .then(response => response.json())
       .then(data => {
         this.setState({
-          data: data.data,
+          featuredData: data.data,
           productInfo: data.data[1],
           check: true,
         })
@@ -41,14 +41,21 @@ class MainPage extends Component {
 
   }
 
+  availableCategories() {
+    const categories = this.props.categories
+    const featuredData = this.state.featuredData
+    return categories.filter(category => featuredData.find(item => item.categoryId === category.id)).sort((a, b) => a.id > b.id)
+  }
+
+
   render() {
-    const { data, productInfo } = this.state
+    const { featuredData, productInfo } = this.state
     return (
       <div className='main-page'>
         <section className="slider">
           <Slider />
         </section>
-        {this.state.check && <NewDeals categories={this.props.categories} data={data} info={productInfo} />}
+        {this.state.check && <NewDeals categories={this.availableCategories()} data={featuredData} info={productInfo} />}
         <section className="sales-and-news wave-bottom">
           <h2 className="h2">акции и новости</h2>
           <Sales />
@@ -95,9 +102,7 @@ class NewDeals extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: this.props.data,
       productInfo: this.props.info,
-      categories: this.props.categories,
       activeData: null
     }
   }
@@ -109,7 +114,7 @@ class NewDeals extends Component {
   }
 
   setActiveCategory = (idx) => {
-    const { categories, data } = this.state
+    const { categories, data } = this.props
     let activeCategoryFilter = data.filter((item) =>
       categories[idx].id === item.categoryId
     )
@@ -119,12 +124,14 @@ class NewDeals extends Component {
       })
     }
   }
+
+
   render() {
     return (
       <section className="new-deals wave-bottom">
         <h2 className="h2">Новинки</h2>
-        <NewDealsMenu categories={this.state.categories} func={this.setActiveCategory} />
-        <DealsSlider data={this.state.activeData ? this.state.activeData : this.state.data} infoFunc={this.loadProductInfo} />
+        <NewDealsMenu categories={this.props.categories} func={this.setActiveCategory} />
+        <DealsSlider data={this.state.activeData ? this.state.activeData : this.props.data} infoFunc={this.loadProductInfo} />
         <ProductInfo info={this.state.productInfo} />
       </section>
     )
