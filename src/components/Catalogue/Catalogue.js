@@ -32,6 +32,7 @@ class Catalogue extends Component {
       sortParam: "price",
       overlookedData: sessionStorage.overlookedKey ? JSON.parse(sessionStorage.overlookedKey) : [],
       //filters
+      categoryId: this.props.catalogueParam ? this.props.catalogueParam.id : '',
       type: '',
       color: '',
       sizes: [],
@@ -43,6 +44,7 @@ class Catalogue extends Component {
       brand: '',
       search: '',
       discounted: false,
+      urlParam: ''
     }
   }
 
@@ -74,11 +76,11 @@ class Catalogue extends Component {
     const sortValue = event.currentTarget.value
     console.log(sortValue)
     this.setState({
-      sortParam: `${sortValue}`
+      sortParam: `${sortValue}`,
+      urlParam: `sortBy=${sortValue}`
     });
-    this.reloadCatalogue(`sortBy=${sortValue}`)
   }
-
+  //dataVault запускает бесконечный рендер
   changePage = (page) => {
     let loadPage = page;
     this.setState({
@@ -90,22 +92,69 @@ class Catalogue extends Component {
         data: dataVaultFilter[0].data
       })
     } else {
-      this.reloadCatalogue(`page=${loadPage}`)
+      this.setState({
+        urlParam: `page=${loadPage}`
+      });
     }
   }
 
-
   setFilterParam = (param) => {
-    console.log(param)
     if (this.state[param.name] === param.value) return;
-    this.setState({ [param.name]: param.value });
-    this.catalogueUrlConfigurator()
+    this.setState({
+      [param.name]: param.value
+    });
   }
 
-  catalogueUrlConfigurator = () => {
+  setFilterArrayParam = (event) => {
+    const { value, name } = event.currentTarget;
+    const filter = this.state[name];
+    const index = filter.indexOf(+value);
+    if (index === -1) {
+      filter.push(+value);
+    } else {
+      filter.splice(index, 1);
+    }
+    this.setState({
+      [name]: filter
+    });
+  }
 
-    console.log('run')
-    const { type, color, sizes, heelSizes, minPrice, maxPrice, reason, season, brand, search, discounted } = this.state
+  setDiscountedParam = (param) => {
+    this.setState({
+      discounted: param
+    })
+  }
+
+  clearFilters = () => {
+    console.log('run clear')
+    this.setState({
+      type: '',
+      color: '',
+      sizes: [],
+      heelSizes: [],
+      minPrice: 0,
+      maxPrice: 60000,
+      reason: '',
+      season: '',
+      brand: '',
+      search: '',
+      discounted: false,
+    })
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    console.log(this.state, nextState)
+    if (this.state !== nextState) {
+      console.log(1)
+      this.catalogueUrlConfigurator(nextProps, nextState);
+    } else {
+      console.log(0)
+    }
+  }
+
+  catalogueUrlConfigurator = (nextProps, nextState) => {
+    console.log('run config', nextState)
+    const { type, color, sizes, heelSizes, minPrice, maxPrice, reason, season, brand, search, discounted, categoryId } = nextState
 
     const sizeParam = sizes.reduce((param, size) => {
       return param + `size[]=${size}&`;
@@ -115,7 +164,7 @@ class Catalogue extends Component {
       return param + `heelSize[]=${heelSize}&`;
     }, '');
 
-    const categoryIdParam = this.props.catalogueParam.id ? `categoryId=${this.props.catalogueParam.id}&` : '';
+    const categoryIdParam = categoryId ? `categoryId=${categoryId}&` : '';
     const typeParam = type ? `type=${type}&` : '';
     const colorParam = color ? `color=${color}&` : '';
     const reasonParam = reason ? `reason=${reason}&` : '';
@@ -125,14 +174,13 @@ class Catalogue extends Component {
     const maxPriceParam = maxPrice ? `maxPrice=${maxPrice}&` : '';
     const searchParam = search ? `search=${search}&` : '';
     const discountedParam = discounted ? `discounted=${discounted}&` : '';
-
     let urlParam = categoryIdParam + typeParam + colorParam + sizeParam + heelSizeParam + minPriceParam + maxPriceParam + reasonParam + seasonParam + brandParam + searchParam + discountedParam
-    this.reloadCatalogue(urlParam)
+    this.reloadCatalogue()
   }
 
-
-  reloadCatalogue = (urlProps) => {
-    fetch(`https://api-neto.herokuapp.com/bosa-noga/products?${urlProps}`, {
+  reloadCatalogue = () => {
+    console.log('reload')
+    fetch(`https://api-neto.herokuapp.com/bosa-noga/products?${this.state.urlParam}`, {
       method: "GET"
     })
       .then(response => {
@@ -143,8 +191,11 @@ class Catalogue extends Component {
       })
       .then(response => response.json())
       .then(data => {
+        console.log(data)
         this.setState({
           data: data.data,
+          pages: data.pages,
+          goods: data.goods,
           dataVault: this.state.dataVault.concat(data)
         })
       })
@@ -184,12 +235,12 @@ class Catalogue extends Component {
   }
   // SideBar вынести в отдельные файлы 
   render() {
-    const { minPrice, maxPrice, goods, sitepath, sortParam, data, pages, overlookedData, page } = this.state
+    const { minPrice, maxPrice, goods, sitepath, sortParam, data, pages, overlookedData, page, discounted } = this.state
     return (
       <div>
         <SitePath pathprops={sitepath} />
         <main className="product-catalogue">
-          <SideBar setFilterParam={this.setFilterParam} filters={this.props.filters} maxPrice={maxPrice} minPrice={minPrice} />
+          <SideBar setFilterParam={this.setFilterParam} setFilterArrayParam={this.setFilterArrayParam} filters={this.props.filters} maxPrice={maxPrice} minPrice={minPrice} discounted={discounted} setDiscountedParam={this.setDiscountedParam} clearFilters={this.clearFilters} />
           <section className="product-catalogue-content">
             <section className="product-catalogue__head">
               <div className="product-catalogue__section-title">
@@ -282,7 +333,7 @@ class SideBar extends Component {
   }
 
   render() {
-    const { setFilterParam, minPrice, maxPrice, filters } = this.props
+    const { setFilterParam, setFilterArrayParam, minPrice, maxPrice, filters, clearFilters, setDiscountedParam, discounted } = this.props
     return (
       <section className="sidebar">
         <section className="sidebar__division">
@@ -319,7 +370,7 @@ class SideBar extends Component {
           <SideBarSize
             func={this.openerButton}
             hiddenFilters={this.state.hiddenFilters}
-            setFilterParam={setFilterParam}
+            setFilterArrayParam={setFilterArrayParam}
             data={filters.sizes}
           />
         </section>
@@ -329,7 +380,7 @@ class SideBar extends Component {
           <SideBarHeelSize
             func={this.openerButton}
             hiddenFilters={this.state.hiddenFilters}
-            setFilterParam={setFilterParam}
+            setFilterArrayParam={setFilterArrayParam}
             data={filters.heelSize}
           />
         </section>
@@ -360,19 +411,21 @@ class SideBar extends Component {
             setFilterParam={setFilterParam}
             data={filters.brand}
           />
-
           <label>
-            <input type="checkbox" className="checkbox" name="checkbox-disc" />
-            <span className="checkbox-discount"></span>
-            <span className="text-discount">Со скидкой</span>
+            <input
+              checked={discounted}
+              onChange={() => setDiscountedParam(!discounted)}
+              type="checkbox"
+              className="checkbox"
+              name="checkbox-disc"
+            />
+            <span className="checkbox-discount"></span> <span className="text-discount">Со скидкой</span>
           </label>
-
           <div className="separator-240"></div>
         </section>
-
         <section className="sidebar__division">
           <div className="drop-down">
-            <NavLink to="/"><span className="drop-down-icon"></span>Сбросить</NavLink>
+            <a onClick={clearFilters} ><span className="drop-down-icon"></span>Сбросить</a>
           </div>
         </section>
       </section>
@@ -545,6 +598,8 @@ class ColorSideBarListItem extends Component {
 
 class SideBarSize extends Component {
   handleClick = () => this.props.func('Size')
+
+
   render() {
     return (
       <div className="sidebar__size">
@@ -554,17 +609,36 @@ class SideBarSize extends Component {
         </div>
         <ul className={this.props.hiddenFilters.includes('Size') ? 'hidden' : "sidebar-ul sidebar__size-list-ul"}>
           {this.props.data.map((size, index) =>
-
-            <li className={this.props.hiddenFilters.includes('Size') ? 'hidden' : "sidebar-ul-li sidebar__size-list-ul-li"} key={`${size}${index}`}>
-              <label>
-                <input type="checkbox" className="checkbox" name={`checkbox-size-${size}`} />
-                <span className="checkbox-custom"></span>
-                <span className="label">{size}</span>
-              </label>
-            </li>
+            <SizeSideBarListItem
+              key={size}
+              data={size}
+              idx={index}
+              hiddenFilters={this.props.hiddenFilters}
+              setFilterArrayParam={this.props.setFilterArrayParam}
+            />
           )}
         </ul>
       </div>
+    )
+  }
+}
+
+class SizeSideBarListItem extends Component {
+  render() {
+    const { data, idx, hiddenFilters, setFilterArrayParam } = this.props
+    return (
+      <li className={hiddenFilters.includes('Size') ? 'hidden' : "sidebar-ul-li sidebar__size-list-ul-li"} key={`${data}${idx}`}>
+        <label>
+          <input type="checkbox"
+            onChange={setFilterArrayParam}
+            value={+data}
+            name='sizes'
+            className="checkbox"
+          />
+          <span className="checkbox-custom"></span>
+          <span className="label">{data}</span>
+        </label>
+      </li>
     )
   }
 }
