@@ -31,7 +31,7 @@ const sidebarColorData = [
   },
   {
     color: "black-sabbath",
-    colorName: "Чёрный",
+    colorName: "Черный",
     colorId: 7
   },
   {

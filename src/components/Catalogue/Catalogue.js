@@ -23,13 +23,12 @@ class Catalogue extends Component {
           title: this.props.catalogueParam ? this.props.catalogueParam.title : 'Каталог'
         }],
       data: [],
-      dataVault: [],
       page: 1,
+      firstUrlParam: this.props.filterParam,
       pages: "",
       goods: "",
       favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [],
-      activeFilter: this.props.filterParam,
-      sortParam: "price",
+      sortVal: "price",
       overlookedData: sessionStorage.overlookedKey ? JSON.parse(sessionStorage.overlookedKey) : [],
       //filters
       categoryId: this.props.catalogueParam ? this.props.catalogueParam.id : '',
@@ -43,66 +42,42 @@ class Catalogue extends Component {
       season: '',
       brand: '',
       search: '',
-      discounted: false,
-      urlParam: ''
+      discounted: false
     }
   }
 
   componentDidMount() {
-    fetch(`https://api-neto.herokuapp.com/bosa-noga/products?${this.state.activeFilter}`, {
-      method: "GET"
-    })
-      .then(response => {
-        if (200 <= response.status && response.status < 300) {
-          return response;
-        }
-        throw new Error(response.statusText);
-      })
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          data: data.data,
-          pages: data.pages,
-          goods: data.goods,
-          dataVault: this.state.dataVault.concat(data),
-        })
-      })
-      .catch(error => {
-        console.log(error)
-      });
+    this.loadCatalogue(this.state.firstUrlParam)
   }
 
   setSortByFilter = (event) => {
     const sortValue = event.currentTarget.value
-    console.log(sortValue)
     this.setState({
-      sortParam: `${sortValue}`,
-      urlParam: `sortBy=${sortValue}`
+      sortVal: sortValue,
     });
-  }
-  //dataVault запускает бесконечный рендер
-  changePage = (page) => {
-    let loadPage = page;
-    this.setState({
-      page: loadPage
-    })
-    let dataVaultFilter = this.state.dataVault.filter((el) => loadPage === el.page);
-    if (dataVaultFilter.length > 0) {
-      this.setState({
-        data: dataVaultFilter[0].data
-      })
-    } else {
-      this.setState({
-        urlParam: `page=${loadPage}`
-      });
-    }
   }
 
-  setFilterParam = (param) => {
-    if (this.state[param.name] === param.value) return;
+  pageClick = (page) => (event) => {
+    event.preventDefault();
     this.setState({
-      [param.name]: param.value
+      page: page
     });
+  }
+
+  arrowClick = (value) => (event) => {
+    event.preventDefault();
+    const newPageNumber = this.state.page + value;
+    if (newPageNumber < 1 || newPageNumber > this.state.pages) return;
+    this.setState({
+      page: newPageNumber
+    });
+  }
+
+
+
+  setFilterParam = ({ name, value }) => {
+    if (this.state[name] === value) return;
+    this.setState({ [name]: value });
   }
 
   setFilterArrayParam = (event) => {
@@ -126,7 +101,6 @@ class Catalogue extends Component {
   }
 
   clearFilters = () => {
-    console.log('run clear')
     this.setState({
       type: '',
       color: '',
@@ -139,22 +113,13 @@ class Catalogue extends Component {
       brand: '',
       search: '',
       discounted: false,
+      page: 1
     })
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    console.log(this.state, nextState)
-    if (this.state !== nextState) {
-      console.log(1)
-      this.catalogueUrlConfigurator(nextProps, nextState);
-    } else {
-      console.log(0)
-    }
-  }
 
-  catalogueUrlConfigurator = (nextProps, nextState) => {
-    console.log('run config', nextState)
-    const { type, color, sizes, heelSizes, minPrice, maxPrice, reason, season, brand, search, discounted, categoryId } = nextState
+  catalogueUrlConfigurator = () => {
+    const { type, color, sizes, heelSizes, minPrice, maxPrice, reason, season, brand, search, discounted, categoryId, page, sortVal } = this.state
 
     const sizeParam = sizes.reduce((param, size) => {
       return param + `size[]=${size}&`;
@@ -174,13 +139,24 @@ class Catalogue extends Component {
     const maxPriceParam = maxPrice ? `maxPrice=${maxPrice}&` : '';
     const searchParam = search ? `search=${search}&` : '';
     const discountedParam = discounted ? `discounted=${discounted}&` : '';
-    let urlParam = categoryIdParam + typeParam + colorParam + sizeParam + heelSizeParam + minPriceParam + maxPriceParam + reasonParam + seasonParam + brandParam + searchParam + discountedParam
-    this.reloadCatalogue()
+    const sortParam = sortVal ? `sortBy=${sortVal}&` : ''
+    const pageParam = page ? `page=${page}` : ''
+    let urlParam = categoryIdParam + typeParam + colorParam + sizeParam + heelSizeParam + minPriceParam + maxPriceParam + reasonParam + seasonParam + brandParam + searchParam + discountedParam + sortParam + pageParam
+    if (this.state.urlParam !== urlParam) {
+      this.setState({
+        urlParam: urlParam
+      })
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    this.catalogueUrlConfigurator()
+    if (this.state.urlParam !== prevState.urlParam) {
+      this.loadCatalogue(this.state.urlParam)
+    }
   }
 
-  reloadCatalogue = () => {
-    console.log('reload')
-    fetch(`https://api-neto.herokuapp.com/bosa-noga/products?${this.state.urlParam}`, {
+  loadCatalogue = (urlParam) => {
+    fetch(`https://api-neto.herokuapp.com/bosa-noga/products?${urlParam}`, {
       method: "GET"
     })
       .then(response => {
@@ -191,12 +167,10 @@ class Catalogue extends Component {
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data)
         this.setState({
           data: data.data,
           pages: data.pages,
           goods: data.goods,
-          dataVault: this.state.dataVault.concat(data)
         })
       })
       .catch(error => {
@@ -226,6 +200,7 @@ class Catalogue extends Component {
     }
   }
 
+
   checkActiveId(itemID) {
     let favoriteData = this.state.favoriteKeyData && this.state.favoriteKeyData
     if (favoriteData.length > 0) {
@@ -233,9 +208,10 @@ class Catalogue extends Component {
       return result
     }
   }
+
   // SideBar вынести в отдельные файлы 
   render() {
-    const { minPrice, maxPrice, goods, sitepath, sortParam, data, pages, overlookedData, page, discounted } = this.state
+    const { minPrice, maxPrice, goods, sitepath, sortVal, data, pages, overlookedData, page, discounted } = this.state
     return (
       <div>
         <SitePath pathprops={sitepath} />
@@ -251,7 +227,7 @@ class Catalogue extends Component {
                 <p className="sort-by">Сортировать</p>
                 <select
                   name="sortBy"
-                  value={sortParam}
+                  value={sortVal}
                   onChange={this.setSortByFilter}
                   id="sorting">
                   <option value="popularity">по популярности</option>
@@ -273,7 +249,7 @@ class Catalogue extends Component {
                 />
               )}
             </section>
-            {pages && <Pagination page={page} pages={pages} func={this.changePage} />}
+            {pages && <Pagination page={page} pages={pages} pageClick={this.pageClick} arrowClick={this.arrowClick} />}
           </section>
           <div style={{ clear: 'both' }}></div>
         </main>
@@ -443,10 +419,10 @@ class SideBarCatalogueList extends Component {
 
   handleClick = () => this.props.func('CatalogueList')
 
-  sideBarTypeSettings = (param, idx) => (event) => {
+  sideBarTypeSettings = ({ name, value }, idx) => (event) => {
     event.preventDefault()
-    console.log('click')
-    this.props.setFilterParam(param)
+    console.log('click', name, value)
+    this.props.setFilterParam({ name, value })
     this.setState({
       isActive: idx
     })
@@ -548,9 +524,9 @@ class SideBarColor extends Component {
 
   handleClick = () => this.props.func('Color')
 
-  sideBarColorSettings = (param, idx) => (event) => {
+  sideBarColorSettings = ({ name, value }, idx) => (event) => {
     event.preventDefault()
-    this.props.setFilterParam(param)
+    this.props.setFilterParam({ name, value })
     this.setState({
       isActive: idx
     })
@@ -580,13 +556,12 @@ class SideBarColor extends Component {
   }
 }
 
-
 class ColorSideBarListItem extends Component {
   render() {
     const { hiddenFilters, func, isActive, data, idx } = this.props
     return (
       <li className={hiddenFilters.includes('Color') ? 'hidden' : "sidebar-ul-li sidebar__color-list-ul-li"} >
-        <button className={isActive ? 'sidebar-button-active' : 'sidebar-button'} onClick={func({ name: 'color', value: `color=${data.color}` }, idx)}>
+        <button className={isActive ? 'sidebar-button-active' : 'sidebar-button'} onClick={func({ name: 'color', value: data.colorName }, idx)}>
           <div className={`color ${data.color}`}></div>
           <span className="color-name">{data.colorName}</span>
         </button>
@@ -598,8 +573,6 @@ class ColorSideBarListItem extends Component {
 
 class SideBarSize extends Component {
   handleClick = () => this.props.func('Size')
-
-
   render() {
     return (
       <div className="sidebar__size">
@@ -625,9 +598,9 @@ class SideBarSize extends Component {
 
 class SizeSideBarListItem extends Component {
   render() {
-    const { data, idx, hiddenFilters, setFilterArrayParam } = this.props
+    const { data, hiddenFilters, setFilterArrayParam } = this.props
     return (
-      <li className={hiddenFilters.includes('Size') ? 'hidden' : "sidebar-ul-li sidebar__size-list-ul-li"} key={`${data}${idx}`}>
+      <li className={hiddenFilters.includes('Size') ? 'hidden' : "sidebar-ul-li sidebar__size-list-ul-li"}>
         <label>
           <input type="checkbox"
             onChange={setFilterArrayParam}
@@ -653,17 +626,37 @@ class SideBarHeelSize extends Component {
           <div className={this.props.hiddenFilters.includes('HeelSize') ? 'opener-up' : 'opener-down'} onClick={this.handleClick}></div>
           <ul className={this.props.hiddenFilters.includes('HeelSize') ? 'hidden' : "sidebar-ul sidebar__heelSize-list-ul"}>
             {this.props.data.map((size, index) =>
-              <li className={this.props.hiddenFilters.includes('HeelSize') ? 'hidden' : "sidebar-ul-li sidebar__heelSize-list-ul-li"} key={`${size}${index}`}>
-                <label>
-                  <input type="checkbox" className="checkbox" name={`checkbox-size-${size}`} />
-                  <span className="checkbox-custom"></span>
-                  <span className="label">{size}</span>
-                </label>
-              </li>
+              <HeelSizeSideBarListItem
+                key={size}
+                data={size}
+                idx={index}
+                hiddenFilters={this.props.hiddenFilters}
+                setFilterArrayParam={this.props.setFilterArrayParam}
+              />
             )}
           </ul>
         </div>
       </div>
+    )
+  }
+}
+
+class HeelSizeSideBarListItem extends Component {
+  render() {
+    const { data, hiddenFilters, setFilterArrayParam } = this.props
+    return (
+      <li className={hiddenFilters.includes('HeelSize') ? 'hidden' : "sidebar-ul-li sidebar__heelSize-list-ul-li"}>
+        <label>
+          <input type="checkbox"
+            onChange={setFilterArrayParam}
+            value={+data}
+            name='heelSizes'
+            className="checkbox"
+          />
+          <span className="checkbox-custom"></span>
+          <span className="label">{data}</span>
+        </label>
+      </li>
     )
   }
 }
@@ -715,7 +708,7 @@ class ReasonSideBarListItem extends Component {
     const { hiddenFilters, func, isActive, data, idx } = this.props
     return (
       <li className={hiddenFilters.includes('Reason') ? 'hidden' : "sidebar-ul-li sidebar__ocassion-list-ul-li"} >
-        <button className={isActive ? 'sidebar-button-active' : 'sidebar-button'} onClick={func({ name: 'reason', value: `reason=${data}` }, idx)}>{data}</button>
+        <button className={isActive ? 'sidebar-button-active' : 'sidebar-button'} onClick={func({ name: 'reason', value: data }, idx)}>{data}</button>
       </li>
     )
   }
@@ -768,12 +761,11 @@ class SeasonSideBarListItem extends Component {
     const { hiddenFilters, func, isActive, data, idx } = this.props
     return (
       <li className={hiddenFilters.includes('Season') ? 'hidden' : "sidebar-ul-li sidebar__season-list-ul-li"} >
-        <button className={isActive ? 'sidebar-button-active' : 'sidebar-button'} onClick={func({ name: 'season', value: `season=${data}` }, idx)}>{data}</button>
+        <button className={isActive ? 'sidebar-button-active' : 'sidebar-button'} onClick={func({ name: 'season', value: data }, idx)}>{data}</button>
       </li>
     )
   }
 }
-
 
 
 class SideBarBrand extends Component {
