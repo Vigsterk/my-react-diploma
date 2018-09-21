@@ -308,9 +308,9 @@ class DroppedMenu extends Component {
     if (!filters || !filters[type]) {
       return null;
     } else {
-      return filters[type].map((item, index) => (
-        <li key={index} className="dropped-menu__item">
-          <NavLink to={`/catalogue/`} onClick={this.props.filterLoader({ activeCategory, type, item })}>{item}</NavLink>
+      return filters[type].map(name => (
+        <li key={name} className="dropped-menu__item">
+          <NavLink to={`/catalogue/`} onClick={this.props.filterLoader({ activeCategory, type, name })}>{name}</NavLink>
         </li>
       ));
     }

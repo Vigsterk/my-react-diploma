@@ -28,7 +28,6 @@ class Favorite extends Component {
 
   setSortByFilter = (event) => {
     const sortValue = event.currentTarget.value
-    console.log(sortValue)
     this.setState({
       sortParam: `${sortValue}`
     });
@@ -49,6 +48,23 @@ class Favorite extends Component {
     }
   }
 
+  pageClick = (page) => (event) => {
+    event.preventDefault();
+    this.setState({
+      page: page
+    });
+  }
+
+  arrowClick = (value) => (event) => {
+    event.preventDefault();
+    const newPageNumber = this.state.page + value;
+    if (newPageNumber < 1 || newPageNumber > this.state.pages) return;
+    this.setState({
+      page: newPageNumber
+    });
+
+  }
+
   favoriteRemove = (event, itemID) => {
     event.preventDefault()
     let favoriteFilter = this.state.favoriteData.filter((item) => itemID === item.id);
@@ -61,6 +77,11 @@ class Favorite extends Component {
         isActive: false,
         pages: Math.ceil(tempfavoriteData.length / 12)
       })
+      if (tempfavoriteData.length < 13) {
+        this.setState({
+          page: 1
+        })
+      }
       const serialTempData = JSON.stringify(tempfavoriteData);
       localStorage.setItem("favoriteKey", serialTempData);
     }
@@ -83,12 +104,6 @@ class Favorite extends Component {
       return two;
     }
     return five;
-  }
-
-  changePage = (page) => {
-    this.setState({
-      page: page
-    })
   }
 
   render() {
@@ -116,7 +131,7 @@ class Favorite extends Component {
               />)}
           </section>
         </main>
-        {this.state.pages > 1 && <Pagination page={this.state.page} pages={this.state.pages} func={this.changePage} />}
+        {<Pagination page={this.state.page} pages={this.state.pages} pageClick={this.pageClick} arrowClick={this.arrowClick} />}
       </div>
     )
   }

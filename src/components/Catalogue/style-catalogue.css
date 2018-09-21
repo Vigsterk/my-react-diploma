@@ -326,7 +326,7 @@ span.producer {
 .product-catalogue__pagination {
   display: block;
   width: 892px;
-  margin:6px auto 71px;
+  margin:25px auto 71px;
 }
 
 .page-nav-wrapper {
@@ -687,12 +687,12 @@ span.producer {
 
 .circle-1 {
   top: 12px;
-  left: 21px;
+  left: 0px;
 }
 
 .circle-2 {
   top: 12px;
-  right: 75px;
+  right: 0px;
 }
 
 .line-white {
@@ -708,8 +708,8 @@ span.producer {
 .line-colored {
   position: absolute;
   top: 21px;
-  left: 42px;
-  width: 105px;
+  left: 0px;
+  width: 236px;
   height: 7px;
   background: #A1B3BF;
 }

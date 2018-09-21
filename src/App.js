@@ -119,17 +119,19 @@ class App extends Component {
     })
   }
 
-  mainMenuFilterLoader = ({ activeCategory, type, item }) => (event) => {
-    const selectedFilterSearch = `categoryId=${activeCategory.id}&${type}=${item}`;
+  mainMenuFilterLoader = ({ activeCategory, type, name }) => (event) => {
+    const selectedCategories = `categoryId=${activeCategory.id}&${type}=${name}`;
+    const selectedCategoriesProps = { [type]: name };
+    console.log(selectedCategoriesProps)
     this.CarryedCatalogue = this.bindProps(Catalogue, {
       categories: this.state.categories,
       filters: this.state.filters,
-      filterParam: selectedFilterSearch,
-      catalogueParam: activeCategory
+      filterParam: selectedCategories,
+      catalogueParam: { activeCategory, selectedCategoriesProps }
     });
     this.setState({
-      catalogueFilterParam: selectedFilterSearch,
-      catalogueParam: activeCategory
+      catalogueFilterParam: selectedCategories,
+      catalogueParam: { activeCategory, selectedCategoriesProps }
     })
 
   }

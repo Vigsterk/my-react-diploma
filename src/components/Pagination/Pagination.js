@@ -6,6 +6,7 @@ class Pagination extends Component {
     const { page, pages } = this.props;
     const tempArr = Array(pages)
       .fill(null).map((item, i) => i + 1).filter(number => number === 1 || number === pages || (((page - 3) < number) && (number < (page + 3))));
+
     if (pages < 5) return tempArr;
     if (page > 4) tempArr.splice(1, 0, '...');
     if (page < (pages - 3)) tempArr.splice((tempArr.length - 1), 0, '...');
@@ -20,13 +21,12 @@ class Pagination extends Component {
             <button className="pagination-page" onClick={this.props.pageClick(page)}>{page}</button>
           </li>
         } else {
-          return <li className='pagination-li' key={index}>{page}</li>
+          return <li className='pagination-li' key={page}>{page}</li>
         }
       });
   }
 
   render() {
-    console.log(this.props)
     return (
       <div className="product-catalogue__pagination">
         <div className="page-nav-wrapper">
