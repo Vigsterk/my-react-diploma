@@ -27,7 +27,8 @@ class App extends Component {
       categories: this.state.categories,
       filters: this.state.filters,
       func: this.orderLoader,
-      filterLoader: this.mainMenuFilterLoader
+      filterLoader: this.mainMenuFilterLoader.CarryedFavorite,
+      search: this.searchParamLoader
     });
 
     this.CarryedCatalogue = this.bindProps(Catalogue, {
@@ -67,9 +68,10 @@ class App extends Component {
       this.CarryedHeader = this.bindProps(Header, {
         cart: this.state.productCartItems,
         categories: categories,
-        filters: this.state.filters,
+        filters: filters,
         func: this.orderLoader,
-        filterLoader: this.mainMenuFilterLoader
+        filterLoader: this.mainMenuFilterLoader,
+        search: this.searchParamLoader
       });
 
       this.CarryedCatalogue = this.bindProps(Catalogue, {
@@ -90,7 +92,6 @@ class App extends Component {
   }
 
   orderLoader = (data) => {
-    console.log("orderLoader", data)
     this.CarryedOrder = this.bindProps(Order, {
       cartItems: data,
       cartId: this.state.cartId,
@@ -103,7 +104,6 @@ class App extends Component {
   }
 
   orderDoneLoader = (param) => {
-    console.log(param)
     this.CarryedOrderEnd = this.bindProps(OrderEnd, {
       orderDetails: param
     });
@@ -122,7 +122,6 @@ class App extends Component {
   mainMenuFilterLoader = ({ activeCategory, type, name }) => (event) => {
     const selectedCategories = `categoryId=${activeCategory.id}&${type}=${name}`;
     const selectedCategoriesProps = { [type]: name };
-    console.log(selectedCategoriesProps)
     this.CarryedCatalogue = this.bindProps(Catalogue, {
       categories: this.state.categories,
       filters: this.state.filters,
@@ -133,7 +132,10 @@ class App extends Component {
       catalogueFilterParam: selectedCategories,
       catalogueParam: { activeCategory, selectedCategoriesProps }
     })
+  }
 
+  searchParamLoader = (searchValue) => {
+    console.log(searchValue)
   }
 
   bindProps = (Component, bindingProps) => (selfProps) => <Component {...bindingProps}{...selfProps} />;
@@ -143,14 +145,14 @@ class App extends Component {
     return (
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <div className='container'>
-          {this.state.categories && <CarryedHeader cart={this.state.productCartItems} categories={this.state.categories} filters={this.state.filters} func={this.orderLoader} />}
+          {this.state.categories && <CarryedHeader />}
           {this.state.categories && <Route path='/' exact component={CarryedMainPage} />}
           {this.state.filters && <Route path='/catalogue/' exact component={CarryedCatalogue} />}
           <Route path='/favorite' exact component={CarryedFavorite} />
           <Route path='/order' exact component={CarryedOrder} />
           <Route path='/orderEnd' exact component={CarryedOrderEnd} />
           <Route path='/productCard/:id' exact component={CarryedProductCard} />
-          <Footer />
+          {this.state.categories && <Footer />}
         </div>
       </BrowserRouter>
     )

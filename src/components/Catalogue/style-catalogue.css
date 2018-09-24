@@ -996,23 +996,16 @@ padding-top: 12px;
   padding-bottom: 13px;
 }
 
-/*Форма поиска по бренду*/
-form.brand-search {
-  position: relative;
+.sidebar__brand-list-ul {
+  width: 240px;
+  height: 175px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  overflow: auto; 
 }
 
-input[type="search"] {
-  position: relative;
-  display: block;
-  width: 238px;
-  height: 38px;
-  margin: -1px 22px;
-  padding-left: 10px;
-  padding-right: 35px;
-  border-radius: 8px;
-  border: 1px solid #C4C4C4;
-  color: #333333;
-  outline: none;
+.sidebar__brand-list-ul-li {
+  padding-top: 12px;
 }
 
 /*Кастомизация плейсхолдера*/

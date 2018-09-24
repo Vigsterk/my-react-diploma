@@ -15,6 +15,7 @@ class Header extends Component {
     this.state = {
       activeCategory: null
     }
+    console.log(props)
   }
   getActiveCategory = (id, title) => {
     this.setState({
@@ -25,12 +26,13 @@ class Header extends Component {
     })
   }
   render() {
+    const { cart, func, search, categories, filters, filterLoader, history } = this.props
     return (
       <header className="header">
         <TopMenu />
-        <HeaderMain cart={this.props.cart} func={this.props.func} />
-        <MainMenu categories={this.props.categories} getActiveCategory={this.getActiveCategory} />
-        <DroppedMenu filters={this.props.filters} filterLoader={this.props.filterLoader} activeCategory={this.state.activeCategory} />
+        <HeaderMain cart={cart} func={func} search={search} history={history} />
+        <MainMenu categories={categories} getActiveCategory={this.getActiveCategory} />
+        <DroppedMenu filters={filters} filterLoader={filterLoader} activeCategory={this.state.activeCategory} />
       </header>
     )
   }
@@ -59,8 +61,10 @@ class HeaderMain extends Component {
     this.state = {
       cartIDJson: localStorage.postCartIDKey && JSON.parse(localStorage.postCartIDKey),
       loadedCartItems: [],
+      searchValue: ''
     }
     localStorage.postCartIDKey && this.loadCartData()
+    console.log(props)
   }
 
   loadCartData = () => {
@@ -151,6 +155,17 @@ class HeaderMain extends Component {
     this.props.func(this.state.loadedCartItems)
   }
 
+  changeSearchValue = (event) => {
+    this.setState({ searchValue: event.currentTarget.value });
+
+  }
+
+  searchSubmit = (event) => {
+    event.preventDefault();
+    this.props.search(this.state.searchValue);
+    this.setState({ searchValue: '' });
+  }
+
   render() {
     const { loadedCartItems } = this.state
     return (
@@ -182,8 +197,8 @@ class HeaderMain extends Component {
                 <div className="header-main__pic_basket_menu"></div>
               </div>
             </div>
-            <form className="header-main__search" action="#">
-              <input placeholder="Поиск" />
+            <form onSubmit={this.searchSubmit} className="header-main__search" action="#">
+              <input onChange={this.changeSearchValue} value={this.state.searchValue} placeholder="Поиск" />
               <i className="fa fa-search" aria-hidden="true"></i>
             </form>
           </div>
@@ -302,7 +317,6 @@ class CategoriesList extends Component {
 }
 
 class DroppedMenu extends Component {
-
   getMenuItems = (type) => {
     const { filters, activeCategory } = this.props
     if (!filters || !filters[type]) {

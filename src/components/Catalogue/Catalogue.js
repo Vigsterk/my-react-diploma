@@ -24,7 +24,7 @@ class Catalogue extends Component {
       urlParam: this.props.filterParam,
       sortVal: 'price',
       categoryId: this.props.catalogueParam ? this.props.catalogueParam.activeCategory.id : '',
-      type: [],
+      shoesType: '',
       color: '',
       sizes: [],
       heelSizes: [],
@@ -57,9 +57,9 @@ class Catalogue extends Component {
             reason: name
           });
           break;
-        case 'type':
+        case 'shoesType':
           this.setState({
-            type: name
+            shoesType: name
           });
           break;
         case 'season':
@@ -99,7 +99,6 @@ class Catalogue extends Component {
   setFilterArrayParam = (event) => {
     const { value, name } = event.currentTarget;
     const filter = this.state[name];
-    console.log(filter)
     const index = filter.indexOf(+value);
     if (index === -1) {
       filter.push(+value);
@@ -119,7 +118,7 @@ class Catalogue extends Component {
 
   clearFilters = () => {
     this.setState({
-      type: '',
+      shoesType: '',
       color: '',
       sizes: [],
       heelSizes: [],
@@ -134,7 +133,7 @@ class Catalogue extends Component {
   }
 
   catalogueUrlConfigurator = (nextProps, nextState) => {
-    const { type, color, categoryId, reason, season, brand, minPrice, maxPrice, search, discounted, sortVal, sizes, heelSizes } = nextState
+    const { shoesType, color, categoryId, reason, season, brand, minPrice, maxPrice, search, discounted, sortVal, sizes, heelSizes } = nextState
 
     const sizeParam = sizes.reduce((param, size) => {
       return param + `size[]=${size}&`;
@@ -145,7 +144,7 @@ class Catalogue extends Component {
     }, '');
 
     const categoryIdParam = categoryId ? `categoryId=${categoryId}&` : '';
-    const typeParam = type ? `type=${type}&` : '';
+    const typeParam = shoesType ? `type=${shoesType}&` : '';
     const colorParam = color ? `color=${color}&` : '';
     const reasonParam = reason ? `reason=${reason}&` : '';
     const seasonParam = season ? `season=${season}&` : '';
@@ -156,7 +155,6 @@ class Catalogue extends Component {
     const discountedParam = discounted ? `discounted=${discounted}&` : '';
     const sortParam = sortVal ? `sortBy=${sortVal}&` : ''
     let urlParam = categoryIdParam + typeParam + colorParam + sizeParam + heelSizeParam + minPriceParam + maxPriceParam + reasonParam + seasonParam + brandParam + searchParam + discountedParam + sortParam
-
     if (this.state.urlParam !== urlParam) {
       this.setState({
         urlParam: urlParam

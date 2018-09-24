@@ -101,6 +101,8 @@ class SideBar extends Component {
         <div className="separator-150 separator-150-7"></div>
         <section className="sidebar__division">
           <SideBarBrand
+            func={this.openerButton}
+            hiddenFilters={this.state.hiddenFilters}
             setFilterParam={setFilterParam}
             data={filtersValue.brand}
           />
@@ -136,7 +138,7 @@ class SideBarCatalogueList extends Component {
 
   handleClick = () => this.props.func('CatalogueList')
 
-  sideBarTypeSettings = ({ name, value }, idx) => (event) => {
+  sideBarShoesTypeSettings = ({ name, value }, idx) => (event) => {
     event.preventDefault()
     this.props.setFilterParam({ name, value })
     this.setState({
@@ -152,13 +154,13 @@ class SideBarCatalogueList extends Component {
           <div className={this.props.hiddenFilters.includes('CatalogueList') ? 'opener-up' : 'opener-down'} onClick={this.handleClick}></div>
         </div>
         <ul className={this.props.hiddenFilters.includes('CatalogueList') ? 'hidden' : 'sidebar-ul sidebar__catalogue-list-ul'}>
-          {this.props.data.map((type, index) =>
-            <TypeSideBarListItem
-              key={type}
-              data={type}
+          {this.props.data.map((shoesType, index) =>
+            <ShoesTypeSideBarListItem
+              key={shoesType}
+              data={shoesType}
               idx={index}
               isActive={this.state.isActive === index}
-              func={this.sideBarTypeSettings}
+              func={this.sideBarShoesTypeSettings}
               hiddenFilters={this.props.hiddenFilters}
             />
           )}
@@ -168,12 +170,12 @@ class SideBarCatalogueList extends Component {
   }
 }
 
-class TypeSideBarListItem extends Component {
+class ShoesTypeSideBarListItem extends Component {
   render() {
     const { hiddenFilters, func, isActive, data, idx } = this.props
     return (
       <li className={hiddenFilters.includes('CatalogueList') ? 'hidden' : "sidebar-ul-li sidebar__catalogue-list-ul-li"} >
-        <button className={isActive ? 'sidebar-button-active' : 'sidebar-button'} onClick={func({ name: 'type', value: `${data}` }, idx)}>{data}</button>
+        <button className={isActive ? 'sidebar-button-active' : 'sidebar-button'} onClick={func({ name: 'shoesType', value: `${data}` }, idx)}>{data}</button>
       </li>
     )
   }
@@ -478,21 +480,58 @@ class SeasonSideBarListItem extends Component {
 }
 
 class SideBarBrand extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isActive: ''
+    }
+  }
+
+  handleClick = () => this.props.func('Season')
+
+  sideBarBrandSettings = (param, idx) => (event) => {
+    event.preventDefault()
+    this.props.setFilterParam(param)
+    this.setState({
+      isActive: idx
+    })
+  }
+
   render() {
     return (
       <div className="sidebar__brand">
-        <h3>Бренд</h3>
-        <form action="post" className="brand-search">
-          <input type="search"
-            className="brand-search"
-            id="brand-search"
-            placeholder="Поиск" />
-          <input type="submit" name=""
-            value="" className="submit" />
-        </form>
+        <div className="sidebar__division-title">
+          <h3>Бренд</h3>
+          <div className={this.props.hiddenFilters.includes('Brand') ? 'opener-up' : 'opener-down'} onClick={this.handleClick}></div>
+          <ul className={this.props.hiddenFilters.includes('Brand') ? 'hidden' : "sidebar-ul sidebar__brand-list-ul"} >
+            {this.props.data.map((brand, index) =>
+              <BrandSideBarListItem
+                key={brand}
+                data={brand}
+                idx={index}
+                isActive={this.state.isActive === index}
+                func={this.sideBarBrandSettings}
+                hiddenFilters={this.props.hiddenFilters}
+              />
+            )}
+          </ul>
+        </div>
       </div>
     )
   }
 }
+
+class BrandSideBarListItem extends Component {
+  render() {
+    const { hiddenFilters, func, isActive, data, idx } = this.props
+    return (
+      <li className={hiddenFilters.includes('Brand') ? 'hidden' : "sidebar-ul-li sidebar__brand-list-ul-li"} >
+        <button className={isActive ? 'sidebar-button-active' : 'sidebar-button'} onClick={func({ name: 'brand', value: data }, idx)}>{data}</button>
+      </li>
+    )
+  }
+}
+
+
 
 export default SideBar
