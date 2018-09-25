@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Catalogue, Favorite, Footer, Header, Order, OrderEnd, MainPage, ProductCard } from './components'
 import './App.css';
-import { BrowserRouter, Route } from 'react-router-dom'
+import { Router, Route } from 'react-router-dom'
 import dataLoader from "./components/Fetch/Fetch"
+import createHistory from 'history/createBrowserHistory';
+const history = createHistory()
 
 class App extends Component {
   constructor(props) {
@@ -28,7 +30,7 @@ class App extends Component {
       filters: this.state.filters,
       func: this.orderLoader,
       filterLoader: this.mainMenuFilterLoader.CarryedFavorite,
-      search: this.searchParamLoader
+      search: this.searchParamLoader,
     });
 
     this.CarryedCatalogue = this.bindProps(Catalogue, {
@@ -71,7 +73,7 @@ class App extends Component {
         filters: filters,
         func: this.orderLoader,
         filterLoader: this.mainMenuFilterLoader,
-        search: this.searchParamLoader
+        search: this.searchParamLoader,
       });
 
       this.CarryedCatalogue = this.bindProps(Catalogue, {
@@ -136,6 +138,17 @@ class App extends Component {
 
   searchParamLoader = (searchValue) => {
     console.log(searchValue)
+    const searchParam = `search=${searchValue}`
+    console.log(searchParam)
+    this.CarryedCatalogue = this.bindProps(Catalogue, {
+      categories: this.state.categories,
+      filters: this.state.filters,
+      filterParam: searchParam,
+      catalogueParam: this.state.catalogueParam
+    });
+    this.setState({
+      filterParam: searchParam
+    })
   }
 
   bindProps = (Component, bindingProps) => (selfProps) => <Component {...bindingProps}{...selfProps} />;
@@ -143,9 +156,9 @@ class App extends Component {
   render() {
     const { CarryedMainPage, CarryedCatalogue, CarryedFavorite, CarryedOrder, CarryedOrderEnd, CarryedProductCard, CarryedHeader } = this;
     return (
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <Router basename={process.env.PUBLIC_URL} history={history}>
         <div className='container'>
-          {this.state.categories && <CarryedHeader />}
+          {this.state.categories && <CarryedHeader history={history} />}
           {this.state.categories && <Route path='/' exact component={CarryedMainPage} />}
           {this.state.filters && <Route path='/catalogue/' exact component={CarryedCatalogue} />}
           <Route path='/favorite' exact component={CarryedFavorite} />
@@ -154,7 +167,7 @@ class App extends Component {
           <Route path='/productCard/:id' exact component={CarryedProductCard} />
           {this.state.categories && <Footer />}
         </div>
-      </BrowserRouter>
+      </Router>
     )
   }
 }

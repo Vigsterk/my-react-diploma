@@ -658,7 +658,7 @@ span.producer {
 
 .circle-container {
   position: relative;
-  width: 100%;
+  width: 240px;
   display: flex;
   justify-content: space-between;
 }
@@ -709,7 +709,6 @@ span.producer {
   position: absolute;
   top: 21px;
   left: 0px;
-  width: 236px;
   height: 7px;
   background: #A1B3BF;
 }

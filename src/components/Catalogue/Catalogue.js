@@ -36,6 +36,7 @@ class Catalogue extends Component {
       search: '',
       discounted: false
     }
+    console.log(this.props.filterParam)
   }
 
   componentWillMount() {
@@ -91,6 +92,7 @@ class Catalogue extends Component {
   }
 
   setFilterParam = ({ name, value }) => {
+    console.log(name, value)
     this.setState({
       [name]: value
     });
@@ -187,7 +189,6 @@ class Catalogue extends Component {
         />
         {overlookedData.length > 0 && <OverlookedSlider data={overlookedData} />}
       </div>
-
     )
   }
 }

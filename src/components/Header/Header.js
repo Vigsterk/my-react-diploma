@@ -157,12 +157,12 @@ class HeaderMain extends Component {
 
   changeSearchValue = (event) => {
     this.setState({ searchValue: event.currentTarget.value });
-
   }
 
   searchSubmit = (event) => {
     event.preventDefault();
     this.props.search(this.state.searchValue);
+    this.props.history.push('/catalogue/')
     this.setState({ searchValue: '' });
   }
 
