@@ -184,7 +184,6 @@ class ShoesTypeSideBarListItem extends Component {
 class SideBarPrice extends Component {
   constructor(props) {
     super(props);
-    // ссылки на объекты DOM
     this.circle1 = null;
     this.circle2 = null;
     this.circleContainer = null;
@@ -194,15 +193,11 @@ class SideBarPrice extends Component {
       circleContainer: ref => this.circleContainer = ref
     };
 
-    // параметр, который мы будем вычитать из event.clientX для получения значения style.left текущего круга
     this.offset = 0;
-    // названия класса перетаскиваемого круга
     this.currentCircleClassName = '';
-    // пустой элемент для отображения вместо 'клона' круга при перетаскивании
     this.blankElement = document.createElement('div');
 
     this.state = {
-      // значение style.left для первого и второго круга
       circle1Left: 0,
       circle2Left: 215,
       hiddenFilters: this.props.hiddenFilters
@@ -221,8 +216,6 @@ class SideBarPrice extends Component {
     }
   }
 
-  // обновление позиций кругов
-  // ширина контейнера 240px, диаметр круга 25px
   updateCirclesPositions = (nextProps) => {
     const fixedMaxPriceValue = 100000
     const { minPrice, maxPrice } = nextProps;
@@ -233,9 +226,7 @@ class SideBarPrice extends Component {
 
   onDragStart = (event) => {
     this.currentCircleClassName = event.currentTarget.className;
-    // вычисляем расстояние от левого края окна до левого края слайдера + от левого края круга до точки касания круга указателем мыши
     this.offset = this.circleContainer.getBoundingClientRect().left + (event.clientX - event.currentTarget.getBoundingClientRect().left);
-    // выставляем пустой элемент для отображения вместо 'клона' круга при перетаскивании
     event.dataTransfer.setDragImage(this.blankElement, 0, 0);
   }
 
