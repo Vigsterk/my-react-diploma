@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './style-favorite.css';
 import SitePath from '../SitePath/SitePath';
-import { NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Pagination from '../Pagination/Pagination';
 
 class Favorite extends Component {
@@ -141,7 +141,7 @@ class ListItem extends Component {
   handleClick = (event) => this.props.func(event, this.props.id)
   render() {
     return (
-      <NavLink key={this.props.id} className="item-list__item-card item" to={`productCard/${this.props.id}`}>
+      <Link key={this.props.id} className="item-list__item-card item" to={`productCard/${this.props.id}`}>
         <div className="item-pic">
           {this.props.images && this.props.images.map((item, index) =>
             <img key={index} className="item-pic" src={item} alt={this.props.title} />)}
@@ -157,7 +157,7 @@ class ListItem extends Component {
           <p className="item-price">{this.props.price}</p>
           {this.props.oldPrice && <p className="item-price old-price"><s>{this.props.oldPrice}</s></p>}
         </div>
-      </NavLink>
+      </Link>
     )
   }
 }

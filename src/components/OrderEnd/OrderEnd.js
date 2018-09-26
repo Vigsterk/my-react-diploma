@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom"
 import SitePath from '../SitePath/SitePath'
 
 const paymentTypes = {
@@ -67,10 +68,9 @@ class OrderEnd extends Component {
             </div>
           </div>
           <p className="order-done__notice">Данные о заказе отправлены на адрес <span>notbosaanymore@gmail.com. </span></p>
-          <button className="order-done__continue">продолжить покупки</button>
+          <Link to='/' className="order-done__continue">продолжить покупки</Link>
         </section>
       </div>
-
     )
   }
 }

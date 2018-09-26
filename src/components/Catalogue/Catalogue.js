@@ -3,13 +3,13 @@ import './style-catalogue.css';
 import '../css/normalize.css';
 import '../css/font-awesome.min.css';
 import '../css/style.css';
-import SitePath from '../SitePath/SitePath'
-import CatalogueProductList from './CatalogueProductList'
-import OverlookedSlider from '../ProductCard/OverlookedSlider'
+import SitePath from '../SitePath/SitePath';
+import CatalogueProductList from './CatalogueProductList';
+import OverlookedSlider from '../ProductCard/OverlookedSlider';
 
 class Catalogue extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       sitepath: [
         {
@@ -35,19 +35,18 @@ class Catalogue extends Component {
       brand: '',
       search: '',
       discounted: false
-    }
-    console.log(this.props.filterParam)
-  }
+    };
+  };
 
   componentWillMount() {
     this.props.catalogueParam && this.updateFilters(this.props);
-  }
+  };
 
   componentWillReceiveProps(nextProps) {
     if (this.props.catalogueParam.selectedCategoriesProps === nextProps.catalogueParam.selectedCategoriesProps) return;
     this.clearFilters();
     this.updateFilters(nextProps);
-  }
+  };
 
   updateFilters = (nextProps) => {
     const types = nextProps.catalogueParam.selectedCategoriesProps;
@@ -89,14 +88,14 @@ class Catalogue extends Component {
     this.setState({
       sortVal: sortValue,
     });
-  }
+  };
 
   setFilterParam = ({ name, value }) => {
     console.log(name, value)
     this.setState({
       [name]: value
     });
-  }
+  };
 
   setFilterArrayParam = (event) => {
     const { value, name } = event.currentTarget;
@@ -110,13 +109,13 @@ class Catalogue extends Component {
     this.setState({
       [name]: filter
     });
-  }
+  };
 
   setDiscountedParam = (param) => {
     this.setState({
       discounted: param
-    })
-  }
+    });
+  };
 
   clearFilters = () => {
     this.setState({
@@ -131,8 +130,8 @@ class Catalogue extends Component {
       brand: '',
       search: '',
       discounted: false,
-    })
-  }
+    });
+  };
 
   catalogueUrlConfigurator = (nextProps, nextState) => {
     const { shoesType, color, categoryId, reason, season, brand, minPrice, maxPrice, search, discounted, sortVal, sizes, heelSizes } = nextState
@@ -155,22 +154,21 @@ class Catalogue extends Component {
     const maxPriceParam = maxPrice ? `maxPrice=${maxPrice}&` : '';
     const searchParam = search ? `search=${search}&` : '';
     const discountedParam = discounted ? `discounted=${discounted}&` : '';
-    const sortParam = sortVal ? `sortBy=${sortVal}&` : ''
-    let urlParam = categoryIdParam + typeParam + colorParam + sizeParam + heelSizeParam + minPriceParam + maxPriceParam + reasonParam + seasonParam + brandParam + searchParam + discountedParam + sortParam
+    const sortParam = sortVal ? `sortBy=${sortVal}&` : '';
+    let urlParam = categoryIdParam + typeParam + colorParam + sizeParam + heelSizeParam + minPriceParam + maxPriceParam + reasonParam + seasonParam + brandParam + searchParam + discountedParam + sortParam;
     if (this.state.urlParam !== urlParam) {
       this.setState({
         urlParam: urlParam
-      })
-    }
-  }
+      });
+    };
+  };
 
   componentWillUpdate(nextProps, nextState) {
-    this.catalogueUrlConfigurator(nextProps, nextState)
-  }
+    this.catalogueUrlConfigurator(nextProps, nextState);
+  };
 
-  // SideBar вынести в отдельные файлы 
   render() {
-    const { sitepath, overlookedData, urlParam } = this.state
+    const { sitepath, overlookedData, urlParam } = this.state;
     return (
       <div>
         <SitePath pathprops={sitepath} />
@@ -189,8 +187,8 @@ class Catalogue extends Component {
         />
         {overlookedData.length > 0 && <OverlookedSlider data={overlookedData} />}
       </div>
-    )
-  }
-}
+    );
+  };
+};
 
 export default Catalogue;

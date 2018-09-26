@@ -1,27 +1,26 @@
 import React, { Component } from 'react';
-import SideBar from "./CatalogueSideBar"
+import SideBar from "./CatalogueSideBar";
 import Pagination from '../Pagination/Pagination';
-import { NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 class CatalogueProductList extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       data: [],
       pages: '',
       goods: '',
       page: 1,
       favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [],
-    }
-    this.loadCatalogue(this.props.urlParam)
-  }
-
+    };
+    this.loadCatalogue(this.props.urlParam);
+  };
 
   componentWillUpdate(nextProps) {
     if (this.props.urlParam !== nextProps.urlParam) {
-      this.loadCatalogue(nextProps.urlParam)
-    }
-  }
+      this.loadCatalogue(nextProps.urlParam);
+    };
+  };
   loadCatalogue = (urlParam) => {
     fetch(`https://api-neto.herokuapp.com/bosa-noga/products?${urlParam}`, {
       method: "GET"
@@ -38,64 +37,66 @@ class CatalogueProductList extends Component {
           data: data.data,
           pages: data.pages,
           goods: data.goods,
-        })
+        });
       })
       .catch(error => {
-        console.log(error)
+        console.log(error);
       });
-  }
-
+  };
 
   pageClick = (page) => (event) => {
     event.preventDefault();
+    const pageUrlParam = this.props.urlParam ? this.props.urlParam + `page=${page}` : `page=${page}`;
+    this.loadCatalogue(pageUrlParam);
     this.setState({
       page: page
     });
-  }
+  };
 
   arrowClick = (value) => (event) => {
     event.preventDefault();
     const newPageNumber = this.state.page + value;
     if (newPageNumber < 1 || newPageNumber > this.state.pages) return;
+    const pageUrlParam = this.props.urlParam ? this.props.urlParam + `page=${newPageNumber}` : `page=${newPageNumber}`;
+    this.loadCatalogue(pageUrlParam);
     this.setState({
       page: newPageNumber
     });
   }
 
   checkActiveId(itemID) {
-    let favoriteData = this.state.favoriteKeyData && this.state.favoriteKeyData
+    let favoriteData = this.state.favoriteKeyData && this.state.favoriteKeyData;
     if (favoriteData.length > 0) {
-      let result = favoriteData.find((el) => itemID === el.id)
+      let result = favoriteData.find((el) => itemID === el.id);
       return result
-    }
-  }
+    };
+  };
 
   favoriteAdd = (event, itemID) => {
-    event.preventDefault()
-    let tempFavoriteKeyData = [...this.state.favoriteKeyData]
+    event.preventDefault();
+    let tempFavoriteKeyData = [...this.state.favoriteKeyData];
     let favoriteFilter = this.state.favoriteKeyData.filter((el) => itemID === el.id);
     if (favoriteFilter.length > 0 && favoriteFilter[0].id === itemID) {
-      let removeData = this.state.favoriteKeyData.indexOf(favoriteFilter[0])
-      tempFavoriteKeyData.splice(removeData, 1)
+      let removeData = this.state.favoriteKeyData.indexOf(favoriteFilter[0]);
+      tempFavoriteKeyData.splice(removeData, 1);
       this.setState({
         favoriteKeyData: tempFavoriteKeyData
-      })
-      const serialTempData = JSON.stringify(tempFavoriteKeyData)
+      });
+      const serialTempData = JSON.stringify(tempFavoriteKeyData);
       localStorage.setItem("favoriteKey", serialTempData);
     } else {
-      tempFavoriteKeyData.push(this.state.data.find((el) => itemID === el.id))
+      tempFavoriteKeyData.push(this.state.data.find((el) => itemID === el.id));
       this.setState({
         favoriteKeyData: tempFavoriteKeyData,
-      })
-      const serialTempData = JSON.stringify(tempFavoriteKeyData)
+      });
+      const serialTempData = JSON.stringify(tempFavoriteKeyData);
       localStorage.setItem("favoriteKey", serialTempData);
-    }
-  }
+    };
+  };
 
   render() {
-    const { goods, pages, page, data } = this.state
-    const { setSortByFilter, setDiscountedParam, setFilterArrayParam, setFilterParam, clearFilters, filters } = this.props
-
+    const { goods, pages, page, data } = this.state;
+    const { setSortByFilter, setDiscountedParam, setFilterArrayParam, setFilterParam, clearFilters, filters } = this.props;
     return (
       <main className="product-catalogue">
         <SideBar setFilterParam={setFilterParam} setFilterArrayParam={setFilterArrayParam} filtersValue={this.props.filtersValue} maxPrice={filters.maxPrice} minPrice={filters.minPrice} discounted={filters.discounted} setDiscountedParam={setDiscountedParam} clearFilters={clearFilters} />
@@ -135,33 +136,61 @@ class CatalogueProductList extends Component {
         </section>
         <div style={{ clear: 'both' }}></div>
       </main>
-    )
-  }
-}
+    );
+  };
+};
 
 class ListItem extends Component {
-  handleClick = (event) => this.props.func(event, this.props.id)
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeImg: this.props.images
+    };
+  };
+
+  handleClick = (event) => this.props.func(event, this.props.id);
+
+  itemArrowClickLeft = (event) => {
+    event.preventDefault();
+    const tempDataArr = [...this.state.activeImg];
+    let firstImg = tempDataArr.shift();
+    tempDataArr.push(firstImg);
+    this.setState({
+      activeImg: tempDataArr
+    });
+  };
+
+  itemArrowClickRight = (event) => {
+    event.preventDefault();
+    const tempDataArr = [...this.state.activeImg];
+    let lastImg = tempDataArr.pop();
+    tempDataArr.unshift(lastImg);
+    this.setState({
+      activeImg: tempDataArr
+    });
+  };
+
   render() {
+    const { id, title, isActive, brand, price, oldPrice } = this.props;
     return (
-      <NavLink key={this.props.id} className="item-list__item-card item" to={`/productCard/${this.props.id}`}>
+      <Link className="item-list__item-card item" to={`/productCard/${id}`}>
         <div className="item-pic">
-          {this.props.images && this.props.images.map((item, index) =>
-            <img key={index} className="item-pic" src={item} alt={this.props.title} />)}
+          <img className="item-pic" src={this.state.activeImg[0]} alt={title} />)
           <div className='product-catalogue__product_favorite' onClick={this.handleClick}>
-            <p className={this.props.isActive ? 'product-catalogue__product_favorite-chosen' : 'product-catalogue__product_favorite-icon'} ></p>
+            <p className={isActive ? 'product-catalogue__product_favorite-chosen' : 'product-catalogue__product_favorite-icon'} ></p>
           </div>
-          <div className="arrow arrow_left" ></div>
-          <div className="arrow arrow_right" ></div>
+          <div className="arrow arrow_left" onClick={this.itemArrowClickLeft} ></div>
+          <div className="arrow arrow_right" onClick={this.itemArrowClickRight} ></div>
         </div>
         <div className="item-desc">
-          <h4 className="item-name">{this.props.title}</h4>
-          <p className="item-producer">Производитель: <span className="producer">{this.props.brand}</span></p>
-          <p className="item-price">{this.props.price}</p>
-          {this.props.oldPrice && <p className="item-price old-price"><s>{this.props.oldPrice}</s></p>}
+          <h4 className="item-name">{title}</h4>
+          <p className="item-producer">Производитель: <span className="producer">{brand}</span></p>
+          <p className="item-price">{price}</p>
+          {oldPrice && <p className="item-price old-price"><s>{oldPrice}</s></p>}
         </div>
-      </NavLink>
-    )
-  }
-}
+      </Link>
+    );
+  };
+};
 
 export default CatalogueProductList

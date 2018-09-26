@@ -7,7 +7,7 @@ import {
 } from "../js/script";
 import topMenuData from "./HeaderData"
 import header_logo from '../img/header-logo.png';
-import { NavLink } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 class Header extends Component {
   constructor(props) {
@@ -15,7 +15,6 @@ class Header extends Component {
     this.state = {
       activeCategory: null
     }
-    console.log(props)
   }
   getActiveCategory = (id, title) => {
     this.setState({
@@ -46,7 +45,7 @@ class TopMenu extends Component {
           <ul className="top-menu__items">
             {topMenuData.map(item =>
               <li key={item.id} className="top-menu__item">
-                <NavLink to="/">{item.title}</NavLink>
+                <Link to="/">{item.title}</Link>
               </li>)}
           </ul>
         </div>
@@ -64,7 +63,12 @@ class HeaderMain extends Component {
       searchValue: ''
     }
     localStorage.postCartIDKey && this.loadCartData()
-    console.log(props)
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.cart !== prevProps.cart) {
+      this.loadCartData(this.props.cart);
+    }
   }
 
   loadCartData = () => {
@@ -100,18 +104,13 @@ class HeaderMain extends Component {
                 size: item.size
               })
             )
+            console.log(cartItemArr)
             this.setState({
               loadedCartItems: cartItemArr
             })
           })
           .catch(error => console.log(`Ошибка: ${error.message}`));
       })
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.cart !== prevProps.cart) {
-      this.loadCartData(this.props.cart);
-    }
   }
 
   removeItem = (itemID, itemSize) => {
@@ -176,11 +175,11 @@ class HeaderMain extends Component {
             <p>Ежедневно: с 09-00 до 21-00</p>
           </div>
           <div className="header-main__logo">
-            <NavLink to="/">
+            <Link to="/">
               <h1>
                 <img src={header_logo} alt="logotype" />
               </h1>
-            </NavLink>
+            </Link>
             <p>Обувь и аксессуары для всей семьи</p>
           </div>
           <div className="header-main__profile">
@@ -205,18 +204,18 @@ class HeaderMain extends Component {
         </div>
         <div className="header-main__hidden-panel hidden-panel">
           <div className="hidden-panel__profile">
-            <NavLink to="/">Личный кабинет</NavLink>
-            <NavLink to="/favorite">
-              <i className="fa fa-heart-o" aria-hidden="true"></i>Избранное</NavLink>
-            <NavLink to="/">Выйти</NavLink>
+            <Link to="/">Личный кабинет</Link>
+            <Link to="/favorite">
+              <i className="fa fa-heart-o" aria-hidden="true"></i>Избранное</Link>
+            <Link to="/">Выйти</Link>
           </div>
-          {localStorage.postCartIDKey ?
+          {loadedCartItems.length > 0 ?
             <div className="hidden-panel__basket basket-dropped">
               <div className="basket-dropped__title">
                 В вашей корзине:
                   </div>
               <ProductList loadedCartItems={loadedCartItems} removeFunc={this.removeItem} />
-              <NavLink className="basket-dropped__order-button" to="/order" onClick={this.sendCartItemsToOrder}>Оформить заказ</NavLink>
+              <Link className="basket-dropped__order-button" to="/order" onClick={this.sendCartItemsToOrder}>Оформить заказ</Link>
             </div> : <div className="hidden-panel__basket basket-dropped">
               <div className="basket-dropped__title">В корзине пока ничего нет. Не знаете, с чего начать? Посмотрите наши новинки!</div>
             </div>}
@@ -253,10 +252,10 @@ class ListItem extends Component {
   render() {
     return (
       <div className="product-list__item">
-        <NavLink to={`productCard/${this.props.id}`} className="product-list__pic_wrap">
+        <Link to={`productCard/${this.props.id}`} className="product-list__pic_wrap">
           <img className="product-list__pic" src={this.props.images[0]} alt={this.props.title} />
           <p className="product-list__product">{this.props.title}, {this.props.brand}</p>
-        </NavLink>
+        </Link>
         <div className="product-list__fill"></div>
         <div className="product-list__price">
           {this.props.price}
@@ -324,7 +323,7 @@ class DroppedMenu extends Component {
     } else {
       return filters[type].map(name => (
         <li key={name} className="dropped-menu__item">
-          <NavLink to={`/catalogue/`} onClick={this.props.filterLoader({ activeCategory, type, name })}>{name}</NavLink>
+          <Link to={`/catalogue/`} onClick={this.props.filterLoader({ activeCategory, type, name })}>{name}</Link>
         </li>
       ));
     }

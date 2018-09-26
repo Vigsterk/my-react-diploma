@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { Catalogue, Favorite, Footer, Header, Order, OrderEnd, MainPage, ProductCard } from './components'
+import { Catalogue, Favorite, Footer, Header, Order, OrderEnd, MainPage, ProductCard } from './components';
 import './App.css';
-import { Router, Route } from 'react-router-dom'
-import dataLoader from "./components/Fetch/Fetch"
+import { Router, Route } from 'react-router-dom';
+import dataLoader from "./components/Fetch/Fetch";
 import createHistory from 'history/createBrowserHistory';
-const history = createHistory()
+const history = createHistory();
 
 class App extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       productCartItems: null,
       filters: null,
@@ -18,19 +18,10 @@ class App extends Component {
       orderDetails: null,
       catalogueFilterParam: null,
       catalogueParam: null
-    }
+    };
 
     this.CarryedMainPage = this.bindProps(MainPage, {
       categories: this.state.categories
-    });
-
-    this.CarryedHeader = this.bindProps(Header, {
-      cart: this.state.productCartItems,
-      categories: this.state.categories,
-      filters: this.state.filters,
-      func: this.orderLoader,
-      filterLoader: this.mainMenuFilterLoader.CarryedFavorite,
-      search: this.searchParamLoader,
     });
 
     this.CarryedCatalogue = this.bindProps(Catalogue, {
@@ -57,23 +48,14 @@ class App extends Component {
       func: this.reloadCategories,
       cartUploader: this.cartItemUploader,
     });
-  }
+  };
 
   componentDidMount() {
-    let filters = dataLoader('filters')
-    let categories = dataLoader('categories')
+    let filters = dataLoader('filters');
+    let categories = dataLoader('categories');
     Promise.all([filters, categories]).then(([filters, categories]) => {
       this.CarryedMainPage = this.bindProps(MainPage, {
         categories: categories
-      });
-
-      this.CarryedHeader = this.bindProps(Header, {
-        cart: this.state.productCartItems,
-        categories: categories,
-        filters: filters,
-        func: this.orderLoader,
-        filterLoader: this.mainMenuFilterLoader,
-        search: this.searchParamLoader,
       });
 
       this.CarryedCatalogue = this.bindProps(Catalogue, {
@@ -86,12 +68,12 @@ class App extends Component {
       this.setState({
         categories: categories,
         filters: filters
-      })
+      });
     },
       reason => {
         console.log(reason)
       });
-  }
+  };
 
   orderLoader = (data) => {
     this.CarryedOrder = this.bindProps(Order, {
@@ -102,8 +84,8 @@ class App extends Component {
     });
     this.setState({
       orderItems: data
-    })
-  }
+    });
+  };
 
   orderDoneLoader = (param) => {
     this.CarryedOrderEnd = this.bindProps(OrderEnd, {
@@ -111,15 +93,15 @@ class App extends Component {
     });
     this.setState({
       orderDetails: param
-    })
-  }
+    });
+  };
 
   cartItemUploader = (data) => {
     this.setState({
       productCartItems: data,
       cartId: data.id
-    })
-  }
+    });
+  };
 
   mainMenuFilterLoader = ({ activeCategory, type, name }) => (event) => {
     const selectedCategories = `categoryId=${activeCategory.id}&${type}=${name}`;
@@ -133,13 +115,11 @@ class App extends Component {
     this.setState({
       catalogueFilterParam: selectedCategories,
       catalogueParam: { activeCategory, selectedCategoriesProps }
-    })
-  }
+    });
+  };
 
   searchParamLoader = (searchValue) => {
-    console.log(searchValue)
-    const searchParam = `search=${searchValue}`
-    console.log(searchParam)
+    const searchParam = `search=${searchValue}`;
     this.CarryedCatalogue = this.bindProps(Catalogue, {
       categories: this.state.categories,
       filters: this.state.filters,
@@ -148,17 +128,19 @@ class App extends Component {
     });
     this.setState({
       filterParam: searchParam
-    })
-  }
+    });
+  };
 
   bindProps = (Component, bindingProps) => (selfProps) => <Component {...bindingProps}{...selfProps} />;
 
   render() {
-    const { CarryedMainPage, CarryedCatalogue, CarryedFavorite, CarryedOrder, CarryedOrderEnd, CarryedProductCard, CarryedHeader } = this;
+    const { CarryedMainPage, CarryedCatalogue, CarryedFavorite, CarryedOrder, CarryedOrderEnd, CarryedProductCard } = this;
     return (
       <Router basename={process.env.PUBLIC_URL} history={history}>
         <div className='container'>
-          {this.state.categories && <CarryedHeader history={history} />}
+          {this.state.categories && <Header history={history} cart={this.state.productCartItems}
+            categories={this.state.categories} filters={this.state.filters} func={this.orderLoader}
+            filterLoader={this.mainMenuFilterLoader} search={this.searchParamLoader} />}
           {this.state.categories && <Route path='/' exact component={CarryedMainPage} />}
           {this.state.filters && <Route path='/catalogue/' exact component={CarryedCatalogue} />}
           <Route path='/favorite' exact component={CarryedFavorite} />
@@ -168,8 +150,8 @@ class App extends Component {
           {this.state.categories && <Footer />}
         </div>
       </Router>
-    )
-  }
-}
+    );
+  };
+};
 
 export default App;

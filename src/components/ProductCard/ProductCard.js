@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './style-product-card.css';
-import { NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import SitePath from '../SitePath/SitePath'
 import OverlookedSlider from "./OverlookedSlider"
 
@@ -228,7 +228,7 @@ class ProductCard extends Component {
               {data.images && <FavoriteSlider data={data} func={this.changeImage} />}
               <div className="main-screen__favourite-product-pic">
                 {data.images && <img src={selectedImage} alt={data.title} />}
-                <NavLink to="/" className="main-screen__favourite-product-pic__zoom" />
+                <Link to="/" className="main-screen__favourite-product-pic__zoom" />
               </div>
               <div className="main-screen__product-info">
                 <div className="product-info-title">
@@ -244,7 +244,7 @@ class ProductCard extends Component {
                       </tr>
                       <tr>
                         <td className="left-col">Производитель:</td>
-                        <td className="right-col"><NavLink to="/"><span className="producer">{data.brand}</span></NavLink></td>
+                        <td className="right-col"><Link to="/"><span className="producer">{data.brand}</span></Link></td>
                       </tr>
                       <tr>
                         <td className="left-col">Цвет:</td>
@@ -276,7 +276,7 @@ class ProductCard extends Component {
                   />)}
                 </ul>
                 <div className="size-wrapper">
-                  <NavLink to="/"><span className="size-rule"></span><p className="size-table">Таблица размеров</p></NavLink>
+                  <Link to="/"><span className="size-rule"></span><p className="size-table">Таблица размеров</p></Link>
                 </div>
                 <div className="in-favourites-wrapper" onClick={this.favoriteAdd}>
                   <div className={isActive ? 'favourite-active' : 'favourite'}></div>
@@ -330,8 +330,8 @@ class FavoriteSlider extends Component {
 
   arrowDown = () => {
     const tempDataArr = [...this.state.favoriteImage]
-    let firstItem = tempDataArr.shift()
-    tempDataArr.push(firstItem)
+    let lastItem = tempDataArr.pop()
+    tempDataArr.unshift(lastItem)
     this.setState({
       favoriteImage: tempDataArr,
     })
@@ -478,9 +478,9 @@ class ProductFirst extends Component {
     return (
       <div className="similar-products-slider__item-list__item-card item">
         <div className="similar-products-slider__item">
-          <NavLink to={`/productCard/${data.id}`}>
+          <Link to={`/productCard/${data.id}`}>
             <img src={data.images[0]} className={`similar-products-slider__item-pic`} alt="firstPic" />
-          </NavLink>
+          </Link>
         </div>
         <ProductInfo data={this.props.data} />
       </div>
@@ -494,9 +494,9 @@ class ProductActive extends Component {
     return (
       <div className="similar-products-slider__item-list__item-card item">
         <div className="similar-products-slider__item">
-          <NavLink to={`/productCard/${data.id}`}>
+          <Link to={`/productCard/${data.id}`}>
             <img src={data.images[0]} className={`similar-products-slider__item-pic`} alt="activePic" />
-          </NavLink>
+          </Link>
         </div>
         <ProductInfo data={this.props.data} />
       </div>
@@ -510,9 +510,9 @@ class ProductLast extends Component {
     return (
       <div className="similar-products-slider__item-list__item-card item">
         <div className="similar-products-slider__item">
-          <NavLink to={`/productCard/${data.id}`}>
+          <Link to={`/productCard/${data.id}`}>
             <img src={data.images[0]} className={`similar-products-slider__item-pic`} alt="lastPic" />
-          </NavLink>
+          </Link>
         </div>
         <ProductInfo data={this.props.data} />
       </div>

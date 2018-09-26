@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import slider from '../js/slider';
-import { NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 class MainPage extends Component {
   constructor(props) {
@@ -72,18 +72,18 @@ const Slider = () => {
   return (
     <div className="wrapper">
       <div className="slider__pictures">
-        <NavLink className="slider__image" to="/">
+        <Link className="slider__image" to="/">
           <img src="img/slider.jpg" alt="slide img" />
-        </NavLink>
-        <NavLink className="slider__image" to="/">
+        </Link>
+        <Link className="slider__image" to="/">
           <img src="img/slider180deg.jpeg" alt="slide img" />
-        </NavLink>
-        <NavLink className="slider__image" to="/">
+        </Link>
+        <Link className="slider__image" to="/">
           <img src="img/slider.jpg" alt="slide img" />
-        </NavLink>
-        <NavLink className="slider__image" to="/">
+        </Link>
+        <Link className="slider__image" to="/">
           <img src="img/slider180deg.jpeg" alt="slide img" />
-        </NavLink>
+        </Link>
         <div className="arrow slider__arrow slider__arrow_left"></div>
         <div className="arrow slider__arrow slider__arrow_right"></div>
         <div className="slider__circles">
@@ -268,9 +268,9 @@ class DealsSlider extends Component {
 const ProductFirst = (props) => {
   return (
     <div className="new-deals__product new-deals__product_first">
-      <NavLink className="new-deals__product_link" to={`productCard/${props.id}`}>
+      <Link className="new-deals__product_link" to={`productCard/${props.id}`}>
         <img className="new-deals__product_first_img" src={props.images} alt={"lastProduct"} />
-      </NavLink>
+      </Link>
     </div>)
 }
 
@@ -280,9 +280,9 @@ class ProductActive extends Component {
     return (
       <div>
         <div className="new-deals__product new-deals__product_active">
-          <NavLink className="new-deals__product_link" to={`productCard/${this.props.id}`}>
+          <Link className="new-deals__product_link" to={`productCard/${this.props.id}`}>
             <img className="new-deals__product_active_img" src={this.props.images} alt={"ActiveProduct"} />
-          </NavLink>
+          </Link>
           <div className={this.props.isActive ? "new-deals__product_favorite-chosen" : "new-deals__product_favorite"} onClick={this.handleClick}></div>
         </div>
       </div>
@@ -293,16 +293,16 @@ class ProductActive extends Component {
 const ProductLast = (props) => {
   return (
     <div className="new-deals__product new-deals__product_last">
-      <NavLink className="new-deals__product_link" to={`productCard/${props.id}`}>
+      <Link className="new-deals__product_link" to={`productCard/${props.id}`}>
         <img className="new-deals__product_last_img" src={props.images} alt={"LastProduct"} />
-      </NavLink>
+      </Link>
     </div>)
 }
 
 const ProductInfo = (props) => {
   return (
     <div className="new-deals__product-info">
-      <NavLink to="productCard" className="h3">{props.info.title}</NavLink>
+      <Link to="productCard" className="h3">{props.info.title}</Link>
       <p>Производитель:
           <span>{props.info.brand}</span>
       </p>
@@ -315,16 +315,16 @@ const Sales = () => {
   return (
     <div className="sales-and-news__items">
       {salesItemsData.map(item => <div key={item.id} className={`sales-and-news__item sales-and-news__item_${item.id}`}>
-        <NavLink to={item.to} className="sales-and-news__item-link">
+        <Link to={item.to} className="sales-and-news__item-link">
           <h3 className="h3">{item.title[0]}<br /><span>{item.title[1]}</span></h3>
-        </NavLink>
+        </Link>
       </div>)}
       <div className="sales-and-news__news">
         <div className="sales-and-news__arrow sales-and-news__arrow_up arrow"></div>
         {salesNewsData.map(item =>
           <div key={item.id} className="sales-and-news__new">
             <time dateTime={item.time}>{item.pubdate}</time>
-            <NavLink className="sales-and-news__item-link" to={item.to}>{item.title}</NavLink>
+            <Link className="sales-and-news__item-link" to={item.to}>{item.title}</Link>
           </div>)}
         <div className="sales-and-news__arrow sales-and-news__arrow_down arrow"></div>
       </div>

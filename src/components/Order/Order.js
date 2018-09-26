@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './style-order.css';
-import { NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import SitePath from '../SitePath/SitePath';
 
 class Order extends Component {
@@ -170,7 +170,7 @@ class BasketItem extends Component {
       <div className="basket-item">
         <div className="basket-item__pic"><img src={products.images[0]} alt={products.title} /></div>
         <div className="basket-item__product">
-          <div className="basket-item__product-name"><NavLink to={`productCard/${products.id}`}>{products.title}</NavLink></div>
+          <div className="basket-item__product-name"><Link to={`productCard/${products.id}`}>{products.title}</Link></div>
           <div className="basket-item__product-features">
             <div className="basket-item__size">Размер: <span>{size}</span></div>
             <div className="basket-item__producer">Производитель: <span>{products.brand}</span></div>
