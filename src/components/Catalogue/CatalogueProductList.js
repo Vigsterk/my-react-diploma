@@ -21,7 +21,9 @@ class CatalogueProductList extends Component {
       this.loadCatalogue(nextProps.urlParam);
     };
   };
+
   loadCatalogue = (urlParam) => {
+    console.log(urlParam)
     fetch(`https://api-neto.herokuapp.com/bosa-noga/products?${urlParam}`, {
       method: "GET"
     })
@@ -62,7 +64,7 @@ class CatalogueProductList extends Component {
     this.setState({
       page: newPageNumber
     });
-  }
+  };
 
   checkActiveId(itemID) {
     let favoriteData = this.state.favoriteKeyData && this.state.favoriteKeyData;
@@ -193,4 +195,4 @@ class ListItem extends Component {
   };
 };
 
-export default CatalogueProductList
+export default CatalogueProductList;

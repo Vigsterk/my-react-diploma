@@ -6,9 +6,9 @@ import Pagination from '../Pagination/Pagination';
 
 class Favorite extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     const favoriteKeyData = localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [];
-    console.log(favoriteKeyData)
+    console.log(favoriteKeyData);
     this.state = {
       sitepath: [
         {
@@ -23,37 +23,37 @@ class Favorite extends Component {
       page: 1,
       pages: Math.ceil(favoriteKeyData.length / 12),
       sortParam: 'date'
-    }
-  }
+    };
+  };
 
   setSortByFilter = (event) => {
-    const sortValue = event.currentTarget.value
+    const sortValue = event.currentTarget.value;
     this.setState({
       sortParam: `${sortValue}`
     });
     if (sortValue === "price") {
-      const sortedItems = [...this.state.favoriteData].sort((a, b) => a.price - b.price)
+      const sortedItems = [...this.state.favoriteData].sort((a, b) => a.price - b.price);
       this.setState({
         favoriteData: sortedItems
-      })
+      });
     } else if (sortValue === "brand") {
-      const sortedItems = [...this.state.favoriteData].sort((a, b) => a.brand - b.brand)
+      const sortedItems = [...this.state.favoriteData].sort((a, b) => a.brand - b.brand);
       this.setState({
         favoriteData: sortedItems
-      })
+      });
     } else {
       this.setState({
         favoriteData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : []
-      })
-    }
-  }
+      });
+    };
+  };
 
   pageClick = (page) => (event) => {
     event.preventDefault();
     this.setState({
       page: page
     });
-  }
+  };
 
   arrowClick = (value) => (event) => {
     event.preventDefault();
@@ -62,49 +62,48 @@ class Favorite extends Component {
     this.setState({
       page: newPageNumber
     });
-
-  }
+  };
 
   favoriteRemove = (event, itemID) => {
-    event.preventDefault()
+    event.preventDefault();
     let favoriteFilter = this.state.favoriteData.filter((item) => itemID === item.id);
-    let tempfavoriteData = [...this.state.favoriteData]
+    let tempfavoriteData = [...this.state.favoriteData];
     if (favoriteFilter.length > 0 && favoriteFilter[0].id === itemID) {
-      let removeData = this.state.favoriteData.indexOf(favoriteFilter[0])
-      tempfavoriteData.splice(removeData, 1)
+      let removeData = this.state.favoriteData.indexOf(favoriteFilter[0]);
+      tempfavoriteData.splice(removeData, 1);
       this.setState({
         favoriteData: tempfavoriteData,
         isActive: false,
         pages: Math.ceil(tempfavoriteData.length / 12)
-      })
+      });
       if (tempfavoriteData.length < 13) {
         this.setState({
           page: 1
-        })
-      }
+        });
+      };
       const serialTempData = JSON.stringify(tempfavoriteData);
       localStorage.setItem("favoriteKey", serialTempData);
-    }
-  }
+    };
+  };
 
   GetNoun = (number, one, two, five, none) => {
     number = Math.abs(number);
     number %= 100;
     if (!number) {
       return none;
-    }
+    };
     if (number >= 5 && number <= 20) {
       return five;
-    }
+    };
     number %= 10;
     if (number === 1) {
       return one;
-    }
+    };
     if (number >= 2 && number <= 4) {
       return two;
-    }
+    };
     return five;
-  }
+  };
 
   render() {
     return (
@@ -133,12 +132,12 @@ class Favorite extends Component {
         </main>
         {<Pagination page={this.state.page} pages={this.state.pages} pageClick={this.pageClick} arrowClick={this.arrowClick} />}
       </div>
-    )
-  }
-}
+    );
+  };
+};
 
 class ListItem extends Component {
-  handleClick = (event) => this.props.func(event, this.props.id)
+  handleClick = (event) => this.props.func(event, this.props.id);
   render() {
     return (
       <Link key={this.props.id} className="item-list__item-card item" to={`productCard/${this.props.id}`}>
@@ -158,9 +157,9 @@ class ListItem extends Component {
           {this.props.oldPrice && <p className="item-price old-price"><s>{this.props.oldPrice}</s></p>}
         </div>
       </Link>
-    )
-  }
-}
+    );
+  };
+};
 
 class SortBy extends Component {
   render() {
@@ -177,8 +176,8 @@ class SortBy extends Component {
           <option value="date">по дате добавления</option>
         </select>
       </div>
-    )
-  }
-}
+    );
+  };
+};
 
-export default Favorite
+export default Favorite;

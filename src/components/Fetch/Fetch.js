@@ -17,7 +17,7 @@ const dataLoader = (param) => {
       .catch(error => {
         reject(error)
       });
-  })
-}
+  });
+};
 
 export default dataLoader

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import slider from '../js/slider';
 import { Link } from 'react-router-dom'
+import NewDeals from './NewDeals'
 
 class MainPage extends Component {
   constructor(props) {
@@ -11,6 +12,7 @@ class MainPage extends Component {
       check: false
     }
   }
+
   componentDidMount() {
     var f = document.querySelector('.slider__pictures'),
       a = f.getElementsByClassName('slider__image'),
@@ -46,7 +48,6 @@ class MainPage extends Component {
     const featuredData = this.state.featuredData
     return categories.filter(category => featuredData.find(item => item.categoryId === category.id)).sort((a, b) => a.id > b.id)
   }
-
 
   render() {
     const { featuredData, productInfo } = this.state
@@ -94,219 +95,6 @@ const Slider = () => {
         </div>
         <h2 className="h2">К весне готовы!</h2>
       </div>
-    </div>
-  )
-}
-
-class NewDeals extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      productInfo: this.props.info,
-      activeData: null
-    }
-  }
-
-  loadProductInfo = (param) => {
-    this.setState({
-      productInfo: param
-    })
-  }
-
-  setActiveCategory = (idx) => {
-    const { categories, data } = this.props
-    let activeCategoryFilter = data.filter((item) =>
-      categories[idx].id === item.categoryId
-    )
-    if (activeCategoryFilter.length > 0) {
-      this.setState({
-        activeData: activeCategoryFilter
-      })
-    }
-  }
-
-
-  render() {
-    return (
-      <section className="new-deals wave-bottom">
-        <h2 className="h2">Новинки</h2>
-        <NewDealsMenu categories={this.props.categories} func={this.setActiveCategory} />
-        <DealsSlider data={this.state.activeData ? this.state.activeData : this.props.data} infoFunc={this.loadProductInfo} />
-        <ProductInfo info={this.state.productInfo} />
-      </section>
-    )
-  }
-}
-
-class NewDealsMenu extends NewDeals {
-  constructor(props) {
-    super(props)
-    this.state = {
-      activeIndex: "",
-    }
-  }
-  handleClick = (index) => {
-    this.props.func(index)
-    this.setState({
-      activeIndex: index,
-    })
-  }
-  render() {
-    const { activeIndex } = this.state
-    const { categories } = this.props
-    return (
-      <div className="new-deals__menu">
-        <ul className="new-deals__menu-items">
-          {categories && categories.map((item, index) => <ListItem key={item.id}
-            url={item.url}
-            func={this.handleClick}
-            title={item.title}
-            isActive={activeIndex === index}
-            idx={index} />)}
-        </ul>
-      </div>
-    )
-  }
-}
-
-class ListItem extends Component {
-  handleClick = () => this.props.func(this.props.idx)
-  render() {
-    return (
-      <li className={this.props.isActive ? 'new-deals__menu-item new-deals__menu-item_active' : 'new-deals__menu-item'}>
-        <button className={this.props.isActive ? 'new-deals__item-button new-deals__item-button_active' : 'new-deals__item-button'} onClick={this.handleClick}>{this.props.title}</button>
-      </li>)
-  }
-}
-
-class DealsSlider extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      data: this.props.data,
-      favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [],
-      func: this.props.infoFunc,
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.data !== prevProps.data) {
-      this.setState({
-        data: this.props.data
-      });
-    }
-  }
-
-  favoriteAdd = (event, itemID) => {
-    event.preventDefault()
-    let tempFavoriteKeyData = [...this.state.favoriteKeyData]
-    let favoriteFilter = this.state.favoriteKeyData.filter((el) => itemID === el.id);
-    if (favoriteFilter.length > 0 && favoriteFilter[0].id === itemID) {
-      let removeData = this.state.favoriteKeyData.indexOf(favoriteFilter[0])
-      tempFavoriteKeyData.splice(removeData, 1)
-      this.setState({
-        favoriteKeyData: tempFavoriteKeyData
-      })
-      const serialTempData = JSON.stringify(tempFavoriteKeyData)
-      localStorage.setItem("favoriteKey", serialTempData);
-    } else {
-      tempFavoriteKeyData.push(this.state.data.find((el) => itemID === el.id))
-      this.setState({
-        favoriteKeyData: tempFavoriteKeyData,
-      })
-      const serialTempData = JSON.stringify(tempFavoriteKeyData)
-      localStorage.setItem("favoriteKey", serialTempData);
-    }
-  }
-
-  moveLeft = () => {
-    const tempDataArr = [...this.state.data]
-    let firstItem = tempDataArr.shift()
-    tempDataArr.push(firstItem)
-    this.setState({
-      data: tempDataArr,
-    })
-    this.state.func(tempDataArr[1])
-  }
-
-  moveRight = () => {
-    const tempDataArr = [...this.state.data]
-    let lastItem = tempDataArr.pop()
-    tempDataArr.unshift(lastItem)
-    this.setState({
-      data: tempDataArr,
-    })
-    this.state.func(tempDataArr[1])
-  }
-
-  checkActiveId(itemID) {
-    let favoriteData = this.state.favoriteKeyData && this.state.favoriteKeyData
-    if (favoriteData.length > 0) {
-      let result = favoriteData.find((el) => itemID === el.id)
-      return result
-    }
-  }
-
-  render() {
-    return (
-      <div className="new-deals__slider">
-        <div className="new-deals__arrow new-deals__arrow_left arrow" onClick={this.moveLeft}></div>
-        <ProductFirst images={this.state.data[0].images[0]} id={this.state.data[0].id} />
-        <ProductActive
-          images={this.state.data[1].images[0]}
-          func={this.favoriteAdd}
-          id={this.state.data[1].id}
-          isActive={this.checkActiveId(this.state.data[1].id)}
-        />
-        <ProductLast images={this.state.data[2].images[0]} id={this.state.data[2].id} />
-        <div className="new-deals__arrow new-deals__arrow_right arrow" onClick={this.moveRight}></div>
-      </div>
-    )
-  }
-}
-
-const ProductFirst = (props) => {
-  return (
-    <div className="new-deals__product new-deals__product_first">
-      <Link className="new-deals__product_link" to={`productCard/${props.id}`}>
-        <img className="new-deals__product_first_img" src={props.images} alt={"lastProduct"} />
-      </Link>
-    </div>)
-}
-
-class ProductActive extends Component {
-  handleClick = (event) => this.props.func(event, this.props.id)
-  render() {
-    return (
-      <div>
-        <div className="new-deals__product new-deals__product_active">
-          <Link className="new-deals__product_link" to={`productCard/${this.props.id}`}>
-            <img className="new-deals__product_active_img" src={this.props.images} alt={"ActiveProduct"} />
-          </Link>
-          <div className={this.props.isActive ? "new-deals__product_favorite-chosen" : "new-deals__product_favorite"} onClick={this.handleClick}></div>
-        </div>
-      </div>
-    )
-  }
-}
-
-const ProductLast = (props) => {
-  return (
-    <div className="new-deals__product new-deals__product_last">
-      <Link className="new-deals__product_link" to={`productCard/${props.id}`}>
-        <img className="new-deals__product_last_img" src={props.images} alt={"LastProduct"} />
-      </Link>
-    </div>)
-}
-
-const ProductInfo = (props) => {
-  return (
-    <div className="new-deals__product-info">
-      <Link to="productCard" className="h3">{props.info.title}</Link>
-      <p>Производитель:
-          <span>{props.info.brand}</span>
-      </p>
-      <h3 className="h3">{props.info.price}₽</h3>
     </div>
   )
 }
@@ -385,7 +173,6 @@ const AboutUs = () => {
     <div>
       <h2 className="about-us__title">Клиенты делают заказ
         <br /> в интернет-магазине BosaNoga!</h2>
-
       <p className="about-us__text">
         В Интернете можно встретить немало магазинов, предлагающих аксессуары. Но именно к нам хочется возвращаться снова и снова.
       </p>
@@ -409,7 +196,6 @@ const AboutUs = () => {
         вы сможете быть модным и стильным как осенью-зимой, так и весной-летом. Просто наберите номер нашего телефона, и мы
         поможем вам определиться с покупкой.
       </p>
-
       <span className="about-us__text_overlay"></span>
       <button className="about-us__text_button">читать</button>
     </div>

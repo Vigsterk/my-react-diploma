@@ -21,4 +21,4 @@ const topMenuData = [
   },
 ]
 
-export default topMenuData 
+export default topMenuData;

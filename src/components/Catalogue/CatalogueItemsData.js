@@ -92,4 +92,4 @@ const sidebarColorData = [
 ]
 
 
-export default sidebarColorData
+export default sidebarColorData;

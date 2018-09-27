@@ -79,9 +79,9 @@ class Catalogue extends Component {
           break;
         default:
           break;
-      }
+      };
     });
-  }
+  };
 
   setSortByFilter = (event) => {
     const sortValue = event.currentTarget.value
@@ -92,6 +92,7 @@ class Catalogue extends Component {
 
   setFilterParam = ({ name, value }) => {
     console.log(name, value)
+    if (this.state[name] === value) return;
     this.setState({
       [name]: value
     });
@@ -149,6 +150,7 @@ class Catalogue extends Component {
     const colorParam = color ? `color=${color}&` : '';
     const reasonParam = reason ? `reason=${reason}&` : '';
     const seasonParam = season ? `season=${season}&` : '';
+    console.log(seasonParam)
     const brandParam = brand ? `brand=${brand}&` : '';
     const minPriceParam = minPrice ? `minPrice=${minPrice}&` : '';
     const maxPriceParam = maxPrice ? `maxPrice=${maxPrice}&` : '';

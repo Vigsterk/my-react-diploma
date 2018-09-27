@@ -5,14 +5,14 @@ class Footer extends Component {
     super(props);
     this.state = {
       isSubscribed: false
-    }
-  }
+    };
+  };
 
   subscribed = () => {
     this.setState({
       isSubscribed: true
     });
-  }
+  };
 
   render() {
     return (
@@ -74,8 +74,8 @@ class Footer extends Component {
         </div>
       </footer>
     );
-  }
-}
+  };
+};
 
 class Subscribe extends Component {
   constructor(props) {
@@ -83,22 +83,22 @@ class Subscribe extends Component {
     this.state = {
       subscribe: 'all',
       email: ''
-    }
-  }
+    };
+  };
 
   onChange = (event) => {
     const { value, name } = event.currentTarget;
     this.setState({
       [name]: value
     });
-  }
+  };
 
   submitEmail = (event) => {
     event.preventDefault();
     const reg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!this.state.email.match(reg)) return;
     this.props.subscribed();
-  }
+  };
 
   render() {
     const { subscribe, email } = this.state;
@@ -148,7 +148,7 @@ class Subscribe extends Component {
         <input className="subscribe__submit" type="submit" value="ПОДПИСАТЬСЯ" />
       </form>
     );
-  }
-}
+  };
+};
 
 export default Footer;
