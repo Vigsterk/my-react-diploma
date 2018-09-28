@@ -108,7 +108,7 @@ class DroppedMenu extends Component {
           <Link to={`/catalogue/`} onClick={this.props.filterLoader({ activeCategory, type, name })}>{name}</Link>
         </li>
       ));
-    };
+    }
   };
 
   render() {

@@ -6,7 +6,7 @@ import {
 } from "../js/script";
 import header_logo from '../img/header-logo.png';
 import { Link } from "react-router-dom";
-import ProductList from './HeaderMainProductList'
+import ProductList from './HeaderMainProductList';
 
 class HeaderMain extends Component {
   constructor(props) {
@@ -174,8 +174,8 @@ class HeaderMain extends Component {
             </div>}
         </div>
       </div>
-    )
-  }
-}
+    );
+  };
+};
 
 export default HeaderMain;

@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import './style-order.css';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import SitePath from '../SitePath/SitePath';
 
 class Order extends Component {
   constructor(props) {
-    super(props)
-    console.log(this.props)
+    super(props);
     this.state = {
       sitepath: [
         {
@@ -24,50 +23,50 @@ class Order extends Component {
       totalPrice: null,
       cartItems: this.props.cartItems,
       cartId: this.props.cartId ? this.props.cartId : JSON.parse(localStorage.postCartIDKey).id
-    }
-  }
+    };
+  };
 
   componentDidMount() {
-    this.props.cartItems && this.getTotalPrice()
-  }
+    this.props.cartItems && this.getTotalPrice();
+  };
 
   getTotalPrice = (num, idx) => {
-    let tempCartItem = [...this.state.cartItems]
+    let tempCartItem = [...this.state.cartItems];
     if (num) {
-      tempCartItem[idx].amount = num
-      this.reloadCart(idx, num)
-    }
-    let totalPrice = ""
-    let priceArr = []
+      tempCartItem[idx].amount = num;
+      this.reloadCart(idx, num);
+    };
+    let totalPrice = "";
+    let priceArr = [];
     tempCartItem.forEach((item) => {
-      priceArr.push(item.products.price * item.amount)
+      priceArr.push(item.products.price * item.amount);
       totalPrice = priceArr.reduce((a, b) => {
-        return a + b
-      })
-    })
+        return a + b;
+      });
+    });
     this.setState({
       totalPrice: totalPrice
-    })
-  }
+    });
+  };
 
   deleteItem = (idx) => {
-    let tempCartItem = [...this.state.cartItems]
-    tempCartItem.splice(idx, 1)
-    this.reloadCart(idx, 0)
+    let tempCartItem = [...this.state.cartItems];
+    tempCartItem.splice(idx, 1);
+    this.reloadCart(idx, 0);
     this.setState({
       cartItems: tempCartItem
-    })
-  }
+    });
+  };
 
   reloadCart = (idx, num) => {
-    const { cartItems } = this.state
+    const { cartItems } = this.state;
     const cartItemProps = {
       id: cartItems[idx].products.id,
       size: cartItems[idx].size,
       amount: cartItems[idx].amount = num
-    }
-    const serialCartItemProps = JSON.stringify(cartItemProps)
-    const cartIDJson = JSON.parse(localStorage.postCartIDKey)
+    };
+    const serialCartItemProps = JSON.stringify(cartItemProps);
+    const cartIDJson = JSON.parse(localStorage.postCartIDKey);
     fetch(`https://api-neto.herokuapp.com/bosa-noga/cart/${cartIDJson.id}`, {
       method: "POST",
       headers: {
@@ -85,15 +84,15 @@ class Order extends Component {
       .then(data => {
         const serialTempData = JSON.stringify(data.data);
         localStorage.setItem("postCartIDKey", serialTempData);
-        this.props.cartUploader(data.data)
+        this.props.cartUploader(data.data);
       })
       .catch(error => {
         console.log(error)
       });
-  }
+  };
 
   render() {
-    const { cartItems } = this.state
+    const { cartItems } = this.state;
     return (
       <div className="wrapper order-wrapper">
         <SitePath pathprops={this.state.sitepath} />
@@ -119,53 +118,52 @@ class Order extends Component {
           <OrderConfimed price={this.state.totalPrice} cartId={this.state.cartId} orderDone={this.props.orderDone} history={this.props.history} />
         </section>
       </div>
-    )
-  }
-}
+    );
+  };
+};
 
 class BasketItem extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       amount: this.props.amount,
       price: this.props.products.price * this.props.amount
-    }
-  }
+    };
+  };
 
   incrementCount = () => {
-    const { amount, price } = this.state
-    let tempCount = amount
+    const { amount, price } = this.state;
+    let tempCount = amount;
     tempCount += 1;
     let tempPrice = price + this.props.products.price;
     this.setState({
       amount: tempCount,
       price: tempPrice
     });
-    this.props.func(tempCount, this.props.idx)
+    this.props.func(tempCount, this.props.idx);
   };
 
   decrementCount = () => {
-    const { amount, price } = this.state
+    const { amount, price } = this.state;
     let tempCount = amount;
-    let tempPrice = price
-    tempCount -= 1
+    let tempPrice = price;
+    tempCount -= 1;
     if (tempCount === 0) {
-      this.props.deleteFunc(this.props.idx)
-    }
-
+      this.props.deleteFunc(this.props.idx);
+    };
     if (tempPrice > this.props.products.price) {
-      tempPrice -= this.props.products.price
-    }
+      tempPrice -= this.props.products.price;
+    };
     this.setState({
       amount: tempCount,
       price: tempPrice
     });
-    this.props.func(tempCount, this.props.idx)
+    this.props.func(tempCount, this.props.idx);
   };
 
   render() {
-    const { products, size } = this.props
-    const { amount, price } = this.state
+    const { products, size } = this.props;
+    const { amount, price } = this.state;
     return (
       <div className="basket-item">
         <div className="basket-item__pic"><img src={products.images[0]} alt={products.title} /></div>
@@ -184,13 +182,13 @@ class BasketItem extends Component {
         </div>
         <div className="basket-item__price">{price}<i className="fa fa-rub" aria-hidden="true"></i></div>
       </div>
-    )
-  }
-}
+    );
+  };
+};
 
 class OrderConfimed extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       orderDetails: {
         name: '',
@@ -198,22 +196,24 @@ class OrderConfimed extends Component {
         address: '',
         paymentType: 'onlineCard',
       }
-    }
-  }
+    };
+  };
 
   setClientData = (event) => {
     const { value, name } = event.currentTarget;
     const { orderDetails } = this.state;
     orderDetails[name] = value;
     this.setState({ orderDetails });
-  }
+  };
+
   sendOrderData = (event) => {
     event.preventDefault();
     const { orderDetails } = this.state;
     const { cartId, price } = this.props;
     if (!orderDetails.name || !orderDetails.phone || !orderDetails.address || !cartId) {
       return null;
-    }
+    };
+
     const orderParam = {
       name: orderDetails.name,
       phone: orderDetails.phone,
@@ -221,6 +221,7 @@ class OrderConfimed extends Component {
       paymentType: orderDetails.paymentType,
       cart: cartId
     };
+
     fetch('https://api-neto.herokuapp.com/bosa-noga/order', {
       body: JSON.stringify(orderParam),
       credentials: 'same-origin',
@@ -230,7 +231,7 @@ class OrderConfimed extends Component {
       .then(response => {
         if (200 <= response.status && response.status < 300) {
           return response;
-        }
+        };
         throw new Error(response.statusText);
       })
       .then(response => response.json())
@@ -245,9 +246,10 @@ class OrderConfimed extends Component {
             totalPrice: price
           });
           this.props.history.push('/orderEnd');
-        }
+        };
       });
-  }
+  };
+
   render() {
     const { orderDetails } = this.state;
     return (
@@ -333,7 +335,7 @@ class OrderConfimed extends Component {
         </form>
       </div>
     );
-  }
-}
+  };
+};
 
 export default Order;

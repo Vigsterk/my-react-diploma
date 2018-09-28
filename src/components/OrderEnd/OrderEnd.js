@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom"
-import SitePath from '../SitePath/SitePath'
+import { Link } from "react-router-dom";
+import SitePath from '../SitePath/SitePath';
 
 const paymentTypes = {
   onlineCard: 'Картой онлайн',
   offlineCard: 'Картой курьеру',
   offlineCash: 'Наличными курьеру'
-}
+};
 
 class OrderEnd extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       sitepath: [
         {
@@ -30,16 +30,16 @@ class OrderEnd extends Component {
           title: "Заказ принят"
         }
       ]
-    }
-  }
+    };
+  };
 
   getPaymentType = () => {
     const { paymentType } = this.props.orderDetails;
-    return paymentTypes[paymentType]
-  }
+    return paymentTypes[paymentType];
+  };
 
   render() {
-    const { orderDetails } = this.props
+    const { orderDetails } = this.props;
     return (
       <div className="wrapper order-wrapper">
         <SitePath pathprops={this.state.sitepath} />
@@ -71,7 +71,8 @@ class OrderEnd extends Component {
           <Link to='/' className="order-done__continue">продолжить покупки</Link>
         </section>
       </div>
-    )
-  }
-}
+    );
+  };
+};
+
 export default OrderEnd;

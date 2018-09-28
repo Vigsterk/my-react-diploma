@@ -6,12 +6,11 @@ class Pagination extends Component {
     const { page, pages } = this.props;
     const tempArr = Array(pages)
       .fill(null).map((item, i) => i + 1).filter(number => number === 1 || number === pages || (((page - 3) < number) && (number < (page + 3))));
-
     if (pages < 5) return tempArr;
     if (page > 4) tempArr.splice(1, 0, '...');
     if (page < (pages - 3)) tempArr.splice((tempArr.length - 1), 0, '...');
     return tempArr;
-  }
+  };
 
   getPages(arr) {
     return arr
@@ -24,7 +23,7 @@ class Pagination extends Component {
           return <li className='pagination-li' key={page}>{page}</li>
         }
       });
-  }
+  };
 
   render() {
     return (
@@ -42,6 +41,7 @@ class Pagination extends Component {
         </div>
       </div>
     );
-  }
-}
-export default Pagination
+  };
+};
+
+export default Pagination;

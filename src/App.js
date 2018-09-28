@@ -137,18 +137,18 @@ class App extends Component {
     const { CarryedMainPage, CarryedCatalogue, CarryedFavorite, CarryedOrder, CarryedOrderEnd, CarryedProductCard } = this;
     return (
       <Router basename={process.env.PUBLIC_URL} history={history}>
-        <div className='container'>
-          {this.state.categories && <Header history={history} cart={this.state.productCartItems}
+        {(this.state.categories && this.state.filters) && <div className='container'>
+          <Header history={history} cart={this.state.productCartItems}
             categories={this.state.categories} filters={this.state.filters} func={this.orderLoader}
-            filterLoader={this.mainMenuFilterLoader} search={this.searchParamLoader} />}
-          {this.state.categories && <Route path='/' exact component={CarryedMainPage} />}
-          {this.state.filters && <Route path='/catalogue/' exact component={CarryedCatalogue} />}
+            filterLoader={this.mainMenuFilterLoader} search={this.searchParamLoader} />
+          <Route path='/' exact component={CarryedMainPage} />
+          <Route path='/catalogue/' exact component={CarryedCatalogue} />
           <Route path='/favorite' exact component={CarryedFavorite} />
           <Route path='/order' exact component={CarryedOrder} />
           <Route path='/orderEnd' exact component={CarryedOrderEnd} />
           <Route path='/productCard/:id' exact component={CarryedProductCard} />
-          {this.state.categories && <Footer />}
-        </div>
+          <Footer />
+        </div>}
       </Router>
     );
   };
