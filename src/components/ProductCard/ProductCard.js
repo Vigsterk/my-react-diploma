@@ -2,16 +2,17 @@ import React, { Component } from 'react';
 import './style-product-card.css';
 import { Link } from 'react-router-dom';
 import SitePath from '../SitePath/SitePath';
-import OverlookedSlider from './OverlookedSlider';
 import FavoriteSlider from './FavoriteSlider';
-import SimilarSlider from './FavoriteSlider';
+import OverlookedSlider from './OverlookedSlider';
+import SimilarSlider from './SimilarSlider';
 
 class ProductCard extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props)
     this.state = {
       sitepath: [],
-      data: [],
+      productData: null,
       selectedImage: [],
       id: props.match.params.id,
       favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [],
@@ -27,18 +28,21 @@ class ProductCard extends Component {
     };
   };
 
+  componentDidMount() {
+    this.loadProductCartData(this.state.id);
+  };
+
   componentDidUpdate(prevProps) {
     if (this.props.match.params.id !== prevProps.match.params.id) {
       this.setState({
         id: this.props.match.params.id,
       });
-      this.componentDidMount(this.props.match.params.id);
+      this.loadProductCartData(this.props.match.params.id);
     };
   };
 
-  componentDidMount(id) {
-    let preloadId = this.state.id
-    fetch(`https://api-neto.herokuapp.com/bosa-noga/products/${id ? id : preloadId}`, {
+  loadProductCartData = (id) => {
+    fetch(`https://api-neto.herokuapp.com/bosa-noga/products/${id}`, {
       method: 'GET'
     })
       .then(response => {
@@ -51,7 +55,7 @@ class ProductCard extends Component {
       .then(data => {
         this.overlookedAdd(data.data);
         this.setState({
-          data: data.data,
+          productData: data.data,
           selectedImage: data.data.images[0],
           productCartDefaultPrice: data.data.price,
           productCartPrice: data.data.price,
@@ -103,9 +107,9 @@ class ProductCard extends Component {
 
   favoriteAdd = (event) => {
     event.preventDefault();
-    let favoriteFilter = this.state.favoriteKeyData.filter((item) => this.state.data.id === item.id);
+    let favoriteFilter = this.state.favoriteKeyData.filter((item) => this.state.productData.id === item.id);
     let tempFavoriteKeyData = [...this.state.favoriteKeyData];
-    if (favoriteFilter.length > 0 && favoriteFilter[0].id === this.state.data.id) {
+    if (favoriteFilter.length > 0 && favoriteFilter[0].id === this.state.productData.id) {
       let removeData = this.state.favoriteKeyData.indexOf(favoriteFilter[0]);
       tempFavoriteKeyData.splice(removeData, 1);
       this.setState({
@@ -129,6 +133,7 @@ class ProductCard extends Component {
     let favoriteData = this.state.favoriteKeyData && this.state.favoriteKeyData;
     if (favoriteData.length > 0) {
       let result = favoriteData.find((el) => itemID === el.id);
+      console.log(result)
       if (result) {
         this.setState({
           isActive: true
@@ -172,9 +177,9 @@ class ProductCard extends Component {
   };
 
   addToCart = () => {
-    const { data, productCartActiveSize, productCartCount } = this.state;
+    const { productData, productCartActiveSize, productCartCount } = this.state;
     const cartItemProps = {
-      id: data.id,
+      id: productData.id,
       size: productCartActiveSize.size,
       amount: productCartCount
     };
@@ -212,22 +217,22 @@ class ProductCard extends Component {
   };
 
   render() {
-    const { data, selectedImage, sitepath, productCartActiveSize, isActive, productCartPrice, productCartCount, overlookedData, id } = this.state;
+    const { productData, selectedImage, sitepath, productCartActiveSize, isActive, productCartPrice, productCartCount, overlookedData, id } = this.state;
     return (
       <div>
         <SitePath pathprops={sitepath} />
-        <main className='product-card'>
+        {productData && <main className='product-card'>
           <section className='product-card-content'>
-            {data.title && <h2 className='section-name'>{data.title}</h2>}
+            <h2 className='section-name'>{productData.title}</h2>
             <section className='product-card-content__main-screen'>
-              {data.images && <FavoriteSlider data={data} func={this.changeImage} />}
+              <FavoriteSlider sliderData={productData} func={this.changeImage} />
               <div className='main-screen__favourite-product-pic'>
-                {data.images && <img src={selectedImage} alt={data.title} />}
+                <img src={selectedImage} alt={productData.title} />
                 <Link to='/' className='main-screen__favourite-product-pic__zoom' />
               </div>
               <div className='main-screen__product-info'>
                 <div className='product-info-title'>
-                  <h2>{data.title}</h2>
+                  <h2>{productData.title}</h2>
                   <div className='in-stock'>В наличии</div>
                 </div>
                 <div className='product-features'>
@@ -235,34 +240,34 @@ class ProductCard extends Component {
                     <tbody>
                       <tr>
                         <td className='left-col'>Артикул:</td>
-                        <td className='right-col'>{data.sku}</td>
+                        <td className='right-col'>{productData.sku}</td>
                       </tr>
                       <tr>
                         <td className='left-col'>Производитель:</td>
-                        <td className='right-col'><Link to='/'><span className='producer'>{data.brand}</span></Link></td>
+                        <td className='right-col'><Link to='/'><span className='producer'>{productData.brand}</span></Link></td>
                       </tr>
                       <tr>
                         <td className='left-col'>Цвет:</td>
-                        <td className='right-col'>{data.color}</td>
+                        <td className='right-col'>{productData.color}</td>
                       </tr>
                       <tr>
                         <td className='left-col'>Материалы:</td>
-                        <td className='right-col'>{data.material}</td>
+                        <td className='right-col'>{productData.material}</td>
                       </tr>
                       <tr>
                         <td className='left-col'>Сезон:</td>
-                        <td className='right-col'>{data.season}</td>
+                        <td className='right-col'>{productData.season}</td>
                       </tr>
                       <tr>
                         <td className='left-col'>Повод:</td>
-                        <td className='right-col'>{data.reason}</td>
+                        <td className='right-col'>{productData.reason}</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
                 <p className='size'>Размер</p>
                 <ul className='sizes'>
-                  {data.sizes && data.sizes.map((item, index) => <ListItem
+                  {productData.sizes.map((item, index) => <ListItem
                     key={index}
                     size={item.size}
                     idx={index}
@@ -286,9 +291,9 @@ class ProductCard extends Component {
               </div>
             </section>
           </section>
-        </main>
-        {overlookedData.length > 0 && <OverlookedSlider data={overlookedData} />}
-        {data.categoryId && <SimilarSlider category={data.categoryId} id={id} />}
+        </main>}
+        {overlookedData.length > 0 && <OverlookedSlider overlookedData={overlookedData} />}
+        {productData && <SimilarSlider category={productData.categoryId} id={id} />}
       </div>
     );
   };

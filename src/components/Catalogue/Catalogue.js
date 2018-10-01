@@ -6,10 +6,12 @@ import '../css/style.css';
 import SitePath from '../SitePath/SitePath';
 import CatalogueProductList from './CatalogueProductList';
 import OverlookedSlider from '../ProductCard/OverlookedSlider';
+import PropTypes from 'prop-types';
 
 class Catalogue extends Component {
   constructor(props) {
     super(props);
+    console.log(props)
     this.state = {
       sitepath: [
         {
@@ -17,8 +19,10 @@ class Catalogue extends Component {
           title: 'Главная'
         },
         {
-          to: this.props.catalogueParam ? `/catalogue/categoryId=${this.props.catalogueParam.activeCategory.id}` : '/catalogue/',
-          title: this.props.catalogueParam ? this.props.catalogueParam.activeCategory.title : 'Каталог'
+          to: '/catalogue/',
+          title: this.props.catalogueParam ? this.props.catalogueParam.activeCategory.title : 'Каталог',
+          filterParamFunc: this.props.filterLoader,
+          filterParam: this.props.catalogueParam && this.props.catalogueParam.activeCategory
         }],
       overlookedData: sessionStorage.overlookedKey ? JSON.parse(sessionStorage.overlookedKey) : [],
       urlParam: this.props.filterParam,
@@ -36,7 +40,33 @@ class Catalogue extends Component {
       search: '',
       discounted: false
     };
+    console.log(this.props)
   };
+
+  static get propTypes() {
+    return {
+      categories: PropTypes.array.isRequired,
+      catalogueParam: PropTypes.shape({
+        activeCategory: PropTypes.shape({
+          id: PropTypes.number.isRequired,
+          title: PropTypes.string.isRequired
+        }),
+        selectedCategoriesProps: PropTypes.shape({
+          season: PropTypes.string.isRequired
+        }).isRequired
+      }).isRequired,
+      filters: PropTypes.shape({
+        brand: PropTypes.array.isRequired,
+        color: PropTypes.array.isRequired,
+        heelSize: PropTypes.array.isRequired,
+        reason: PropTypes.array.isRequired,
+        season: PropTypes.array.isRequired,
+        sizes: PropTypes.array.isRequired,
+        type: PropTypes.array.isRequired
+      }).isRequired,
+      filterParam: PropTypes.string.isRequired
+    }
+  }
 
   componentWillMount() {
     this.props.catalogueParam && this.updateFilters(this.props);
@@ -175,7 +205,6 @@ class Catalogue extends Component {
       <div>
         <SitePath pathprops={sitepath} />
         <CatalogueProductList
-          favoriteKeyData={this.props.favoriteKeyData}
           filterParam={this.props.filterParam}
           catalogueParam={this.props.catalogueParam}
           setSortByFilter={this.setSortByFilter}
@@ -187,7 +216,7 @@ class Catalogue extends Component {
           clearFilters={this.clearFilters}
           urlParam={urlParam}
         />
-        {overlookedData.length > 0 && <OverlookedSlider data={overlookedData} />}
+        {overlookedData.length > 0 && <OverlookedSlider overlookedData={overlookedData} />}
       </div>
     );
   };

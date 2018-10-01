@@ -28,7 +28,8 @@ class App extends Component {
       categories: this.state.categories,
       filters: this.state.filters,
       filterParam: this.state.catalogueFilterParam,
-      catalogueParam: this.state.catalogueParam
+      catalogueParam: this.state.catalogueParam,
+      filterLoader: this.mainMenuFilterLoader
     });
 
     this.CarryedFavorite = this.bindProps(Favorite, {});
@@ -62,7 +63,8 @@ class App extends Component {
         categories: this.state.categories,
         filters: filters,
         filterParam: this.state.catalogueFilterParam,
-        catalogueParam: this.state.catalogueParam
+        catalogueParam: this.state.catalogueParam,
+        filterLoader: this.mainMenuFilterLoader
       });
 
       this.setState({
@@ -110,7 +112,8 @@ class App extends Component {
       categories: this.state.categories,
       filters: this.state.filters,
       filterParam: selectedCategories,
-      catalogueParam: { activeCategory, selectedCategoriesProps }
+      catalogueParam: { activeCategory, selectedCategoriesProps },
+      filterLoader: this.mainMenuFilterLoader
     });
     this.setState({
       catalogueFilterParam: selectedCategories,

@@ -4,50 +4,52 @@ class FavoriteSlider extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      favorite: this.props.data,
-      favoriteImage: this.props.data.images,
-      func: this.props.func
+      favoriteImage: this.props.sliderData.images
     };
   };
 
-  arrowUp = () => {
-    const tempDataArr = [...this.state.favoriteImage];
+  componentDidUpdate(prevProps) {
+    if (this.props.sliderData !== prevProps.sliderData) {
+      this.setState({
+        favoriteImage: this.props.sliderData.images
+      });
+    };
+  };
+
+  arrowUp = () => (event) => {
+    event.preventDefault();
+    const tempDataArr = [...this.props.sliderData.images];
     let firstItem = tempDataArr.shift();
     tempDataArr.push(firstItem);
     this.setState({
       favoriteImage: tempDataArr,
     });
-    this.state.func(tempDataArr);
+    this.props.func(tempDataArr);
   };
 
-  arrowDown = () => {
-    const tempDataArr = [...this.state.favoriteImage];
+  arrowDown = () => (event) => {
+    event.preventDefault();
+    const tempDataArr = [...this.props.sliderData.images];
     let lastItem = tempDataArr.pop();
     tempDataArr.unshift(lastItem);
     this.setState({
       favoriteImage: tempDataArr,
     });
-    this.state.func(tempDataArr);
-  };
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      favorite: nextProps.data,
-      favoriteImage: nextProps.data.images,
-    });
+    this.props.func(tempDataArr);
   };
 
   render() {
-    const { favoriteImage, favorite } = this.state;
+    const { sliderData } = this.props;
+    const { favoriteImage } = this.state
     return (
       <section className="main-screen__favourite-product-slider" >
-        <div className="favourite-product-slider">
+        {favoriteImage && <div className="favourite-product-slider">
           <div className="favourite-product-slider__arrow favourite-product-slider__arrow_up arrow-up" onClick={this.arrowUp}></div>
-          <FirstImg img={favoriteImage[0]} title={favorite.title} />
-          {favoriteImage[1] && <SecondImg img={favoriteImage[1]} title={favorite.title} />}
-          {favoriteImage[2] && <LastImg img={favoriteImage[2]} title={favorite.title} />}
+          <FirstImg img={favoriteImage[0]} title={sliderData.title} />
+          {favoriteImage[1] && <SecondImg img={favoriteImage[1]} title={sliderData.title} />}
+          {favoriteImage[2] && <LastImg img={favoriteImage[2]} title={sliderData.title} />}
           <div className="favourite-product-slider__arrow favourite-product-slider__arrow_down arrow-down" onClick={this.arrowDown}></div>
-        </div>
+        </div>}
       </section>
     );
   };
@@ -78,3 +80,5 @@ const LastImg = (props) => {
 };
 
 export default FavoriteSlider;
+
+

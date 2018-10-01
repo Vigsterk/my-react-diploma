@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import SideBar from "./CatalogueSideBar";
 import Pagination from '../Pagination/Pagination';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 class CatalogueProductList extends Component {
   constructor(props) {
@@ -14,7 +15,44 @@ class CatalogueProductList extends Component {
       favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [],
     };
     this.loadCatalogue(this.props.urlParam);
+    console.log(this.props)
   };
+
+  static get propTypes() {
+    return {
+      filterParam: PropTypes.string.isRequired,
+      catalogueParam: PropTypes.object.isRequired,
+      setSortByFilter: PropTypes.func.isRequired,
+      setDiscountedParam: PropTypes.func.isRequired,
+      setFilterArrayParam: PropTypes.func.isRequired,
+      setFilterParam: PropTypes.func.isRequired,
+
+      //Базовые
+      // filters: PropTypes.shape({
+      //   brand: PropTypes.string.isRequired,
+      //   categoryId: PropTypes.number.isRequired,
+      //   color: PropTypes.string.isRequired,
+      //   discounted: PropTypes.bool.isRequired,
+      //   heelSizes: PropTypes.array.isRequired,
+      //   maxPrice: PropTypes.number.isRequired,
+      //   minPrice: PropTypes.number.isRequired,
+      //   overlookedData: PropTypes.array.isRequired,
+      //   reason: PropTypes.string.isRequired,
+      //   search: PropTypes.string.isRequired,
+      //   season: PropTypes.string.isRequired,
+      //   shoesType: PropTypes.string.isRequired,
+      //   sitepath: PropTypes.array.isRequired,
+      //   sizes: PropTypes.array.isRequired,
+      //   sortVal: PropTypes.string.isRequired,
+      //   urlParam: PropTypes.string.isRequired,
+      // }).isRequired,
+
+      filters: PropTypes.object.isRequired,
+      filtersValue: PropTypes.object.isRequired,
+      clearFilters: PropTypes.func.isRequired,
+      urlParam: PropTypes.string.isRequired
+    }
+  }
 
   componentWillUpdate(nextProps) {
     if (this.props.urlParam !== nextProps.urlParam) {

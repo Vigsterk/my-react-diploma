@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+
 
 class SimilarSlider extends Component {
   constructor(props) {
@@ -6,20 +8,16 @@ class SimilarSlider extends Component {
     this.state = {
       similarData: null,
       info: null,
-      categoryId: this.props.category
     };
+    this.loadSimilarData(this.props.category)
   };
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      categoryId: nextProps.category
-    });
-    this.componentDidMount(nextProps.category);
+    this.loadSimilarData(nextProps.category);
   };
 
-  componentDidMount(id) {
-    let preloadId = this.state.categoryId;
-    fetch(`https://api-neto.herokuapp.com/bosa-noga/products?categoryId=${id ? id : preloadId}`, {
+  loadSimilarData = (id) => {
+    fetch(`https://api-neto.herokuapp.com/bosa-noga/products?categoryId=${id}`, {
       method: 'GET'
     })
       .then(response => {

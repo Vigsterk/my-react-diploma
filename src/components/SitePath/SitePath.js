@@ -1,16 +1,19 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
 
-const SitePath = (props) => {
-  const pathArr = props.pathprops
-  return (
-    <div className="site-path">
-      <ul className="site-path__items">
-        {pathArr.map((item, index) =>
-          <li key={index} className="site-path__item"><NavLink to={item.to}>{item.title}</NavLink></li>
-        )}
-      </ul>
-    </div>
-  )
+class SitePath extends Component {
+  handleClick = () => this.props.filterParamFunc(this.props.filterParam)
+  render() {
+    const pathArr = this.props.pathprops
+    return (
+      <div className="site-path">
+        <ul className="site-path__items">
+          {pathArr.map((item, index) =>
+            <li key={index} className="site-path__item"><Link to={item.to} onClick={this.handleClick}>{item.title}</Link></li>
+          )}
+        </ul>
+      </div>
+    )
+  }
 }
 export default SitePath
