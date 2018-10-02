@@ -77,16 +77,26 @@ h2.section-name {
 
 /*Картинка товара*/
 .main-screen__favourite-product-pic img {
-  position: relative;
-  width: 468px;
-  height: 386px;
-  margin: 45px 0;
+    z-index: 10;
+    display: block;
+    margin: auto;
+    max-width: 400px;
+    max-height: 460px;
+    width: auto;
+    height: auto;
+    position: relative;
 }
 
-.main-screen__favourite-product-pic a {
-  position: relative;
-  top: 23px;
-  left: 14px;
+.main-screen__favourite-product-pic .bigPic {
+    max-width: 130%;
+    max-height: 130%;
+}
+
+.main-screen__favourite-product-pic{
+    position: relative;
+    width: 500px;
+    height: 440px;
+    margin: 45px 0;
 }
 
 .main-screen__favourite-product-pic img:hover {

@@ -48,6 +48,9 @@ class App extends Component {
     this.CarryedProductCard = this.bindProps(ProductCard, {
       func: this.reloadCategories,
       cartUploader: this.cartItemUploader,
+      filterParam: this.state.catalogueFilterParam,
+      catalogueParam: this.state.catalogueParam,
+      filterLoader: this.mainMenuFilterLoader
     });
   };
 
@@ -106,7 +109,10 @@ class App extends Component {
   };
 
   mainMenuFilterLoader = ({ activeCategory, type, name }) => (event) => {
-    const selectedCategories = `categoryId=${activeCategory.id}&${type}=${name}`;
+    const selectedCategoryId = `categoryId=${activeCategory.id}`;
+    const selectedType = type ? `&${type}` : '';
+    const selectedName = name ? `=${name}` : '';
+    const selectedCategories = selectedCategoryId + selectedType + selectedName;
     const selectedCategoriesProps = { [type]: name };
     this.CarryedCatalogue = this.bindProps(Catalogue, {
       categories: this.state.categories,

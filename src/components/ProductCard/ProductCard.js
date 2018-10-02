@@ -9,9 +9,12 @@ import SimilarSlider from './SimilarSlider';
 class ProductCard extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props)
     this.state = {
       sitepath: [],
+      sitepathParam: {
+        title: '',
+        id: ''
+      },
       productData: null,
       selectedImage: [],
       id: props.match.params.id,
@@ -24,7 +27,8 @@ class ProductCard extends Component {
         idx: '',
         size: ''
       },
-      overlookedData: sessionStorage.overlookedKey ? JSON.parse(sessionStorage.overlookedKey) : []
+      overlookedData: sessionStorage.overlookedKey ? JSON.parse(sessionStorage.overlookedKey) : [],
+      activeZoom: false
     };
   };
 
@@ -69,14 +73,17 @@ class ProductCard extends Component {
               title: 'Главная'
             },
             {
-              to: '/catalogue',
-              title: data.data.type
+              to: '/catalogue/',
+              title: data.data.type,
             },
             {
               to: `/productCard/${id}`,
               title: data.data.title
             }
           ],
+          sitepathParam: {
+            id: data.data.categoryId
+          }
         });
         this.checkActiveId(id);
       })
@@ -216,19 +223,29 @@ class ProductCard extends Component {
       });
   };
 
+  zoomProductPic = (event) => {
+    event.preventDefault();
+    if (this.state.activeZoom) {
+      this.setState({ activeZoom: false });
+    } else {
+      this.setState({ activeZoom: true });
+    };
+  };
+
   render() {
-    const { productData, selectedImage, sitepath, productCartActiveSize, isActive, productCartPrice, productCartCount, overlookedData, id } = this.state;
+    const { productData, selectedImage, sitepath, productCartActiveSize, isActive, productCartPrice, productCartCount, overlookedData, id, activeZoom, sitepathParam } = this.state;
     return (
       <div>
-        <SitePath pathprops={sitepath} />
+        <SitePath pathprops={sitepath} filterParamFunc={this.props.filterLoader}
+          filterParam={sitepathParam} />
         {productData && <main className='product-card'>
           <section className='product-card-content'>
             <h2 className='section-name'>{productData.title}</h2>
             <section className='product-card-content__main-screen'>
               <FavoriteSlider sliderData={productData} func={this.changeImage} />
               <div className='main-screen__favourite-product-pic'>
-                <img src={selectedImage} alt={productData.title} />
-                <Link to='/' className='main-screen__favourite-product-pic__zoom' />
+                <img className={activeZoom ? '' : 'bigPic'} src={selectedImage} alt={productData.title} onClick={this.zoomProductPic} />
+                <a className='main-screen__favourite-product-pic__zoom' onClick={this.zoomProductPic}></a>
               </div>
               <div className='main-screen__product-info'>
                 <div className='product-info-title'>

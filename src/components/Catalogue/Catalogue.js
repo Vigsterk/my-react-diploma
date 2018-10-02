@@ -11,7 +11,6 @@ import PropTypes from 'prop-types';
 class Catalogue extends Component {
   constructor(props) {
     super(props);
-    console.log(props)
     this.state = {
       sitepath: [
         {
@@ -20,9 +19,7 @@ class Catalogue extends Component {
         },
         {
           to: '/catalogue/',
-          title: this.props.catalogueParam ? this.props.catalogueParam.activeCategory.title : 'Каталог',
-          filterParamFunc: this.props.filterLoader,
-          filterParam: this.props.catalogueParam && this.props.catalogueParam.activeCategory
+          title: this.props.catalogueParam ? this.props.catalogueParam.activeCategory.title : 'Каталог'
         }],
       overlookedData: sessionStorage.overlookedKey ? JSON.parse(sessionStorage.overlookedKey) : [],
       urlParam: this.props.filterParam,
@@ -45,16 +42,14 @@ class Catalogue extends Component {
 
   static get propTypes() {
     return {
-      categories: PropTypes.array.isRequired,
+      categories: PropTypes.array,
       catalogueParam: PropTypes.shape({
         activeCategory: PropTypes.shape({
           id: PropTypes.number.isRequired,
           title: PropTypes.string.isRequired
         }),
-        selectedCategoriesProps: PropTypes.shape({
-          season: PropTypes.string.isRequired
-        }).isRequired
-      }).isRequired,
+        selectedCategoriesProps: PropTypes.object.isRequired
+      }),
       filters: PropTypes.shape({
         brand: PropTypes.array.isRequired,
         color: PropTypes.array.isRequired,
@@ -64,22 +59,29 @@ class Catalogue extends Component {
         sizes: PropTypes.array.isRequired,
         type: PropTypes.array.isRequired
       }).isRequired,
-      filterParam: PropTypes.string.isRequired
-    }
-  }
+      filterParam: PropTypes.string
+    };
+  };
 
   componentWillMount() {
     this.props.catalogueParam && this.updateFilters(this.props);
   };
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.catalogueParam.selectedCategoriesProps === nextProps.catalogueParam.selectedCategoriesProps) return;
-    this.clearFilters();
-    this.updateFilters(nextProps);
+    if (this.props.catalogueParam) {
+      if (this.props.catalogueParam.selectedCategoriesProps === nextProps.catalogueParam.selectedCategoriesProps) {
+        return;
+      } else {
+        this.clearFilters();
+        this.props.catalogueParam && this.updateFilters(nextProps);
+      }
+    }
+
   };
 
   updateFilters = (nextProps) => {
     const types = nextProps.catalogueParam.selectedCategoriesProps;
+    console.log(types)
     Object.keys(types).forEach(name => {
       switch (name) {
         case 'reason':
@@ -114,14 +116,13 @@ class Catalogue extends Component {
   };
 
   setSortByFilter = (event) => {
-    const sortValue = event.currentTarget.value
+    const sortValue = event.currentTarget.value;
     this.setState({
       sortVal: sortValue,
     });
   };
 
   setFilterParam = ({ name, value }) => {
-    console.log(name, value)
     if (this.state[name] === value) return;
     this.setState({
       [name]: value
@@ -160,17 +161,16 @@ class Catalogue extends Component {
       season: '',
       brand: '',
       search: '',
-      discounted: false,
+      discounted: false
     });
   };
 
   catalogueUrlConfigurator = (nextProps, nextState) => {
-    const { shoesType, color, categoryId, reason, season, brand, minPrice, maxPrice, search, discounted, sortVal, sizes, heelSizes } = nextState
-
+    console.log('run config')
+    const { shoesType, color, categoryId, reason, season, brand, minPrice, maxPrice, search, discounted, sortVal, sizes, heelSizes } = nextState;
     const sizeParam = sizes.reduce((param, size) => {
       return param + `size[]=${size}&`;
     }, '');
-
     const heelSizeParam = heelSizes.reduce((param, heelSize) => {
       return param + `heelSize[]=${heelSize}&`;
     }, '');
@@ -181,6 +181,9 @@ class Catalogue extends Component {
     const reasonParam = reason ? `reason=${reason}&` : '';
     const seasonParam = season ? `season=${season}&` : '';
     console.log(seasonParam)
+    if (seasonParam === 'season=season&') {
+      debugger
+    }
     const brandParam = brand ? `brand=${brand}&` : '';
     const minPriceParam = minPrice ? `minPrice=${minPrice}&` : '';
     const maxPriceParam = maxPrice ? `maxPrice=${maxPrice}&` : '';
@@ -188,6 +191,7 @@ class Catalogue extends Component {
     const discountedParam = discounted ? `discounted=${discounted}&` : '';
     const sortParam = sortVal ? `sortBy=${sortVal}&` : '';
     let urlParam = categoryIdParam + typeParam + colorParam + sizeParam + heelSizeParam + minPriceParam + maxPriceParam + reasonParam + seasonParam + brandParam + searchParam + discountedParam + sortParam;
+    console.log(urlParam)
     if (this.state.urlParam !== urlParam) {
       this.setState({
         urlParam: urlParam
@@ -196,6 +200,7 @@ class Catalogue extends Component {
   };
 
   componentWillUpdate(nextProps, nextState) {
+    if (nextState === this.state) return;
     this.catalogueUrlConfigurator(nextProps, nextState);
   };
 
@@ -203,7 +208,8 @@ class Catalogue extends Component {
     const { sitepath, overlookedData, urlParam } = this.state;
     return (
       <div>
-        <SitePath pathprops={sitepath} />
+        <SitePath pathprops={sitepath} filterParamFunc={this.props.filterLoader}
+          filterParam={this.props.catalogueParam} />
         <CatalogueProductList
           filterParam={this.props.filterParam}
           catalogueParam={this.props.catalogueParam}
