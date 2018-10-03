@@ -3,12 +3,25 @@ import { mainSubmenuVisibility } from "../js/script";
 import topMenuData from "./HeaderData";
 import HeaderMain from './HeaderMain'
 import { Link } from "react-router-dom";
+import PropTypes from 'prop-types';
 
 class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
       activeCategory: null
+    };
+    console.log(this.props)
+  };
+
+  static get propTypes() {
+    return {
+      cart: PropTypes.object,
+      categories: PropTypes.array,
+      filterLoader: PropTypes.func,
+      filters: PropTypes.object.isRequired,
+      func: PropTypes.func,
+      history: PropTypes.object,
     };
   };
 

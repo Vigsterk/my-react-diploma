@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 class DealsSlider extends Component {
   constructor(props) {
@@ -7,8 +8,14 @@ class DealsSlider extends Component {
     this.state = {
       data: this.props.data,
       favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [],
-      func: this.props.infoFunc,
     };
+  };
+
+  static get propTypes() {
+    return {
+      data: PropTypes.array.isRequired,
+      infoFunc: PropTypes.func.isRequired
+    }
   };
 
   componentDidUpdate(prevProps) {
@@ -48,7 +55,7 @@ class DealsSlider extends Component {
     this.setState({
       data: tempDataArr,
     });
-    this.state.func(tempDataArr[1]);
+    this.props.infoFunc(tempDataArr[1]);
   };
 
   moveRight = () => {
@@ -58,7 +65,7 @@ class DealsSlider extends Component {
     this.setState({
       data: tempDataArr,
     });
-    this.state.func(tempDataArr[1]);
+    this.props.infoFunc(tempDataArr[1]);
   };
 
   checkActiveId(itemID) {

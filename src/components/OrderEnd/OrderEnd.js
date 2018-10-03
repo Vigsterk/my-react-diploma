@@ -18,10 +18,6 @@ class OrderEnd extends Component {
           title: "Главная"
         },
         {
-          to: "/",
-          title: "Корзина"
-        },
-        {
           to: "/order",
           title: "Оформление заказа"
         },
@@ -31,6 +27,7 @@ class OrderEnd extends Component {
         }
       ]
     };
+    console.log(this.props)
   };
 
   getPaymentType = () => {

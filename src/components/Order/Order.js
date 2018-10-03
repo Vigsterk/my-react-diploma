@@ -13,10 +13,6 @@ class Order extends Component {
           title: "Главная"
         },
         {
-          to: "/",
-          title: "Корзина"
-        },
-        {
           to: "/order",
           title: "Оформление заказа"
         }],
@@ -24,6 +20,7 @@ class Order extends Component {
       cartItems: this.props.cartItems,
       cartId: this.props.cartId ? this.props.cartId : JSON.parse(localStorage.postCartIDKey).id
     };
+    console.log(this.props)
   };
 
   componentDidMount() {

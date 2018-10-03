@@ -30,6 +30,7 @@ class ProductCard extends Component {
       overlookedData: sessionStorage.overlookedKey ? JSON.parse(sessionStorage.overlookedKey) : [],
       activeZoom: false
     };
+    console.log(this.props)
   };
 
   componentDidMount() {
@@ -140,7 +141,6 @@ class ProductCard extends Component {
     let favoriteData = this.state.favoriteKeyData && this.state.favoriteKeyData;
     if (favoriteData.length > 0) {
       let result = favoriteData.find((el) => itemID === el.id);
-      console.log(result)
       if (result) {
         this.setState({
           isActive: true
@@ -244,7 +244,7 @@ class ProductCard extends Component {
             <section className='product-card-content__main-screen'>
               <FavoriteSlider sliderData={productData} func={this.changeImage} />
               <div className='main-screen__favourite-product-pic'>
-                <img className={activeZoom ? '' : 'bigPic'} src={selectedImage} alt={productData.title} onClick={this.zoomProductPic} />
+                <img className={activeZoom ? 'bigPic' : ''} src={selectedImage} alt={productData.title} onClick={this.zoomProductPic} />
                 <a className='main-screen__favourite-product-pic__zoom' onClick={this.zoomProductPic}></a>
               </div>
               <div className='main-screen__product-info'>

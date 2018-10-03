@@ -1,10 +1,21 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 
 class SideBarReason extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isActive: ''
+    };
+  };
+
+  static get propTypes() {
+    return {
+      func: PropTypes.func.isRequired,
+      hiddenFilters: PropTypes.array.isRequired,
+      setFilterParam: PropTypes.func.isRequired,
+      data: PropTypes.array.isRequired
     };
   };
 

@@ -37,7 +37,8 @@ class Catalogue extends Component {
       search: '',
       discounted: false
     };
-    console.log(this.props)
+    //console.log('catalogProps', this.props)
+    this.props.catalogueParam && this.updateFilters(this.props);
   };
 
   static get propTypes() {
@@ -63,10 +64,6 @@ class Catalogue extends Component {
     };
   };
 
-  componentWillMount() {
-    this.props.catalogueParam && this.updateFilters(this.props);
-  };
-
   componentWillReceiveProps(nextProps) {
     if (this.props.catalogueParam) {
       if (this.props.catalogueParam.selectedCategoriesProps === nextProps.catalogueParam.selectedCategoriesProps) {
@@ -76,12 +73,11 @@ class Catalogue extends Component {
         this.props.catalogueParam && this.updateFilters(nextProps);
       }
     }
-
   };
 
   updateFilters = (nextProps) => {
     const types = nextProps.catalogueParam.selectedCategoriesProps;
-    console.log(types)
+    //console.log('updateFilters', types)
     Object.keys(types).forEach(name => {
       switch (name) {
         case 'reason':
@@ -166,33 +162,31 @@ class Catalogue extends Component {
   };
 
   catalogueUrlConfigurator = (nextProps, nextState) => {
-    console.log('run config')
+    //console.log('run config')
     const { shoesType, color, categoryId, reason, season, brand, minPrice, maxPrice, search, discounted, sortVal, sizes, heelSizes } = nextState;
+
     const sizeParam = sizes.reduce((param, size) => {
       return param + `size[]=${size}&`;
     }, '');
+
     const heelSizeParam = heelSizes.reduce((param, heelSize) => {
       return param + `heelSize[]=${heelSize}&`;
     }, '');
-
     const categoryIdParam = categoryId ? `categoryId=${categoryId}&` : '';
     const typeParam = shoesType ? `type=${shoesType}&` : '';
     const colorParam = color ? `color=${color}&` : '';
     const reasonParam = reason ? `reason=${reason}&` : '';
     const seasonParam = season ? `season=${season}&` : '';
-    console.log(seasonParam)
-    if (seasonParam === 'season=season&') {
-      debugger
-    }
     const brandParam = brand ? `brand=${brand}&` : '';
     const minPriceParam = minPrice ? `minPrice=${minPrice}&` : '';
     const maxPriceParam = maxPrice ? `maxPrice=${maxPrice}&` : '';
     const searchParam = search ? `search=${search}&` : '';
     const discountedParam = discounted ? `discounted=${discounted}&` : '';
     const sortParam = sortVal ? `sortBy=${sortVal}&` : '';
+
     let urlParam = categoryIdParam + typeParam + colorParam + sizeParam + heelSizeParam + minPriceParam + maxPriceParam + reasonParam + seasonParam + brandParam + searchParam + discountedParam + sortParam;
-    console.log(urlParam)
     if (this.state.urlParam !== urlParam) {
+      //console.log(urlParam)
       this.setState({
         urlParam: urlParam
       });
@@ -200,7 +194,6 @@ class Catalogue extends Component {
   };
 
   componentWillUpdate(nextProps, nextState) {
-    if (nextState === this.state) return;
     this.catalogueUrlConfigurator(nextProps, nextState);
   };
 

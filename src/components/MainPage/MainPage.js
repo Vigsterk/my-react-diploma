@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import slider from '../js/slider';
 import { Slider, SalesNews, AboutUs } from './MainPageData';
 import NewDeals from './NewDeals';
+import PropTypes from 'prop-types';
 
 class MainPage extends Component {
   constructor(props) {
@@ -11,6 +12,12 @@ class MainPage extends Component {
       productInfo: null,
       check: false
     };
+  };
+
+  static get propTypes() {
+    return {
+      categories: PropTypes.array,
+    }
   };
 
   componentDidMount() {

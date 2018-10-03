@@ -11,6 +11,7 @@ class OverlookedSlider extends Component {
     this.state = {
       overlookedData: this.props.overlookedData,
     };
+    console.log(this.props)
   };
 
   componentDidUpdate(prevProps) {

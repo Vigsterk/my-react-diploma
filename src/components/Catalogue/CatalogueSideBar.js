@@ -7,12 +7,27 @@ import SideBarHeelSize from './SideBarHeelSize';
 import SideBarReason from './SideBarReason';
 import SideBarSeason from './SideBarSeason';
 import SideBarBrand from './SideBarBrand';
+import PropTypes from 'prop-types';
 
 class SideBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
       hiddenFilters: []
+    };
+    //console.log(this.props)
+  };
+
+  static get propTypes() {
+    return {
+      setFilterParam: PropTypes.func.isRequired,
+      setFilterArrayParam: PropTypes.func.isRequired,
+      filtersValue: PropTypes.object.isRequired,
+      maxPrice: PropTypes.number.isRequired,
+      minPrice: PropTypes.number.isRequired,
+      discounted: PropTypes.bool.isRequired,
+      setDiscountedParam: PropTypes.func.isRequired,
+      clearFilters: PropTypes.func.isRequired
     };
   };
 

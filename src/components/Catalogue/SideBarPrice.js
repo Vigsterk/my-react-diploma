@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 
 class SideBarPrice extends Component {
   constructor(props) {
@@ -22,6 +24,17 @@ class SideBarPrice extends Component {
       hiddenFilters: this.props.hiddenFilters
     };
   };
+
+  static get propTypes() {
+    return {
+      func: PropTypes.func.isRequired,
+      hiddenFilters: PropTypes.array.isRequired,
+      setFilterParam: PropTypes.func.isRequired,
+      maxPrice: PropTypes.number.isRequired,
+      minPrice: PropTypes.number.isRequired
+    };
+  };
+
   handleClick = () => this.props.func('CatalogueList');
 
   componentWillMount() {

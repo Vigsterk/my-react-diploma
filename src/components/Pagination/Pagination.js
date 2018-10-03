@@ -26,6 +26,7 @@ class Pagination extends Component {
   };
 
   render() {
+    console.log(this.props)
     return (
       <div className="product-catalogue__pagination">
         <div className="page-nav-wrapper">

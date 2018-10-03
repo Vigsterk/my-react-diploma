@@ -8,7 +8,6 @@ class Favorite extends Component {
   constructor(props) {
     super(props);
     const favoriteKeyData = localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [];
-    console.log(favoriteKeyData);
     this.state = {
       sitepath: [
         {

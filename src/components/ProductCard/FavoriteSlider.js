@@ -16,9 +16,8 @@ class FavoriteSlider extends Component {
     };
   };
 
-  arrowUp = () => (event) => {
-    event.preventDefault();
-    const tempDataArr = [...this.props.sliderData.images];
+  arrowUp = () => {
+    const tempDataArr = [...this.state.favoriteImage];
     let firstItem = tempDataArr.shift();
     tempDataArr.push(firstItem);
     this.setState({
@@ -27,9 +26,19 @@ class FavoriteSlider extends Component {
     this.props.func(tempDataArr);
   };
 
-  arrowDown = () => (event) => {
-    event.preventDefault();
-    const tempDataArr = [...this.props.sliderData.images];
+  selectImg = (idx) => {
+    const tempDataArr = [...this.state.favoriteImage];
+    let selectItem = tempDataArr[idx];
+    let firstItem = tempDataArr.shift(selectItem);
+    tempDataArr.push(firstItem);
+    this.setState({
+      favoriteImage: tempDataArr,
+    });
+    this.props.func(tempDataArr);
+  };
+
+  arrowDown = () => {
+    const tempDataArr = [...this.state.favoriteImage];
     let lastItem = tempDataArr.pop();
     tempDataArr.unshift(lastItem);
     this.setState({
@@ -40,14 +49,14 @@ class FavoriteSlider extends Component {
 
   render() {
     const { sliderData } = this.props;
-    const { favoriteImage } = this.state
+    const { favoriteImage } = this.state;
     return (
       <section className="main-screen__favourite-product-slider" >
         {favoriteImage && <div className="favourite-product-slider">
           <div className="favourite-product-slider__arrow favourite-product-slider__arrow_up arrow-up" onClick={this.arrowUp}></div>
-          <FirstImg img={favoriteImage[0]} title={sliderData.title} />
-          {favoriteImage[1] && <SecondImg img={favoriteImage[1]} title={sliderData.title} />}
-          {favoriteImage[2] && <LastImg img={favoriteImage[2]} title={sliderData.title} />}
+          <FirstImg img={favoriteImage[0]} title={sliderData.title} selectImg={this.selectImg} />
+          {favoriteImage[1] && <SecondImg img={favoriteImage[1]} title={sliderData.title} selectImg={this.selectImg} />}
+          {favoriteImage[2] && <LastImg img={favoriteImage[2]} title={sliderData.title} selectImg={this.selectImg} />}
           <div className="favourite-product-slider__arrow favourite-product-slider__arrow_down arrow-down" onClick={this.arrowDown}></div>
         </div>}
       </section>
@@ -55,28 +64,40 @@ class FavoriteSlider extends Component {
   };
 };
 
-const FirstImg = (props) => {
-  return (
-    <div className="favourite-product-slider__item">
-      <img className="favorite-slider-img favourite-product-slider__item-1" src={props.img} alt={props.title} />
-    </div>
-  );
+class FirstImg extends Component {
+  handleClick = () => this.props.selectImg(0)
+  render() {
+    const { img, title } = this.props
+    return (
+      <div className="favourite-product-slider__item">
+        <img className="favorite-slider-img favourite-product-slider__item-1" src={img} alt={title} onClick={this.handleClick} />
+      </div>
+    );
+  };
 };
 
-const SecondImg = (props) => {
-  return (
-    <div className="favourite-product-slider__item">
-      <img className="favorite-slider-img favourite-product-slider__item-2" src={props.img} alt={props.title} />
-    </div>
-  );
+class SecondImg extends Component {
+  handleClick = () => this.props.selectImg(1)
+  render() {
+    const { img, title } = this.props
+    return (
+      <div className="favourite-product-slider__item">
+        <img className="favorite-slider-img favourite-product-slider__item-2" src={img} alt={title} onClick={this.handleClick} />
+      </div>
+    );
+  };
 };
 
-const LastImg = (props) => {
-  return (
-    <div className="favourite-product-slider__item">
-      <img className="favorite-slider-img favourite-product-slider__item-3" src={props.img} alt={props.title} />
-    </div>
-  );
+class LastImg extends Component {
+  handleClick = () => this.props.selectImg(2)
+  render() {
+    const { img, title } = this.props
+    return (
+      <div className="favourite-product-slider__item">
+        <img className="favorite-slider-img favourite-product-slider__item-3" src={img} alt={title} onClick={this.handleClick} />
+      </div>
+    );
+  };
 };
 
 export default FavoriteSlider;

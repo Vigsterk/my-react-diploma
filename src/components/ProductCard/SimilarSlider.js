@@ -10,6 +10,7 @@ class SimilarSlider extends Component {
       info: null,
     };
     this.loadSimilarData(this.props.category)
+    console.log(this.props)
   };
 
   componentWillReceiveProps(nextProps) {

@@ -29,8 +29,8 @@ class CatalogueProductList extends Component {
       filtersValue: PropTypes.object.isRequired,
       clearFilters: PropTypes.func.isRequired,
       urlParam: PropTypes.string
-    }
-  }
+    };
+  };
 
   componentWillUpdate(nextProps) {
     if (this.props.urlParam !== nextProps.urlParam) {
@@ -39,7 +39,7 @@ class CatalogueProductList extends Component {
   };
 
   loadCatalogue = (urlParam) => {
-    console.log('urlParam', urlParam)
+    // console.log('urlParam', urlParam)
     fetch(`https://api-neto.herokuapp.com/bosa-noga/products?${urlParam}`, {
       method: "GET"
     })
@@ -117,7 +117,8 @@ class CatalogueProductList extends Component {
     const { setSortByFilter, setDiscountedParam, setFilterArrayParam, setFilterParam, clearFilters, filters } = this.props;
     return (
       <main className="product-catalogue">
-        <SideBar setFilterParam={setFilterParam} setFilterArrayParam={setFilterArrayParam} filtersValue={this.props.filtersValue} maxPrice={filters.maxPrice} minPrice={filters.minPrice} discounted={filters.discounted} setDiscountedParam={setDiscountedParam} clearFilters={clearFilters} />
+        <SideBar setFilterParam={setFilterParam} setFilterArrayParam={setFilterArrayParam} filtersValue={this.props.filtersValue}
+          maxPrice={filters.maxPrice} minPrice={filters.minPrice} discounted={filters.discounted} setDiscountedParam={setDiscountedParam} clearFilters={clearFilters} />
         <section className="product-catalogue-content">
           <section className="product-catalogue__head">
             <div className="product-catalogue__section-title">

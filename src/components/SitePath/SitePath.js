@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 class SitePath extends Component {
   render() {
+    console.log(this.props)
     const { filterParamFunc, filterParam } = this.props
     const activeCategory = filterParam ? filterParam.activeCategory : null
     return (

@@ -1,7 +1,19 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class SideBarHeelSize extends Component {
+
+  static get propTypes() {
+    return {
+      func: PropTypes.func.isRequired,
+      hiddenFilters: PropTypes.array.isRequired,
+      setFilterArrayParam: PropTypes.func.isRequired,
+      data: PropTypes.array.isRequired
+    };
+  };
+
   handleClick = () => this.props.func('HeelSize');
+
   render() {
     return (
       <div className='sidebar__heel-height'>
