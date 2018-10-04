@@ -12,7 +12,7 @@ class HeaderMain extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cartIDJson: localStorage.postCartIDKey && JSON.parse(localStorage.postCartIDKey),
+      cartIDJson: localStorage.postCartIDKey ? JSON.parse(localStorage.postCartIDKey).id : '',
       loadedCartItems: [],
       searchValue: ''
     };
@@ -26,48 +26,57 @@ class HeaderMain extends Component {
   };
 
   loadCartData = () => {
-    let cartData = this.props.cart ? this.props.cart.id : this.state.cartIDJson.id;
-    fetch(`https://api-neto.herokuapp.com/bosa-noga/cart/${cartData}`, {
-      headers: {
-        "Content-type": "application/json"
-      },
-    })
-      .then(response => {
-        if (200 <= response.status && response.status < 300) {
-          return response.json();
-        }
-        throw new Error(response.statusText);
+    let cartData = this.props.cart ? this.props.cart.id : this.state.cartIDJson;
+    console.log('cartData', cartData)
+    if (cartData) {
+      fetch(`https://api-neto.herokuapp.com/bosa-noga/cart/${cartData}`, {
+        headers: {
+          "Content-type": "application/json"
+        },
       })
-      .then(data => {
-        const promises = data.data.products.map(element =>
-          fetch(`https://api-neto.herokuapp.com/bosa-noga/products/${element.id}`, {
-            method: "GET"
-          })
-        );
-        Promise.all(promises)
-          .then(responseArray => {
-            const resJsonPromises = responseArray.map(res => res.json());
-            return Promise.all(resJsonPromises);
-          })
-          .then(dataArr => {
-            let cartItemArr = [];
-            data.data.products.map((item, index) =>
-              cartItemArr.push({
-                products: dataArr[index].data,
-                amount: item.amount,
-                size: item.size
-              })
-            );
-            this.setState({
-              loadedCartItems: cartItemArr
-            });
-          })
-          .catch(error => console.log(`Ошибка: ${error.message}`));
+        .then(response => {
+          if (200 <= response.status && response.status < 300) {
+            return response.json();
+          }
+          throw new Error(response.statusText);
+        })
+        .then(data => {
+          const promises = data.data.products.map(element =>
+            fetch(`https://api-neto.herokuapp.com/bosa-noga/products/${element.id}`, {
+              method: "GET"
+            })
+          );
+          Promise.all(promises)
+            .then(responseArray => {
+              const resJsonPromises = responseArray.map(res => res.json());
+              return Promise.all(resJsonPromises);
+            })
+            .then(dataArr => {
+              let cartItemArr = [];
+              data.data.products.map((item, index) =>
+                cartItemArr.push({
+                  products: dataArr[index].data,
+                  amount: item.amount,
+                  size: item.size
+                })
+              );
+              this.setState({
+                loadedCartItems: cartItemArr
+              });
+              this.props.func(cartItemArr);
+            })
+            .catch(error => console.log(`Ошибка: ${error.message}`));
+        });
+    } else {
+      this.setState({
+        loadedCartItems: []
       });
+      this.props.func(null);
+    }
   };
 
   removeItem = (itemID, itemSize) => {
-    let cartData = this.props.cart ? this.props.cart.id : this.state.cartIDJson.id;
+    let cartData = this.props.cart ? this.props.cart.id : this.state.cartIDJson;
     const cartItemProps = {
       id: itemID,
       size: itemSize,
@@ -92,7 +101,7 @@ class HeaderMain extends Component {
         const serialTempData = JSON.stringify(data.data);
         localStorage.setItem("postCartIDKey", serialTempData);
         if (this.props.cart !== cartData) {
-          this.loadCartData(this.props.cart);
+          this.loadCartData();
         };
       })
       .catch(error => {

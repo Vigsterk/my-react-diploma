@@ -46,7 +46,6 @@ class App extends Component {
     });
 
     this.CarryedProductCard = this.bindProps(ProductCard, {
-      func: this.reloadCategories,
       cartUploader: this.cartItemUploader,
       filterParam: this.state.catalogueFilterParam,
       catalogueParam: this.state.catalogueParam,
@@ -81,6 +80,17 @@ class App extends Component {
   };
 
   orderLoader = (data) => {
+    if (data === null) {
+      this.setState({
+        orderItems: null
+      });
+      this.CarryedOrder = this.bindProps(Order, {
+        cartItems: null,
+        cartId: this.state.cartId,
+        cartUploader: this.cartItemUploader,
+        orderDone: this.orderDoneLoader
+      });
+    }
     this.CarryedOrder = this.bindProps(Order, {
       cartItems: data,
       cartId: this.state.cartId,
@@ -102,11 +112,19 @@ class App extends Component {
   };
 
   cartItemUploader = (data) => {
-    this.setState({
-      productCartItems: data,
-      cartId: data.id
-    });
+    if (data === null) {
+      this.setState({
+        productCartItems: null,
+        cartId: null
+      });
+    } else {
+      this.setState({
+        productCartItems: data,
+        cartId: data.id
+      });
+    }
   };
+
 
   mainMenuFilterLoader = ({ activeCategory, type, name }) => (event) => {
     const selectedCategoryId = `categoryId=${activeCategory.id}`;

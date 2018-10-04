@@ -11,7 +11,6 @@ class Header extends Component {
     this.state = {
       activeCategory: null
     };
-    console.log(this.props)
   };
 
   static get propTypes() {

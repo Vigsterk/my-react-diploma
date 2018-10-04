@@ -103,13 +103,13 @@ h2.section-name {
   box-shadow: 2px 2px 2px 2px #cccccc;
 }
 
-a.main-screen__favourite-product-pic__zoom{
+figure.main-screen__favourite-product-pic__zoom{
   display: block;
   position: absolute;
-  top: 9px;
-  right: 11px;
-  height: 29px;
-  width: 29px;
+  top: -15px;
+  right: -15px;
+  height: 22px;
+  width: 22px;
   background-image: url(../img/product-card-pics/zoom.png);
   background-repeat: no-repeat;
 }

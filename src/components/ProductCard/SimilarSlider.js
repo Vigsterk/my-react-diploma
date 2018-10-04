@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-
+import PropTypes from 'prop-types';
 
 class SimilarSlider extends Component {
   constructor(props) {
@@ -10,7 +10,14 @@ class SimilarSlider extends Component {
       info: null,
     };
     this.loadSimilarData(this.props.category)
-    console.log(this.props)
+    console.log('Similar Slider', this.props)
+  };
+
+  static get propTypes() {
+    return {
+      category: PropTypes.number.isRequired,
+      id: PropTypes.string.isRequired,
+    };
   };
 
   componentWillReceiveProps(nextProps) {

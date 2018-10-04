@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types';
 
 class SitePath extends Component {
+
+  static get propTypes() {
+    return {
+      filterParam: PropTypes.object,
+      filterParamFunc: PropTypes.func,
+      pathprops: PropTypes.array
+    };
+  };
+
   render() {
-    console.log(this.props)
     const { filterParamFunc, filterParam } = this.props
     const activeCategory = filterParam ? filterParam.activeCategory : null
     return (

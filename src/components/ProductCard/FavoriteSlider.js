@@ -1,10 +1,19 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class FavoriteSlider extends Component {
   constructor(props) {
     super(props);
     this.state = {
       favoriteImage: this.props.sliderData.images
+    };
+    console.log('Favorite Slider', this.props)
+  };
+
+  static get propTypes() {
+    return {
+      func: PropTypes.func.isRequired,
+      sliderData: PropTypes.object.isRequired,
     };
   };
 

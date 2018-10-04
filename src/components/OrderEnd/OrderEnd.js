@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import SitePath from '../SitePath/SitePath';
+import PropTypes from 'prop-types';
 
 const paymentTypes = {
   onlineCard: 'Картой онлайн',
@@ -27,7 +28,13 @@ class OrderEnd extends Component {
         }
       ]
     };
-    console.log(this.props)
+    //console.log('OrderEnd props',this.props)
+  };
+
+  static get propTypes() {
+    return {
+      orderDetails: PropTypes.object
+    };
   };
 
   getPaymentType = () => {

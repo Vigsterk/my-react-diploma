@@ -4,6 +4,7 @@ import '../css/normalize.css';
 import '../css/font-awesome.min.css';
 import '../css/style.css';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 class OverlookedSlider extends Component {
   constructor(props) {
@@ -11,7 +12,13 @@ class OverlookedSlider extends Component {
     this.state = {
       overlookedData: this.props.overlookedData,
     };
-    console.log(this.props)
+    //console.log('OverLookedSlider Props',this.props)
+  };
+
+  static get propTypes() {
+    return {
+      overlookedData: PropTypes.array
+    };
   };
 
   componentDidUpdate(prevProps) {

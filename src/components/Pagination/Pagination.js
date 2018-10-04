@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class Pagination extends Component {
+
+  static get propTypes() {
+    return {
+      arrowClick: PropTypes.func.isRequired,
+      page: PropTypes.number.isRequired,
+      pageClick: PropTypes.func.isRequired,
+      pages: PropTypes.number.isRequired
+    };
+  };
 
   getPagesArr() {
     const { page, pages } = this.props;
@@ -26,7 +36,6 @@ class Pagination extends Component {
   };
 
   render() {
-    console.log(this.props)
     return (
       <div className="product-catalogue__pagination">
         <div className="page-nav-wrapper">

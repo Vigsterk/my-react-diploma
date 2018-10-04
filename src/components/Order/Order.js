@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './style-order.css';
 import { Link } from 'react-router-dom';
 import SitePath from '../SitePath/SitePath';
+import PropTypes from 'prop-types';
 
 class Order extends Component {
   constructor(props) {
@@ -18,13 +19,22 @@ class Order extends Component {
         }],
       totalPrice: null,
       cartItems: this.props.cartItems,
-      cartId: this.props.cartId ? this.props.cartId : JSON.parse(localStorage.postCartIDKey).id
+      cartId: this.props.cartId ? this.props.cartId : localStorage.postCartIDKey ? JSON.parse(localStorage.postCartIDKey).id : ''
     };
-    console.log(this.props)
+    //console.log('Order Props', this.props)
+  };
+
+  static get propTypes() {
+    return {
+      cartId: PropTypes.string,
+      cartItems: PropTypes.array,
+      cartUploader: PropTypes.func.isRequired,
+      orderDone: PropTypes.func.isRequired,
+    };
   };
 
   componentDidMount() {
-    this.props.cartItems && this.getTotalPrice();
+    localStorage.postCartIDKey && this.props.cartItems && this.getTotalPrice();
   };
 
   getTotalPrice = (num, idx) => {
@@ -84,7 +94,8 @@ class Order extends Component {
         this.props.cartUploader(data.data);
       })
       .catch(error => {
-        console.log(error)
+        localStorage.removeItem("postCartIDKey")
+        this.props.cartUploader(null)
       });
   };
 
@@ -126,6 +137,18 @@ class BasketItem extends Component {
       amount: this.props.amount,
       price: this.props.products.price * this.props.amount
     };
+    console.log(this.props)
+  };
+
+  static get propTypes() {
+    return {
+      idx: PropTypes.number,
+      products: PropTypes.object,
+      amount: PropTypes.number,
+      size: PropTypes.number,
+      func: PropTypes.func,
+      deleteFunc: PropTypes.func,
+    };
   };
 
   incrementCount = () => {
@@ -144,7 +167,9 @@ class BasketItem extends Component {
     const { amount, price } = this.state;
     let tempCount = amount;
     let tempPrice = price;
-    tempCount -= 1;
+    if (tempCount > 0) {
+      tempCount -= 1;
+    }
     if (tempCount === 0) {
       this.props.deleteFunc(this.props.idx);
     };
@@ -193,6 +218,12 @@ class OrderConfimed extends Component {
         address: '',
         paymentType: 'onlineCard',
       }
+    };
+  };
+
+  static get propTypes() {
+    return {
+      price: PropTypes.number,
     };
   };
 

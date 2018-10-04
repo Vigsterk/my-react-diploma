@@ -5,6 +5,7 @@ import SitePath from '../SitePath/SitePath';
 import FavoriteSlider from './FavoriteSlider';
 import OverlookedSlider from './OverlookedSlider';
 import SimilarSlider from './SimilarSlider';
+import PropTypes from 'prop-types';
 
 class ProductCard extends Component {
   constructor(props) {
@@ -30,7 +31,16 @@ class ProductCard extends Component {
       overlookedData: sessionStorage.overlookedKey ? JSON.parse(sessionStorage.overlookedKey) : [],
       activeZoom: false
     };
-    console.log(this.props)
+    // console.log('ProductCart Props',this.props)
+  };
+
+  static get propTypes() {
+    return {
+      cartUploader: PropTypes.func.isRequired,
+      catalogueParam: PropTypes.object,
+      filterLoader: PropTypes.func.isRequired,
+      filterParam: PropTypes.object
+    };
   };
 
   componentDidMount() {
@@ -64,6 +74,7 @@ class ProductCard extends Component {
           selectedImage: data.data.images[0],
           productCartDefaultPrice: data.data.price,
           productCartPrice: data.data.price,
+          productCartCount: 1,
           productCartActiveSize: {
             idx: 0,
             size: data.data.sizes[0].size
@@ -245,7 +256,7 @@ class ProductCard extends Component {
               <FavoriteSlider sliderData={productData} func={this.changeImage} />
               <div className='main-screen__favourite-product-pic'>
                 <img className={activeZoom ? 'bigPic' : ''} src={selectedImage} alt={productData.title} onClick={this.zoomProductPic} />
-                <a className='main-screen__favourite-product-pic__zoom' onClick={this.zoomProductPic}></a>
+                <figure className='main-screen__favourite-product-pic__zoom' onClick={this.zoomProductPic}></figure>
               </div>
               <div className='main-screen__product-info'>
                 <div className='product-info-title'>
@@ -261,7 +272,8 @@ class ProductCard extends Component {
                       </tr>
                       <tr>
                         <td className='left-col'>Производитель:</td>
-                        <td className='right-col'><Link to='/'><span className='producer'>{productData.brand}</span></Link></td>
+                        <td className='right-col'>
+                          <Link to='/'><span className='producer'>{productData.brand}</span></Link></td>
                       </tr>
                       <tr>
                         <td className='left-col'>Цвет:</td>
