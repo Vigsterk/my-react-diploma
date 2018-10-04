@@ -106,3 +106,6 @@
   outline: none;
   border-top: none;
 }
+.product-catalogue__item-list_favorite a.item-list__item-card.item:not( :nth-of-type(4n + 1)) {
+  margin-left: 20px;
+}
