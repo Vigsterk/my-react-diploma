@@ -150,10 +150,14 @@ a {
         border-radius: 8px;
         border-width: 0;
         transition: background-position 1s;
-        &:hover {
+        &:hover:not(&_disabled) {
             cursor: pointer;
             box-shadow: none;
             margin: 71px auto 69px;
+        }
+        &_disabled {
+            opacity: 0.65; 
+            cursor: not-allowed;
         }
         &_click {
             overflow: hidden;

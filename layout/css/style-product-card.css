@@ -321,6 +321,15 @@ li.active {
   border: none;
 }
 
+.in-basket:hover:not(.in-basket_disabled) {
+  cursor: pointer;
+}
+
+.in-basket_disabled {
+  opacity: 0.65; 
+  cursor: not-allowed;
+}
+
 .in-basket-click {
   overflow: hidden;
   position: relative;
@@ -352,10 +361,6 @@ li.active {
   left: 120%;
   -webkit-transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
           transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-.in-basket:hover {
-  cursor: pointer;
 }
 
 
