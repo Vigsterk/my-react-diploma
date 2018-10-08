@@ -28,10 +28,10 @@ class DealsSlider extends Component {
 
   favoriteAdd = (event, itemID) => {
     event.preventDefault();
-    let tempFavoriteKeyData = [...this.state.favoriteKeyData];
-    let favoriteFilter = this.state.favoriteKeyData.filter((el) => itemID === el.id);
+    const tempFavoriteKeyData = [...this.state.favoriteKeyData];
+    const favoriteFilter = this.state.favoriteKeyData.filter((el) => itemID === el.id);
     if (favoriteFilter.length > 0 && favoriteFilter[0].id === itemID) {
-      let removeData = this.state.favoriteKeyData.indexOf(favoriteFilter[0]);
+      const removeData = this.state.favoriteKeyData.indexOf(favoriteFilter[0]);
       tempFavoriteKeyData.splice(removeData, 1);
       this.setState({
         favoriteKeyData: tempFavoriteKeyData
@@ -50,7 +50,7 @@ class DealsSlider extends Component {
 
   moveLeft = () => {
     const tempDataArr = [...this.state.data];
-    let firstItem = tempDataArr.shift();
+    const firstItem = tempDataArr.shift();
     tempDataArr.push(firstItem);
     this.setState({
       data: tempDataArr,
@@ -60,7 +60,7 @@ class DealsSlider extends Component {
 
   moveRight = () => {
     const tempDataArr = [...this.state.data];
-    let lastItem = tempDataArr.pop();
+    const lastItem = tempDataArr.pop();
     tempDataArr.unshift(lastItem);
     this.setState({
       data: tempDataArr,
@@ -69,9 +69,9 @@ class DealsSlider extends Component {
   };
 
   checkActiveId(itemID) {
-    let favoriteData = this.state.favoriteKeyData && this.state.favoriteKeyData;
+    const favoriteData = this.state.favoriteKeyData && this.state.favoriteKeyData;
     if (favoriteData.length > 0) {
-      let result = favoriteData.find((el) => itemID === el.id);
+      const result = favoriteData.find((el) => itemID === el.id);
       return result;
     };
   };

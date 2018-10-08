@@ -31,7 +31,7 @@ class OverlookedSlider extends Component {
 
   moveLeft = () => {
     const tempDataArr = [...this.state.overlookedData];
-    let firstItem = tempDataArr.shift();
+    const firstItem = tempDataArr.shift();
     tempDataArr.push(firstItem);
     this.setState({
       overlookedData: tempDataArr,
@@ -40,7 +40,7 @@ class OverlookedSlider extends Component {
 
   moveRight = () => {
     const tempDataArr = [...this.state.overlookedData];
-    let lastItem = tempDataArr.pop();
+    const lastItem = tempDataArr.pop();
     tempDataArr.unshift(lastItem);
     this.setState({
       overlookedData: tempDataArr,

@@ -27,7 +27,7 @@ class FavoriteSlider extends Component {
 
   arrowUp = () => {
     const tempDataArr = [...this.state.favoriteImage];
-    let firstItem = tempDataArr.shift();
+    const firstItem = tempDataArr.shift();
     tempDataArr.push(firstItem);
     this.setState({
       favoriteImage: tempDataArr,
@@ -37,8 +37,8 @@ class FavoriteSlider extends Component {
 
   selectImg = (idx) => {
     const tempDataArr = [...this.state.favoriteImage];
-    let selectItem = tempDataArr[idx];
-    let firstItem = tempDataArr.shift(selectItem);
+    const selectItem = tempDataArr[idx];
+    const firstItem = tempDataArr.shift(selectItem);
     tempDataArr.push(firstItem);
     this.setState({
       favoriteImage: tempDataArr,
@@ -48,7 +48,7 @@ class FavoriteSlider extends Component {
 
   arrowDown = () => {
     const tempDataArr = [...this.state.favoriteImage];
-    let lastItem = tempDataArr.pop();
+    const lastItem = tempDataArr.pop();
     tempDataArr.unshift(lastItem);
     this.setState({
       favoriteImage: tempDataArr,

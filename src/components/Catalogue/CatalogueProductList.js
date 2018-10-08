@@ -64,7 +64,7 @@ class CatalogueProductList extends Component {
 
   pageClick = (page) => (event) => {
     event.preventDefault();
-    const pageUrlParam = this.props.urlParam ? this.props.urlParam + `page=${page}` : `page=${page}`;
+    const pageUrlParam = this.props.urlParam ? this.props.urlParam + `&page=${page}` : `page=${page}`;
     this.loadCatalogue(pageUrlParam);
     this.setState({
       page: page
@@ -75,27 +75,27 @@ class CatalogueProductList extends Component {
     event.preventDefault();
     const newPageNumber = this.state.page + value;
     if (newPageNumber < 1 || newPageNumber > this.state.pages) return;
-    const pageUrlParam = this.props.urlParam ? this.props.urlParam + `page=${newPageNumber}` : `page=${newPageNumber}`;
+    const pageUrlParam = this.props.urlParam ? this.props.urlParam + `&page=${newPageNumber}` : `page=${newPageNumber}`;
     this.loadCatalogue(pageUrlParam);
     this.setState({
       page: newPageNumber
     });
   };
 
-  checkActiveId(itemID) {
-    let favoriteData = this.state.favoriteKeyData && this.state.favoriteKeyData;
+  checkActiveId = (itemID) => {
+    const favoriteData = this.state.favoriteKeyData && this.state.favoriteKeyData;
     if (favoriteData.length > 0) {
-      let result = favoriteData.find((el) => itemID === el.id);
+      const result = favoriteData.find((el) => itemID === el.id);
       return result
     };
   };
 
   favoriteAdd = (event, itemID) => {
     event.preventDefault();
-    let tempFavoriteKeyData = [...this.state.favoriteKeyData];
-    let favoriteFilter = this.state.favoriteKeyData.filter((el) => itemID === el.id);
+    const tempFavoriteKeyData = [...this.state.favoriteKeyData];
+    const favoriteFilter = this.state.favoriteKeyData.filter((el) => itemID === el.id);
     if (favoriteFilter.length > 0 && favoriteFilter[0].id === itemID) {
-      let removeData = this.state.favoriteKeyData.indexOf(favoriteFilter[0]);
+      const removeData = this.state.favoriteKeyData.indexOf(favoriteFilter[0]);
       tempFavoriteKeyData.splice(removeData, 1);
       this.setState({
         favoriteKeyData: tempFavoriteKeyData
@@ -172,7 +172,7 @@ class ListItem extends Component {
   itemArrowClickLeft = (event) => {
     event.preventDefault();
     const tempDataArr = [...this.state.activeImg];
-    let firstImg = tempDataArr.shift();
+    const firstImg = tempDataArr.shift();
     tempDataArr.push(firstImg);
     this.setState({
       activeImg: tempDataArr
@@ -182,7 +182,7 @@ class ListItem extends Component {
   itemArrowClickRight = (event) => {
     event.preventDefault();
     const tempDataArr = [...this.state.activeImg];
-    let lastImg = tempDataArr.pop();
+    const lastImg = tempDataArr.pop();
     tempDataArr.unshift(lastImg);
     this.setState({
       activeImg: tempDataArr

@@ -6,26 +6,30 @@ class SimilarSlider extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      similarData: null,
+      similarData: [],
       info: null,
     };
-    this.loadSimilarData(this.props.category)
+    this.props.categories && this.loadSimilarData(this.props.categories)
     console.log('Similar Slider', this.props)
   };
 
   static get propTypes() {
     return {
-      category: PropTypes.number.isRequired,
+      categories: PropTypes.object.isRequired,
       id: PropTypes.string.isRequired,
     };
   };
 
-  componentWillReceiveProps(nextProps) {
-    this.loadSimilarData(nextProps.category);
+  componentDidUpdate(prevProps) {
+    if (this.props.categories !== prevProps.categories) {
+      console.log('neeext')
+      this.loadSimilarData(this.props.categories);
+    };
   };
 
-  loadSimilarData = (id) => {
-    fetch(`https://api-neto.herokuapp.com/bosa-noga/products?categoryId=${id}`, {
+  loadSimilarData = (categories) => {
+    console.log(categories.type, categories.color)
+    fetch(`https://api-neto.herokuapp.com/bosa-noga/products?type=${categories.type}&color=${categories.color}`, {
       method: 'GET'
     })
       .then(response => {
@@ -36,21 +40,17 @@ class SimilarSlider extends Component {
       })
       .then(response => response.json())
       .then(data => {
-        this.setState({
-          similarData: data.data,
-        })
-        this.state.similarData && this.checkSimilarId(+this.props.id);
+        this.checkSimilarId(+this.props.id, data.data);
       })
       .catch(error => {
         console.log(error);
       });
   };
 
-  checkSimilarId = (itemId) => {
-    const { similarData } = this.state;
-    let matchId = similarData.find((item) => itemId === item.id);
-    let tempSimilarData = [...similarData];
-    let removeMatch = similarData.indexOf(matchId);
+  checkSimilarId = (itemId, similarData) => {
+    const matchId = similarData.find((item) => itemId === item.id);
+    const tempSimilarData = [...similarData];
+    const removeMatch = similarData.indexOf(matchId);
     tempSimilarData.splice(removeMatch, 1);
     this.setState({
       similarData: tempSimilarData,
@@ -59,7 +59,7 @@ class SimilarSlider extends Component {
 
   moveLeft = () => {
     const tempDataArr = [...this.state.similarData];
-    let firstItem = tempDataArr.shift();
+    const firstItem = tempDataArr.shift();
     tempDataArr.push(firstItem);
     this.setState({
       similarData: tempDataArr,
@@ -68,7 +68,7 @@ class SimilarSlider extends Component {
 
   moveRight = () => {
     const tempDataArr = [...this.state.similarData];
-    let lastItem = tempDataArr.pop();
+    const lastItem = tempDataArr.pop();
     tempDataArr.unshift(lastItem);
     this.setState({
       similarData: tempDataArr,
@@ -78,13 +78,13 @@ class SimilarSlider extends Component {
   render() {
     const { similarData } = this.state;
     return (
-      this.state.similarData && <section className='product-card__similar-products-slider' >
+      similarData.length > 0 && <section className='product-card__similar-products-slider' >
         <h3>Похожие товары:</h3>
         <div className='similar-products-slider'>
           <div className='similar-products-slider__arrow similar-products-slider__arrow_left arrow' onClick={this.moveLeft}></div>
-          {similarData && <ProductFirst data={similarData[0]} />}
-          {similarData && <ProductActive data={similarData[1]} />}
-          {similarData && <ProductLast data={similarData[2]} />}
+          {similarData[0] && <ProductFirst data={similarData[0]} />}
+          {similarData[1] && <ProductActive data={similarData[1]} />}
+          {similarData[2] && <ProductLast data={similarData[2]} />}
           <div className='similar-products-slider__arrow similar-products-slider__arrow_right arrow' onClick={this.moveRight}></div>
         </div>
       </section>

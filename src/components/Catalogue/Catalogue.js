@@ -184,7 +184,7 @@ class Catalogue extends Component {
     const discountedParam = discounted ? `discounted=${discounted}&` : '';
     const sortParam = sortVal ? `sortBy=${sortVal}&` : '';
 
-    let urlParam = categoryIdParam + typeParam + colorParam + sizeParam + heelSizeParam + minPriceParam + maxPriceParam + reasonParam + seasonParam + brandParam + searchParam + discountedParam + sortParam;
+    const urlParam = categoryIdParam + typeParam + colorParam + sizeParam + heelSizeParam + minPriceParam + maxPriceParam + reasonParam + seasonParam + brandParam + searchParam + discountedParam + sortParam;
     if (this.state.urlParam !== urlParam) {
       //console.log(urlParam)
       this.setState({

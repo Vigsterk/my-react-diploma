@@ -27,7 +27,7 @@ class NewDeals extends Component {
 
   setActiveCategory = (idx) => {
     const { categories, data } = this.props;
-    let activeCategoryFilter = data.filter((item) => categories[idx].id === item.categoryId);
+    const activeCategoryFilter = data.filter((item) => categories[idx].id === item.categoryId);
     if (activeCategoryFilter.length > 0) {
       this.setState({
         activeData: activeCategoryFilter

@@ -150,7 +150,8 @@ select {
 .product-catalogue .product-catalogue__product_favorite a,
 .product-catalogue .product-catalogue__product_favorite-icon {
   position: relative;
-  top: 1px;
+  top: 9px;
+  right: 6px;
   width: 33px;
   height: 30px;
   background-image: url(../img/catalogue-pics/product-catalogue__product_favorite.png);
@@ -177,6 +178,8 @@ select {
   display: block;
   width: 33px;
   height: 30px;
+  top: 9px;
+  right: 6px;
   background-image: url(../img/catalogue-pics/product-catalogue__product_favorite_chosen.png);
   background-repeat: no-repeat;
 }

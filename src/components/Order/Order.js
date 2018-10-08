@@ -38,13 +38,13 @@ class Order extends Component {
   };
 
   getTotalPrice = (num, idx) => {
-    let tempCartItem = [...this.state.cartItems];
+    const tempCartItem = [...this.state.cartItems];
     if (num) {
       tempCartItem[idx].amount = num;
       this.reloadCart(idx, num);
     };
     let totalPrice = "";
-    let priceArr = [];
+    const priceArr = [];
     tempCartItem.forEach((item) => {
       priceArr.push(item.products.price * item.amount);
       totalPrice = priceArr.reduce((a, b) => {
@@ -57,7 +57,7 @@ class Order extends Component {
   };
 
   deleteItem = (idx) => {
-    let tempCartItem = [...this.state.cartItems];
+    const tempCartItem = [...this.state.cartItems];
     tempCartItem.splice(idx, 1);
     this.reloadCart(idx, 0);
     this.setState({

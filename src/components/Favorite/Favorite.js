@@ -65,10 +65,10 @@ class Favorite extends Component {
 
   favoriteRemove = (event, itemID) => {
     event.preventDefault();
-    let favoriteFilter = this.state.favoriteData.filter((item) => itemID === item.id);
-    let tempfavoriteData = [...this.state.favoriteData];
+    const favoriteFilter = this.state.favoriteData.filter((item) => itemID === item.id);
+    const tempfavoriteData = [...this.state.favoriteData];
     if (favoriteFilter.length > 0 && favoriteFilter[0].id === itemID) {
-      let removeData = this.state.favoriteData.indexOf(favoriteFilter[0]);
+      const removeData = this.state.favoriteData.indexOf(favoriteFilter[0]);
       tempfavoriteData.splice(removeData, 1);
       this.setState({
         favoriteData: tempfavoriteData,

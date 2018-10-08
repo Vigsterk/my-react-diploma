@@ -54,8 +54,8 @@ class App extends Component {
   };
 
   componentDidMount() {
-    let filters = dataLoader('filters');
-    let categories = dataLoader('categories');
+    const filters = dataLoader('filters');
+    const categories = dataLoader('categories');
     Promise.all([filters, categories]).then(([filters, categories]) => {
       this.CarryedMainPage = this.bindProps(MainPage, {
         categories: categories

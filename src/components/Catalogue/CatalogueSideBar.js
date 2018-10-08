@@ -32,7 +32,7 @@ class SideBar extends Component {
   };
 
   openerButton = (filterName) => {
-    let filterIndex = this.state.hiddenFilters.findIndex((filter) => {
+    const filterIndex = this.state.hiddenFilters.findIndex((filter) => {
       return filter === filterName;
     });
     if (filterIndex === -1) {

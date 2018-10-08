@@ -13,8 +13,7 @@ class ProductCard extends Component {
     this.state = {
       sitepath: [],
       sitepathParam: {
-        title: '',
-        id: ''
+        id: null
       },
       productData: null,
       selectedImage: [],
@@ -22,11 +21,11 @@ class ProductCard extends Component {
       favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [],
       isActive: false,
       productCartCount: 1,
-      productCartPrice: '',
-      productCartDefaultPrice: '',
+      productCartPrice: null,
+      productCartDefaultPrice: null,
       productCartActiveSize: {
-        idx: '',
-        size: ''
+        idx: null,
+        size: null
       },
       overlookedData: sessionStorage.overlookedKey ? JSON.parse(sessionStorage.overlookedKey) : [],
       activeZoom: false
@@ -69,16 +68,13 @@ class ProductCard extends Component {
       .then(response => response.json())
       .then(data => {
         this.overlookedAdd(data.data);
+        this.checkActiveId(id);
         this.setState({
           productData: data.data,
           selectedImage: data.data.images[0],
           productCartDefaultPrice: data.data.price,
           productCartPrice: data.data.price,
           productCartCount: 1,
-          productCartActiveSize: {
-            idx: 0,
-            size: data.data.sizes[0].size
-          },
           sitepath: [
             {
               to: '/',
@@ -97,7 +93,6 @@ class ProductCard extends Component {
             id: data.data.categoryId
           }
         });
-        this.checkActiveId(id);
       })
       .catch(error => {
         console.log(error)
@@ -113,7 +108,7 @@ class ProductCard extends Component {
   overlookedAdd = (itemData) => {
     const { overlookedData } = this.state;
     const overlookedTempData = [...overlookedData];
-    let overlookedFilter = overlookedData.find((item) => itemData.id === item.id);
+    const overlookedFilter = overlookedData.find((item) => itemData.id === item.id);
     if (!overlookedFilter) {
       overlookedTempData.push(itemData);
       this.setState({
@@ -126,10 +121,10 @@ class ProductCard extends Component {
 
   favoriteAdd = (event) => {
     event.preventDefault();
-    let favoriteFilter = this.state.favoriteKeyData.filter((item) => this.state.productData.id === item.id);
-    let tempFavoriteKeyData = [...this.state.favoriteKeyData];
+    const favoriteFilter = this.state.favoriteKeyData.filter((item) => this.state.productData.id === item.id);
+    const tempFavoriteKeyData = [...this.state.favoriteKeyData];
     if (favoriteFilter.length > 0 && favoriteFilter[0].id === this.state.productData.id) {
-      let removeData = this.state.favoriteKeyData.indexOf(favoriteFilter[0]);
+      const removeData = this.state.favoriteKeyData.indexOf(favoriteFilter[0]);
       tempFavoriteKeyData.splice(removeData, 1);
       this.setState({
         favoriteKeyData: tempFavoriteKeyData,
@@ -138,7 +133,7 @@ class ProductCard extends Component {
       const serialTempData = JSON.stringify(tempFavoriteKeyData);
       localStorage.setItem('favoriteKey', serialTempData);
     } else {
-      tempFavoriteKeyData.push(this.state.data);
+      tempFavoriteKeyData.push(this.state.productData);
       this.setState({
         favoriteKeyData: tempFavoriteKeyData,
         isActive: true
@@ -149,13 +144,17 @@ class ProductCard extends Component {
   };
 
   checkActiveId = (itemID) => {
-    let favoriteData = this.state.favoriteKeyData && this.state.favoriteKeyData;
+    const favoriteData = this.state.favoriteKeyData && this.state.favoriteKeyData;
     if (favoriteData.length > 0) {
-      let result = favoriteData.find((el) => itemID === el.id);
+      const result = favoriteData.find((el) => +itemID === el.id);
       if (result) {
         this.setState({
           isActive: true
         });
+      } else {
+        this.setState({
+          isActive: false
+        })
       };
     };
   };
@@ -196,6 +195,7 @@ class ProductCard extends Component {
 
   addToCart = () => {
     const { productData, productCartActiveSize, productCartCount } = this.state;
+    if (productCartActiveSize.size === null) return;
     const cartItemProps = {
       id: productData.id,
       size: productCartActiveSize.size,
@@ -316,13 +316,13 @@ class ProductCard extends Component {
                   <div className='basket-item__quantity-change basket-item-list__quantity-change_plus' onClick={this.incrementCount}>+</div>
                 </div>
                 <div className='price'>{productCartPrice}₽</div>
-                <button className='in-basket in-basket-click' onClick={this.addToCart}>В корзину</button>
+                <button className={productCartActiveSize.size != null ? 'in-basket in-basket-click' : 'in-basket_disabled in-basket-click'} onClick={this.addToCart}>В корзину</button>
               </div>
             </section>
           </section>
         </main>}
         {overlookedData.length > 0 && <OverlookedSlider overlookedData={overlookedData} />}
-        {productData && <SimilarSlider category={productData.categoryId} id={id} />}
+        {productData && <SimilarSlider categories={productData} id={id} />}
       </div>
     );
   };

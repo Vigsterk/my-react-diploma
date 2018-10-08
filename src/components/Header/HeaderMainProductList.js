@@ -37,7 +37,7 @@ class ListItem extends Component {
           {this.props.price}
           <i className="fa fa-rub" aria-hidden="true"></i>
         </div>
-        <div className="product-list__delete" onClick={this.handleClick}>
+        <div className="product-list__deconste" onClick={this.handleClick}>
           <i className="fa fa-times" aria-hidden="true"></i>
         </div>
       </div>

@@ -26,7 +26,7 @@ class HeaderMain extends Component {
   };
 
   loadCartData = () => {
-    let cartData = this.props.cart ? this.props.cart.id : this.state.cartIDJson;
+    const cartData = this.props.cart ? this.props.cart.id : this.state.cartIDJson;
     console.log('cartData', cartData)
     if (cartData) {
       fetch(`https://api-neto.herokuapp.com/bosa-noga/cart/${cartData}`, {
@@ -52,7 +52,7 @@ class HeaderMain extends Component {
               return Promise.all(resJsonPromises);
             })
             .then(dataArr => {
-              let cartItemArr = [];
+              const cartItemArr = [];
               data.data.products.map((item, index) =>
                 cartItemArr.push({
                   products: dataArr[index].data,
@@ -76,7 +76,7 @@ class HeaderMain extends Component {
   };
 
   removeItem = (itemID, itemSize) => {
-    let cartData = this.props.cart ? this.props.cart.id : this.state.cartIDJson;
+    const cartData = this.props.cart ? this.props.cart.id : this.state.cartIDJson;
     const cartItemProps = {
       id: itemID,
       size: itemSize,
@@ -133,7 +133,7 @@ class HeaderMain extends Component {
       <div className="header-main">
         <div className="header-main__wrapper wrapper">
           <div className="header-main__phone">
-            <a href="tel:+7-495-790-35-03">+7 495 79 03 5 03</a>
+            <a href="tel:+7-495-790-35-03">+7 495 79 03 503</a>
             <p>Ежедневно: с 09-00 до 21-00</p>
           </div>
           <div className="header-main__logo">

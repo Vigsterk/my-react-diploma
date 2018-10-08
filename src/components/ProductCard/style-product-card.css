@@ -347,6 +347,25 @@ li.active {
   position: relative;
 }
 
+.in-basket_disabled{
+    opacity: .65;
+    cursor: not-allowed;
+    position: relative;
+    top: 60px;
+    left: 87px;
+    width: 246px;
+    height: 47px;
+    font-family: Roboto, sans-serif;
+    font-weight: 300;
+    font-size: 18px;
+    text-align: center;
+    color: #FFFFFF;
+    background: linear-gradient(90deg, #FF65A5 0%, #FF8076 100.22%);
+    box-shadow: 0 2px 8px rgba(255, 101, 165, 0.6), inset 0 1px 1px #FF8076;
+    border-radius: 8px;
+    border: none;
+}
+
 .in-basket-click span {
   z-index: 20;
 }
