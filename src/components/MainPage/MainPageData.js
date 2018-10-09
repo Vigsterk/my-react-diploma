@@ -1,21 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import slider from '../img/slider.jpg'
+import slider180deg from '../img/slider180deg.jpeg'
 
 const Slider = () => {
   return (
     <div className="wrapper">
       <div className="slider__pictures">
         <Link className="slider__image" to="/">
-          <img src="img/slider.jpg" alt="slide img" />
+          <img src={slider} alt="slide img" />
         </Link>
         <Link className="slider__image" to="/">
-          <img src="img/slider180deg.jpeg" alt="slide img" />
+          <img src={slider180deg} alt="slide img" />
         </Link>
         <Link className="slider__image" to="/">
-          <img src="img/slider.jpg" alt="slide img" />
+          <img src={slider} alt="slide img" />
         </Link>
         <Link className="slider__image" to="/">
-          <img src="img/slider180deg.jpeg" alt="slide img" />
+          <img src={slider180deg} alt="slide img" />
         </Link>
         <div className="arrow slider__arrow slider__arrow_left"></div>
         <div className="arrow slider__arrow slider__arrow_right"></div>

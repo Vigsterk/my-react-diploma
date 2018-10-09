@@ -501,8 +501,13 @@ li a:hover {
 }
 .new-deals__product_active,.new-deals__product_active_img {
   position: relative;
+  margin: auto;
+  padding-top: 1px;
+  padding-left: 1px;
   width: 383px;
   height: 252px;
+  max-width: 99%;
+  max-height: 99%;
   ;
 }
 .new-deals__product_first, .new-deals__product_first_img {

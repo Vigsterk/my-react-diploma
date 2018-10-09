@@ -24,7 +24,7 @@ class Pagination extends Component {
 
   getPages(arr) {
     return arr
-      .map((page, index) => {
+      .map(page => {
         if (typeof page === 'number') {
           return <li key={page} className={page === this.props.page ? 'pagination-li pagination-li-active' : 'pagination-li'} >
             <button className="pagination-page" onClick={this.props.pageClick(page)}>{page}</button>

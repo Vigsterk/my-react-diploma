@@ -1,4 +1,4 @@
-
+//Функция получает первичные данные по категориям и фильтрам для создания и заполнения меню в Header
 const dataLoader = (param) => {
   return new Promise((resolve, reject) => {
     fetch(`https://api-neto.herokuapp.com/bosa-noga/${param}`, {

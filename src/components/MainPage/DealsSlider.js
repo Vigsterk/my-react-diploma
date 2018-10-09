@@ -27,6 +27,7 @@ class DealsSlider extends Component {
   };
 
   favoriteAdd = (event, itemID) => {
+    //Функция добавит товар в избранное если его там нет и удалит при повторном клике если есть
     event.preventDefault();
     const tempFavoriteKeyData = [...this.state.favoriteKeyData];
     const favoriteFilter = this.state.favoriteKeyData.filter((el) => itemID === el.id);

@@ -398,6 +398,10 @@ li.active {
   cursor: pointer;
 }
 
+.in-basket_disabled:hover{
+  cursor: not-allowed;
+}
+
 
 /*Слайдеры*/
 
@@ -578,7 +582,6 @@ li.active {
 
 .similar-products-slider__item {
   position: relative;
-  top: -3px;
   width: 319px;
   height: 230px;
   border: solid 0.5px rgba(41, 42, 58, 0.25);

@@ -7,7 +7,7 @@ class FavoriteSlider extends Component {
     this.state = {
       favoriteImage: this.props.sliderData.images
     };
-    console.log('Favorite Slider', this.props)
+    //console.log('Favorite Slider', this.props)
   };
 
   static get propTypes() {

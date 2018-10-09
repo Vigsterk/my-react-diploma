@@ -17,7 +17,7 @@ class MainPage extends Component {
   static get propTypes() {
     return {
       categories: PropTypes.array,
-    }
+    };
   };
 
   componentDidMount() {

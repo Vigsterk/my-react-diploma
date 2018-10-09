@@ -7,6 +7,7 @@ import {
 import header_logo from '../img/header-logo.png';
 import { Link } from "react-router-dom";
 import ProductList from './HeaderMainProductList';
+import PropTypes from 'prop-types';
 
 class HeaderMain extends Component {
   constructor(props) {
@@ -16,18 +17,30 @@ class HeaderMain extends Component {
       loadedCartItems: [],
       searchValue: ''
     };
+    //console.log('this.props HeaderMain', this.props)
     localStorage.postCartIDKey && this.loadCartData();
   };
 
+  static get propTypes() {
+    return {
+      cart: PropTypes.object,
+      search: PropTypes.func.isRequired,
+      orderLoader: PropTypes.func.isRequired
+    }
+  }
+
   componentDidUpdate(prevProps) {
     if (this.props.cart !== prevProps.cart) {
-      this.loadCartData(this.props.cart);
+      //console.log('localStorage.postCartIDKey', localStorage.postCartIDKey)
+      localStorage.postCartIDKey ? this.loadCartData(this.props.cart) : this.setState({ loadedCartItems: [] });
     };
   };
 
   loadCartData = () => {
+    /* cartData - если в props нет ID карты то он возьмёт ID из LocalStorage (На случай перезагрузки страницы) 
+    Если cartData будет undefined(при удалении корзины на сервере не через removeItem) то loadCartData очистит state корзины*/
     const cartData = this.props.cart ? this.props.cart.id : this.state.cartIDJson;
-    console.log('cartData', cartData)
+
     if (cartData) {
       fetch(`https://api-neto.herokuapp.com/bosa-noga/cart/${cartData}`, {
         headers: {
@@ -63,7 +76,7 @@ class HeaderMain extends Component {
               this.setState({
                 loadedCartItems: cartItemArr
               });
-              this.props.func(cartItemArr);
+              this.props.orderLoader(cartItemArr);
             })
             .catch(error => console.log(`Ошибка: ${error.message}`));
         });
@@ -71,11 +84,12 @@ class HeaderMain extends Component {
       this.setState({
         loadedCartItems: []
       });
-      this.props.func(null);
+      this.props.orderLoader(null);
     }
   };
 
   removeItem = (itemID, itemSize) => {
+    //Функция удаляет конкретный товар из корзины и вызывает loadCartData для обновления содержимого корзины, если удалены все товары то removeItem очистит state корзины
     const cartData = this.props.cart ? this.props.cart.id : this.state.cartIDJson;
     const cartItemProps = {
       id: itemID,
@@ -112,14 +126,16 @@ class HeaderMain extends Component {
       });
   };
 
+  //Переброска параметров заказа в компонент Order
   sendCartItemsToOrder = () => {
-    this.props.func(this.state.loadedCartItems);
+    this.props.orderLoader(this.state.loadedCartItems);
   };
 
   changeSearchValue = (event) => {
     this.setState({ searchValue: event.currentTarget.value });
   };
 
+  // При нажатии Enter инициализирует переход в каталог с параметрами поиска
   searchSubmit = (event) => {
     event.preventDefault();
     this.props.search(this.state.searchValue);

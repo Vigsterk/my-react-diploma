@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-
 class SideBarSeason extends Component {
   constructor(props) {
     super(props);

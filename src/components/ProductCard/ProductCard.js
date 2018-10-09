@@ -69,6 +69,7 @@ class ProductCard extends Component {
       .then(data => {
         this.overlookedAdd(data.data);
         this.checkActiveId(id);
+        console.log(data.data)
         this.setState({
           productData: data.data,
           selectedImage: data.data.images[0],
@@ -296,7 +297,7 @@ class ProductCard extends Component {
                 </div>
                 <p className='size'>Размер</p>
                 <ul className='sizes'>
-                  {productData.sizes.map((item, index) => <ListItem
+                  {productData.sizes.filter(({ available }) => available).map((item, index) => <ListItem
                     key={index}
                     size={item.size}
                     idx={index}

@@ -4,7 +4,7 @@ import './App.css';
 import { Router, Route } from 'react-router-dom';
 import dataLoader from "./components/Fetch/Fetch";
 import createHistory from 'history/createBrowserHistory';
-const history = createHistory();
+const history = createHistory({ basename: process.env.PUBLIC_URL });
 
 class App extends Component {
   constructor(props) {
@@ -163,10 +163,10 @@ class App extends Component {
   render() {
     const { CarryedMainPage, CarryedCatalogue, CarryedFavorite, CarryedOrder, CarryedOrderEnd, CarryedProductCard } = this;
     return (
-      <Router basename={process.env.PUBLIC_URL} history={history}>
+      <Router history={history}>
         {(this.state.categories && this.state.filters) && <div className='container'>
           <Header history={history} cart={this.state.productCartItems}
-            categories={this.state.categories} filters={this.state.filters} func={this.orderLoader}
+            categories={this.state.categories} filters={this.state.filters} orderLoader={this.orderLoader}
             filterLoader={this.mainMenuFilterLoader} search={this.searchParamLoader} />
           <Route path='/' exact component={CarryedMainPage} />
           <Route path='/catalogue/' exact component={CarryedCatalogue} />

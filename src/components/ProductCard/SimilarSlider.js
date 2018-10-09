@@ -10,7 +10,6 @@ class SimilarSlider extends Component {
       info: null,
     };
     this.props.categories && this.loadSimilarData(this.props.categories)
-    console.log('Similar Slider', this.props)
   };
 
   static get propTypes() {
@@ -22,13 +21,11 @@ class SimilarSlider extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.categories !== prevProps.categories) {
-      console.log('neeext')
       this.loadSimilarData(this.props.categories);
     };
   };
 
   loadSimilarData = (categories) => {
-    console.log(categories.type, categories.color)
     fetch(`https://api-neto.herokuapp.com/bosa-noga/products?type=${categories.type}&color=${categories.color}`, {
       method: 'GET'
     })

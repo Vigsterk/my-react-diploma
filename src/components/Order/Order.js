@@ -123,7 +123,7 @@ class Order extends Component {
             </div>
             <div className="order-basket__summ">Итого:<span>{this.state.totalPrice}<i className="fa fa-rub" aria-hidden="true"></i></span></div>
           </div>
-          <OrderConfimed price={this.state.totalPrice} cartId={this.state.cartId} orderDone={this.props.orderDone} history={this.props.history} />
+          <OrderConfimed price={this.state.totalPrice} cartId={this.state.cartId} orderDone={this.props.orderDone} history={this.props.history} cartUploader={this.props.cartUploader} />
         </section>
       </div>
     );
@@ -137,7 +137,7 @@ class BasketItem extends Component {
       amount: this.props.amount,
       price: this.props.products.price * this.props.amount
     };
-    console.log(this.props)
+    //console.log(this.props)
   };
 
   static get propTypes() {
@@ -224,6 +224,7 @@ class OrderConfimed extends Component {
   static get propTypes() {
     return {
       price: PropTypes.number,
+
     };
   };
 
@@ -273,6 +274,7 @@ class OrderConfimed extends Component {
             paymentType: orderDetails.paymentType,
             totalPrice: price
           });
+          this.props.cartUploader(null)
           this.props.history.push('/orderEnd');
         };
       });
@@ -359,7 +361,9 @@ class OrderConfimed extends Component {
               </label>
             </div>
           </div>
-          <button type="submit" className="order-process__form-submit order-process__form-submit_click">Подтвердить заказ</button>
+          <button type="submit"
+            className={!orderDetails.name || !orderDetails.phone || !orderDetails.address ? "order-process__form-submit_disabled order-process__form-submit_click" :
+              'order-process__form-submit order-process__form-submit_click'}>Подтвердить заказ</button>
         </form>
       </div>
     );
