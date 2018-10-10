@@ -12,6 +12,7 @@ class CatalogueProductList extends Component {
       pages: '',
       goods: '',
       page: 1,
+      sortVal: 'price',
       favoriteKeyData: localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [],
     };
     this.loadCatalogue(this.props.urlParam);
@@ -21,7 +22,6 @@ class CatalogueProductList extends Component {
     return {
       filterParam: PropTypes.string,
       catalogueParam: PropTypes.object,
-      setSortByFilter: PropTypes.func.isRequired,
       setDiscountedParam: PropTypes.func.isRequired,
       setFilterArrayParam: PropTypes.func.isRequired,
       setFilterParam: PropTypes.func.isRequired,
@@ -39,7 +39,6 @@ class CatalogueProductList extends Component {
   };
 
   loadCatalogue = (urlParam) => {
-    // console.log('urlParam', urlParam)
     fetch(`https://api-neto.herokuapp.com/bosa-noga/products?${urlParam}`, {
       method: "GET"
     })
@@ -62,11 +61,22 @@ class CatalogueProductList extends Component {
       });
   };
 
+  setSortByFilter = (event) => {
+    const sortValue = event.currentTarget.value;
+    const sortUrlParam = this.props.urlParam ? this.props.urlParam + `&sortBy=${sortValue}` : `sortBy=${sortValue}`;
+    this.loadCatalogue(sortUrlParam);
+    this.setState({
+      urlParam: sortUrlParam,
+      sortVal: sortValue,
+    });
+  };
+
   pageClick = (page) => (event) => {
     event.preventDefault();
     const pageUrlParam = this.props.urlParam ? this.props.urlParam + `&page=${page}` : `page=${page}`;
     this.loadCatalogue(pageUrlParam);
     this.setState({
+      urlParam: pageUrlParam,
       page: page
     });
   };
@@ -113,8 +123,8 @@ class CatalogueProductList extends Component {
   };
 
   render() {
-    const { goods, pages, page, data } = this.state;
-    const { setSortByFilter, setDiscountedParam, setFilterArrayParam, setFilterParam, clearFilters, filters } = this.props;
+    const { goods, pages, page, data, sortVal } = this.state;
+    const { setDiscountedParam, setFilterArrayParam, setFilterParam, clearFilters, filters } = this.props;
     return (
       <main className="product-catalogue">
         <SideBar setFilterParam={setFilterParam} setFilterArrayParam={setFilterArrayParam} filtersValue={this.props.filtersValue}
@@ -129,8 +139,8 @@ class CatalogueProductList extends Component {
               <p className="sort-by">Сортировать</p>
               <select
                 name="sortBy"
-                value={filters.sortVal}
-                onChange={setSortByFilter}
+                value={sortVal}
+                onChange={this.setSortByFilter}
                 id="sorting">
                 <option value="popularity">по популярности</option>
                 <option value="price">по цене</option>

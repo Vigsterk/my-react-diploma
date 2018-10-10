@@ -23,7 +23,7 @@ class Catalogue extends Component {
         }],
       overlookedData: sessionStorage.overlookedKey ? JSON.parse(sessionStorage.overlookedKey) : [],
       urlParam: this.props.filterParam,
-      sortVal: 'price',
+
       categoryId: this.props.catalogueParam ? this.props.catalogueParam.activeCategory.id : '',
       shoesType: '',
       color: '',
@@ -38,7 +38,6 @@ class Catalogue extends Component {
       discounted: false
     };
     //console.log('catalogProps', this.props)
-    this.props.catalogueParam && this.updateFilters(this.props);
   };
 
   static get propTypes() {
@@ -64,20 +63,14 @@ class Catalogue extends Component {
     };
   };
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.catalogueParam) {
-      if (this.props.catalogueParam.selectedCategoriesProps === nextProps.catalogueParam.selectedCategoriesProps) {
-        return;
-      } else {
-        this.clearFilters();
-        this.props.catalogueParam && this.updateFilters(nextProps);
-      }
-    }
+  componentWillUpdate(nextProps, nextState) {
+    if (this.state !== nextState) {
+      this.catalogueUrlConfigurator(nextProps, nextState);
+    };
   };
 
   updateFilters = (nextProps) => {
     const types = nextProps.catalogueParam.selectedCategoriesProps;
-    //console.log('updateFilters', types)
     Object.keys(types).forEach(name => {
       switch (name) {
         case 'reason':
@@ -108,13 +101,6 @@ class Catalogue extends Component {
         default:
           break;
       };
-    });
-  };
-
-  setSortByFilter = (event) => {
-    const sortValue = event.currentTarget.value;
-    this.setState({
-      sortVal: sortValue,
     });
   };
 
@@ -162,9 +148,7 @@ class Catalogue extends Component {
   };
 
   catalogueUrlConfigurator = (nextProps, nextState) => {
-    //console.log('run config')
-    const { shoesType, color, categoryId, reason, season, brand, minPrice, maxPrice, search, discounted, sortVal, sizes, heelSizes } = nextState;
-
+    const { shoesType, color, categoryId, reason, season, brand, minPrice, maxPrice, search, discounted, sizes, heelSizes } = nextState;
     const sizeParam = sizes.reduce((param, size) => {
       return param + `size[]=${size}&`;
     }, '');
@@ -181,20 +165,14 @@ class Catalogue extends Component {
     const minPriceParam = minPrice ? `minPrice=${minPrice}&` : '';
     const maxPriceParam = maxPrice ? `maxPrice=${maxPrice}&` : '';
     const searchParam = search ? `search=${search}&` : '';
-    const discountedParam = discounted ? `discounted=${discounted}&` : '';
-    const sortParam = sortVal ? `sortBy=${sortVal}&` : '';
+    const discountedParam = discounted ? `discounted=${discounted}` : '';
 
-    const urlParam = categoryIdParam + typeParam + colorParam + sizeParam + heelSizeParam + minPriceParam + maxPriceParam + reasonParam + seasonParam + brandParam + searchParam + discountedParam + sortParam;
+    const urlParam = categoryIdParam + typeParam + colorParam + sizeParam + heelSizeParam + minPriceParam + maxPriceParam + reasonParam + seasonParam + brandParam + searchParam + discountedParam;
     if (this.state.urlParam !== urlParam) {
-      //console.log(urlParam)
       this.setState({
         urlParam: urlParam
       });
     };
-  };
-
-  componentWillUpdate(nextProps, nextState) {
-    this.catalogueUrlConfigurator(nextProps, nextState);
   };
 
   render() {

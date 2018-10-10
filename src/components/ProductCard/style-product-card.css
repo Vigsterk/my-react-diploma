@@ -548,7 +548,7 @@ li.active {
   width: 995px;
   height: 367px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   margin: 0 auto;
 }
 

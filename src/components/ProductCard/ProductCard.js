@@ -69,7 +69,6 @@ class ProductCard extends Component {
       .then(data => {
         this.overlookedAdd(data.data);
         this.checkActiveId(id);
-        console.log(data.data)
         this.setState({
           productData: data.data,
           selectedImage: data.data.images[0],

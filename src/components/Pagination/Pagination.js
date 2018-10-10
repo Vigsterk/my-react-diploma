@@ -36,9 +36,10 @@ class Pagination extends Component {
   };
 
   render() {
+    const { pages } = this.props
     return (
       <div className="product-catalogue__pagination">
-        <div className="page-nav-wrapper">
+        {pages > 1 && <div className="page-nav-wrapper">
           <div className="angle-back">
             <button className="angle-back_button" onClick={this.props.arrowClick(-1)} />
           </div>
@@ -48,7 +49,7 @@ class Pagination extends Component {
           <div className="angle-forward">
             <button className="angle-forward_button" onClick={this.props.arrowClick(+1)} />
           </div>
-        </div>
+        </div>}
       </div>
     );
   };
