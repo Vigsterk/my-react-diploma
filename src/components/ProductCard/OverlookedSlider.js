@@ -53,13 +53,13 @@ class OverlookedSlider extends Component {
       <section className="product-card__overlooked-slider">
         <h3>Вы смотрели:</h3>
         <div className="overlooked-slider">
-          <div className="overlooked-slider__arrow overlooked-slider__arrow_left arrow" onClick={this.moveLeft} />
+          {overlookedData.length > 5 && <div className="overlooked-slider__arrow overlooked-slider__arrow_left arrow" onClick={this.moveLeft} />}
           <OverlookedItem1 data={overlookedData} />
           <OverlookedItem2 data={overlookedData} />
           <OverlookedItem3 data={overlookedData} />
           <OverlookedItem4 data={overlookedData} />
           <OverlookedItem5 data={overlookedData} />
-          <div className="overlooked-slider__arrow overlooked-slider__arrow_right arrow" onClick={this.moveRight} />
+          {overlookedData.length > 5 && <div className="overlooked-slider__arrow overlooked-slider__arrow_right arrow" onClick={this.moveRight} />}
         </div>
       </section>
     );

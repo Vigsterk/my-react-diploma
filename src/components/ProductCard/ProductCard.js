@@ -110,10 +110,18 @@ class ProductCard extends Component {
     const overlookedTempData = [...overlookedData];
     const overlookedFilter = overlookedData.find((item) => itemData.id === item.id);
     if (!overlookedFilter) {
-      overlookedTempData.push(itemData);
-      this.setState({
-        overlookedData: overlookedTempData
-      });
+      if (overlookedTempData.length > 10) {
+        overlookedTempData.shift();
+        overlookedTempData.push(itemData);
+        this.setState({
+          overlookedData: overlookedTempData
+        });
+      } else {
+        overlookedTempData.push(itemData);
+        this.setState({
+          overlookedData: overlookedTempData
+        });
+      }
       const serialTempData = JSON.stringify(overlookedTempData);
       sessionStorage.setItem('overlookedKey', serialTempData);
     };
