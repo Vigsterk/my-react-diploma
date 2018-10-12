@@ -19,8 +19,6 @@ class SitePath extends Component {
     } : null;
     const type = sitepathParam ? sitepathParam.type : null;
     const name = sitepathParam ? sitepathParam.name : null;
-    console.log(activeCategory, type, name)
-    console.log(this.props)
     return (
       <div className="site-path">
         <ul className="site-path__items">
