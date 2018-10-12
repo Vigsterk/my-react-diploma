@@ -11,10 +11,7 @@ class ProductCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      sitepath: [],
-      sitepathParam: {
-        id: null
-      },
+      sitepathParam: null,
       productData: null,
       selectedImage: [],
       id: props.match.params.id,
@@ -68,6 +65,7 @@ class ProductCard extends Component {
       .then(response => response.json())
       .then(data => {
         this.overlookedAdd(data.data);
+        console.log(data.data)
         this.checkActiveId(id);
         this.setState({
           productData: data.data,
@@ -75,22 +73,9 @@ class ProductCard extends Component {
           productCartDefaultPrice: data.data.price,
           productCartPrice: data.data.price,
           productCartCount: 1,
-          sitepath: [
-            {
-              to: '/',
-              title: 'Главная'
-            },
-            {
-              to: '/catalogue/',
-              title: data.data.type,
-            },
-            {
-              to: `/productCard/${id}`,
-              title: data.data.title
-            }
-          ],
           sitepathParam: {
-            id: data.data.categoryId
+            id: id,
+            title: data.data.title,
           }
         });
       })
@@ -252,11 +237,11 @@ class ProductCard extends Component {
   };
 
   render() {
-    const { productData, selectedImage, sitepath, productCartActiveSize, isActive, productCartPrice, productCartCount, overlookedData, id, activeZoom, sitepathParam } = this.state;
+    const { productData, selectedImage, productCartActiveSize, isActive, productCartPrice, productCartCount, overlookedData, id, activeZoom, sitepathParam } = this.state;
     return (
       <div>
-        <SitePath pathprops={sitepath} filterParamFunc={this.props.filterLoader}
-          filterParam={sitepathParam} />
+        <SitePath filterParamFunc={this.props.filterLoader} filterParam={this.props.filterParam}
+          sitepathParam={sitepathParam} mainUrlparam={{ to: '/catalogue', title: 'Каталог' }} />
         {productData && <main className='product-card'>
           <section className='product-card-content'>
             <h2 className='section-name'>{productData.title}</h2>

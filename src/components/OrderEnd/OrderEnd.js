@@ -10,27 +10,6 @@ const paymentTypes = {
 };
 
 class OrderEnd extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      sitepath: [
-        {
-          to: "/",
-          title: "Главная"
-        },
-        {
-          to: "/order",
-          title: "Оформление заказа"
-        },
-        {
-          to: "/orderEnd",
-          title: "Заказ принят"
-        }
-      ]
-    };
-    //console.log('OrderEnd props',this.props)
-  };
-
   static get propTypes() {
     return {
       orderDetails: PropTypes.object
@@ -46,7 +25,7 @@ class OrderEnd extends Component {
     const { orderDetails } = this.props;
     return (
       <div className="wrapper order-wrapper">
-        <SitePath pathprops={this.state.sitepath} />
+        <SitePath mainUrlparam={{ to: '/orderEnd', title: 'Заказ принят' }} />
         <section className="order-done">
           <h2 className="order-done__title order-process__title">Заказ принят, спасибо!</h2>
           <div className="order-done__information order-info">

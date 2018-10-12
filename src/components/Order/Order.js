@@ -8,15 +8,6 @@ class Order extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      sitepath: [
-        {
-          to: "/",
-          title: "Главная"
-        },
-        {
-          to: "/order",
-          title: "Оформление заказа"
-        }],
       totalPrice: null,
       cartItems: this.props.cartItems,
       cartId: this.props.cartId ? this.props.cartId : localStorage.postCartIDKey ? JSON.parse(localStorage.postCartIDKey).id : ''
@@ -103,7 +94,7 @@ class Order extends Component {
     const { cartItems } = this.state;
     return (
       <div className="wrapper order-wrapper">
-        <SitePath pathprops={this.state.sitepath} />
+        <SitePath mainUrlparam={{ to: '/order', title: 'Оформление заказа' }} />
         <section className="order-process">
           <h2 className="order-process__title">Оформление заказа</h2>
           <div className="order-process__basket order-basket">

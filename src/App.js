@@ -125,8 +125,8 @@ class App extends Component {
     }
   };
 
-
   mainMenuFilterLoader = ({ activeCategory, type, name }) => (event) => {
+    console.log(activeCategory, type, name)
     const selectedCategoryId = `categoryId=${activeCategory.id}`;
     const selectedType = type ? `&${type}` : '';
     const selectedName = name ? `=${name}` : '';

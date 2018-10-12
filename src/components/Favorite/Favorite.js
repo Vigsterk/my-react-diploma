@@ -9,15 +9,6 @@ class Favorite extends Component {
     super(props);
     const favoriteKeyData = localStorage.favoriteKey ? JSON.parse(localStorage.favoriteKey) : [];
     this.state = {
-      sitepath: [
-        {
-          to: "/",
-          title: "Главная"
-        },
-        {
-          to: "/favorite",
-          title: "Избранное"
-        }],
       favoriteData: favoriteKeyData,
       page: 1,
       pages: Math.ceil(favoriteKeyData.length / 12),
@@ -107,7 +98,7 @@ class Favorite extends Component {
   render() {
     return (
       <div className="wrapper wrapper_favorite">
-        <SitePath pathprops={this.state.sitepath} />
+        <SitePath mainUrlparam={{ to: '/favorite', title: 'Избранное' }} />
         <main className="product-catalogue product-catalogue_favorite">
           <section className="product-catalogue__head product-catalogue__head_favorite">
             <div className="product-catalogue__section-title">

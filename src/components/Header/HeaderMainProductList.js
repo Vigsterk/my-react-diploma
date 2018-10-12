@@ -15,6 +15,7 @@ class ProductList extends Component {
             images={item.products.images}
             brand={item.products.brand}
             price={item.products.price * item.amount}
+            amount={item.amount}
             func={this.props.removeFunc}
           />
         )}
@@ -30,7 +31,7 @@ class ListItem extends Component {
       <div className="product-list__item">
         <Link to={`productCard/${this.props.id}`} className="product-list__pic_wrap">
           <img className="product-list__pic" src={this.props.images[0]} alt={this.props.title} />
-          <p className="product-list__product">{this.props.title}, {this.props.brand}</p>
+          <p className="product-list__product">{this.props.title}, {this.props.brand}, размер: {this.props.size}, кол-во:{this.props.amount}.ед</p>
         </Link>
         <div className="product-list__fill"></div>
         <div className="product-list__price">

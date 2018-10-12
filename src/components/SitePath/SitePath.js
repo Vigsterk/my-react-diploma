@@ -6,21 +6,29 @@ class SitePath extends Component {
 
   static get propTypes() {
     return {
-      filterParam: PropTypes.object,
+      sitepathParam: PropTypes.object,
       filterParamFunc: PropTypes.func,
-      pathprops: PropTypes.array
     };
   };
 
   render() {
-    const { filterParamFunc, filterParam } = this.props;
-    const activeCategory = filterParam ? filterParam.activeCategory : null;
+    const { filterParamFunc, sitepathParam, filterParam, mainUrlparam } = this.props;
+    const activeCategory = filterParam ? {
+      id: filterParam.activeCategory.id,
+      title: filterParam.activeCategory.title
+    } : null;
+    const type = sitepathParam ? sitepathParam.type : null;
+    const name = sitepathParam ? sitepathParam.name : null;
+    console.log(activeCategory, type, name)
+    console.log(this.props)
     return (
       <div className="site-path">
         <ul className="site-path__items">
-          {this.props.pathprops.map(item =>
-            <li key={item.title} className="site-path__item"><Link to={item.to} onClick={activeCategory && filterParamFunc && filterParamFunc({ activeCategory })}>{item.title}</Link></li>
-          )}
+          <li className="site-path__item"><Link to='/'>Главная</Link></li>
+          <li className="site-path__item"><Link to={mainUrlparam.to} onClick={activeCategory && filterParamFunc && filterParamFunc({ activeCategory, type, name })}>
+            {filterParam ? filterParam.activeCategory.title : mainUrlparam.title}
+          </Link></li>
+          {sitepathParam && <li className="site-path__item"><Link to={`/productCard/${sitepathParam.id}`}>{sitepathParam.title}</Link></li>}
         </ul>
       </div>
     );

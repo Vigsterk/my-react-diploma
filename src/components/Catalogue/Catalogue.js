@@ -12,15 +12,6 @@ class Catalogue extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      sitepath: [
-        {
-          to: '/',
-          title: 'Главная'
-        },
-        {
-          to: '/catalogue/',
-          title: this.props.catalogueParam ? this.props.catalogueParam.activeCategory.title : 'Каталог'
-        }],
       overlookedData: sessionStorage.overlookedKey ? JSON.parse(sessionStorage.overlookedKey) : [],
       urlParam: this.props.filterParam,
 
@@ -176,11 +167,11 @@ class Catalogue extends Component {
   };
 
   render() {
-    const { sitepath, overlookedData, urlParam } = this.state;
+    const { overlookedData, urlParam } = this.state;
     return (
       <div>
-        <SitePath pathprops={sitepath} filterParamFunc={this.props.filterLoader}
-          filterParam={this.props.catalogueParam} />
+        <SitePath filterParamFunc={this.props.filterLoader}
+          filterParam={this.props.catalogueParam} mainUrlparam={{ to: '/catalogue', title: 'Каталог' }} />
         <CatalogueProductList
           filterParam={this.props.filterParam}
           catalogueParam={this.props.catalogueParam}
