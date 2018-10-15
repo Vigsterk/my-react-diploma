@@ -27,15 +27,16 @@ class ProductList extends Component {
 class ListItem extends Component {
   handleClick = () => this.props.func(this.props.id, this.props.size);
   render() {
+    const { id, images, title, brand, size, amount, price } = this.props
     return (
       <div className="product-list__item">
-        <Link to={`productCard/${this.props.id}`} className="product-list__pic_wrap">
-          <img className="product-list__pic" src={this.props.images[0]} alt={this.props.title} />
-          <p className="product-list__product">{this.props.title}, {this.props.brand}, размер: {this.props.size}, кол-во:{this.props.amount}.ед</p>
+        <Link to={`productCard/${id}`} className="product-list__pic_wrap">
+          <img className="product-list__pic" src={images[0]} alt={title} />
+          <p className="product-list__product">{title}, {brand}, размер: {size}, кол-во:{amount}.ед</p>
         </Link>
         <div className="product-list__fill"></div>
         <div className="product-list__price">
-          {this.props.price}
+          {price}
           <i className="fa fa-rub" aria-hidden="true"></i>
         </div>
         <div className="product-list__deconste" onClick={this.handleClick}>

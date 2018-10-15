@@ -48,12 +48,13 @@ class SideBar extends Component {
 
   render() {
     const { setFilterParam, setFilterArrayParam, minPrice, maxPrice, filtersValue, clearFilters, setDiscountedParam, discounted } = this.props;
+    const { hiddenFilters } = this.state;
     return (
       <section className='sidebar'>
         <section className='sidebar__division'>
           <SideBarCatalogueList
             func={this.openerButton}
-            hiddenFilters={this.state.hiddenFilters}
+            hiddenFilters={hiddenFilters}
             setFilterParam={setFilterParam}
             data={filtersValue.type}
           />
@@ -62,7 +63,7 @@ class SideBar extends Component {
         <section className='sidebar__division'>
           <SideBarPrice
             func={this.openerButton}
-            hiddenFilters={this.state.hiddenFilters}
+            hiddenFilters={hiddenFilters}
             setFilterParam={setFilterParam}
             maxPrice={maxPrice}
             minPrice={minPrice}
@@ -72,7 +73,7 @@ class SideBar extends Component {
         <section className='sidebar__division'>
           <SideBarColor
             func={this.openerButton}
-            hiddenFilters={this.state.hiddenFilters}
+            hiddenFilters={hiddenFilters}
             setFilterParam={setFilterParam}
           />
         </section>
@@ -80,7 +81,7 @@ class SideBar extends Component {
         <section className='sidebar__division'>
           <SideBarSize
             func={this.openerButton}
-            hiddenFilters={this.state.hiddenFilters}
+            hiddenFilters={hiddenFilters}
             setFilterArrayParam={setFilterArrayParam}
             data={filtersValue.sizes}
           />
@@ -89,7 +90,7 @@ class SideBar extends Component {
         <section className='sidebar__division'>
           <SideBarHeelSize
             func={this.openerButton}
-            hiddenFilters={this.state.hiddenFilters}
+            hiddenFilters={hiddenFilters}
             setFilterArrayParam={setFilterArrayParam}
             data={filtersValue.heelSize}
           />
@@ -98,7 +99,7 @@ class SideBar extends Component {
         <section className='sidebar__division'>
           <SideBarReason
             func={this.openerButton}
-            hiddenFilters={this.state.hiddenFilters}
+            hiddenFilters={hiddenFilters}
             setFilterParam={setFilterParam}
             data={filtersValue.reason}
           />
@@ -107,7 +108,7 @@ class SideBar extends Component {
         <section className='sidebar__division'>
           <SideBarSeason
             func={this.openerButton}
-            hiddenFilters={this.state.hiddenFilters}
+            hiddenFilters={hiddenFilters}
             setFilterParam={setFilterParam}
             data={filtersValue.season}
           />
@@ -116,7 +117,7 @@ class SideBar extends Component {
         <section className='sidebar__division'>
           <SideBarBrand
             func={this.openerButton}
-            hiddenFilters={this.state.hiddenFilters}
+            hiddenFilters={hiddenFilters}
             setFilterParam={setFilterParam}
             data={filtersValue.brand}
           />

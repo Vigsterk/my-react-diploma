@@ -14,7 +14,6 @@ class Catalogue extends Component {
     this.state = {
       overlookedData: sessionStorage.overlookedKey ? JSON.parse(sessionStorage.overlookedKey) : [],
       urlParam: this.props.filterParam,
-
       categoryId: this.props.catalogueParam ? this.props.catalogueParam.activeCategory.id : '',
       shoesType: '',
       color: '',
@@ -143,10 +142,10 @@ class Catalogue extends Component {
     const sizeParam = sizes.reduce((param, size) => {
       return param + `size[]=${size}&`;
     }, '');
-
     const heelSizeParam = heelSizes.reduce((param, heelSize) => {
       return param + `heelSize[]=${heelSize}&`;
     }, '');
+
     const categoryIdParam = categoryId ? `categoryId=${categoryId}&` : '';
     const typeParam = shoesType ? `type=${shoesType}&` : '';
     const colorParam = color ? `color=${color}&` : '';
@@ -168,20 +167,22 @@ class Catalogue extends Component {
 
   render() {
     const { overlookedData, urlParam } = this.state;
+    const { filterParam, catalogueParam, filters } = this.props
+    const { setSortByFilter, setDiscountedParam, setFilterParam, state, clearFilters } = this
     return (
       <div>
-        <SitePath filterParamFunc={this.props.filterLoader}
-          filterParam={this.props.catalogueParam} mainUrlparam={{ to: '/catalogue', title: 'Каталог' }} />
+        <SitePath filterParamFunc={filterLoader}
+          filterParam={catalogueParam} mainUrlparam={{ to: '/catalogue/', title: 'Каталог' }} />
         <CatalogueProductList
-          filterParam={this.props.filterParam}
-          catalogueParam={this.props.catalogueParam}
-          setSortByFilter={this.setSortByFilter}
-          setDiscountedParam={this.setDiscountedParam}
-          setFilterArrayParam={this.setFilterArrayParam}
-          setFilterParam={this.setFilterParam}
-          filters={this.state}
-          filtersValue={this.props.filters}
-          clearFilters={this.clearFilters}
+          filterParam={filterParam}
+          catalogueParam={catalogueParam}
+          setSortByFilter={setSortByFilter}
+          setDiscountedParam={setDiscountedParam}
+          setFilterArrayParam={setFilterArrayParam}
+          setFilterParam={setFilterParam}
+          filters={state}
+          filtersValue={filters}
+          clearFilters={clearFilters}
           urlParam={urlParam}
         />
         {overlookedData.length > 0 && <OverlookedSlider overlookedData={overlookedData} />}

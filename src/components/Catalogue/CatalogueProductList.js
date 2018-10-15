@@ -124,15 +124,15 @@ class CatalogueProductList extends Component {
 
   render() {
     const { goods, pages, page, data, sortVal } = this.state;
-    const { setDiscountedParam, setFilterArrayParam, setFilterParam, clearFilters, filters } = this.props;
+    const { setDiscountedParam, setFilterArrayParam, setFilterParam, clearFilters, filters, filtersValue, catalogueParam } = this.props;
     return (
       <main className="product-catalogue">
-        <SideBar setFilterParam={setFilterParam} setFilterArrayParam={setFilterArrayParam} filtersValue={this.props.filtersValue}
+        <SideBar setFilterParam={setFilterParam} setFilterArrayParam={setFilterArrayParam} filtersValue={filtersValue}
           maxPrice={filters.maxPrice} minPrice={filters.minPrice} discounted={filters.discounted} setDiscountedParam={setDiscountedParam} clearFilters={clearFilters} />
         <section className="product-catalogue-content">
           <section className="product-catalogue__head">
             <div className="product-catalogue__section-title">
-              <h2 className="section-name">{this.props.catalogueParam ? this.props.catalogueParam.activeCategory.title : 'Каталог'}</h2>
+              <h2 className="section-name">{catalogueParam ? catalogueParam.activeCategory.title : 'Каталог'}</h2>
               <span className="amount">{goods}</span>
             </div>
             <div className="product-catalogue__sort-by">

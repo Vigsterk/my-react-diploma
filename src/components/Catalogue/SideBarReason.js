@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-
 class SideBarReason extends Component {
   constructor(props) {
     super(props);
@@ -49,9 +48,9 @@ class SideBarReason extends Component {
           </ul>
         </div>
       </div>
-    )
-  }
-}
+    );
+  };
+};
 
 class ReasonSideBarListItem extends Component {
   render() {

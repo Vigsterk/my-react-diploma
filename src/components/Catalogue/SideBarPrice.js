@@ -34,7 +34,7 @@ class SideBarPrice extends Component {
     };
   };
 
-  handleClick = () => this.props.func('CatalogueList');
+  handleClick = () => this.props.func('Price');
 
   componentWillMount() {
     this.updateCirclesPositions(this.props);

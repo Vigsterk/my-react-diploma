@@ -78,17 +78,18 @@ class DealsSlider extends Component {
   };
 
   render() {
+    const { data } = this.state
     return (
       <div className="new-deals__slider">
         <div className="new-deals__arrow new-deals__arrow_left arrow" onClick={this.moveLeft}></div>
-        <ProductFirst images={this.state.data[0].images[0]} id={this.state.data[0].id} />
+        <ProductFirst images={data[0].images[0]} id={data[0].id} />
         <ProductActive
-          images={this.state.data[1].images[0]}
+          images={data[1].images[0]}
           func={this.favoriteAdd}
-          id={this.state.data[1].id}
-          isActive={this.checkActiveId(this.state.data[1].id)}
+          id={data[1].id}
+          isActive={this.checkActiveId(data[1].id)}
         />
-        <ProductLast images={this.state.data[2].images[0]} id={this.state.data[2].id} />
+        <ProductLast images={data[2].images[0]} id={data[2].id} />
         <div className="new-deals__arrow new-deals__arrow_right arrow" onClick={this.moveRight}></div>
       </div>
     );
