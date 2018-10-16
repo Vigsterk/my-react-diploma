@@ -167,8 +167,8 @@ class Catalogue extends Component {
 
   render() {
     const { overlookedData, urlParam } = this.state;
-    const { filterParam, catalogueParam, filters } = this.props
-    const { setSortByFilter, setDiscountedParam, setFilterParam, state, clearFilters } = this
+    const { filterParam, catalogueParam, filters, filterLoader } = this.props
+    const { setSortByFilter, setDiscountedParam, setFilterParam, setFilterArrayParam, state, clearFilters } = this
     return (
       <div>
         <SitePath filterParamFunc={filterLoader}

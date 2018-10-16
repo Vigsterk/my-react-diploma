@@ -147,20 +147,24 @@ class CatalogueProductList extends Component {
               </select>
             </div>
           </section>
-          <section className="product-catalogue__item-list">
-            {data.length > 0 && data.map(items =>
-              <ListItem key={items.id}
-                id={items.id}
-                title={items.title}
-                images={items.images}
-                brand={items.brand}
-                price={items.price}
-                oldPrice={items.oldPrice}
-                func={this.favoriteAdd}
-                isActive={this.checkActiveId(items.id)}
-              />
-            )}
-          </section>
+          {goods === 0 ?
+            <section className="product-catalogue__item-list">
+              <p className="product-catalogue__item-list_not-found">По вашему запросу товар не найден</p>
+            </section> :
+            <section className="product-catalogue__item-list">
+              {data.length > 0 && data.map(items =>
+                <ListItem key={items.id}
+                  id={items.id}
+                  title={items.title}
+                  images={items.images}
+                  brand={items.brand}
+                  price={items.price}
+                  oldPrice={items.oldPrice}
+                  func={this.favoriteAdd}
+                  isActive={this.checkActiveId(items.id)}
+                />
+              )}
+            </section>}
           {pages && <Pagination page={page} pages={pages} pageClick={this.pageClick} arrowClick={this.arrowClick} />}
         </section>
         <div style={{ clear: 'both' }}></div>

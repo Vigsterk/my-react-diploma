@@ -146,6 +146,18 @@ select {
   border-top: 1px solid #F4F4F4;
 }
 
+.product-catalogue__item-list_not-found{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: 100px auto;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  text-align: left;
+  text-transform: uppercase;
+}
+
 /*Сердечки для избранного товара с эффектами*/
 .product-catalogue .product-catalogue__product_favorite a,
 .product-catalogue .product-catalogue__product_favorite-icon {
