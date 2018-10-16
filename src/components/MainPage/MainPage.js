@@ -26,27 +26,36 @@ class MainPage extends Component {
       button = f.getElementsByClassName('slider__circles')[0].getElementsByClassName('slider__circle'),
       arrows = f.getElementsByClassName('slider__arrow');
     slider(f, a, button, '4000', '1000', arrows);
-
-    fetch("https://api-neto.herokuapp.com/bosa-noga/featured", {
-      method: "GET"
-    })
-      .then(response => {
-        if (200 <= response.status && response.status < 300) {
-          return response;
-        }
-        throw new Error(response.statusText);
-      })
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          featuredData: data.data,
-          productInfo: data.data[1],
-          check: true,
-        });
-      })
-      .catch(error => {
-        console.log(error);
+    const featured = this.featuredFetch()
+    Promise.all([featured]).then(([featured]) => {
+      this.setState({
+        featuredData: featured.data,
+        productInfo: featured.data[1],
+        check: true,
       });
+    }
+    );
+  };
+
+  featuredFetch = () => {
+    return new Promise((resolve, reject) => {
+      fetch("https://api-neto.herokuapp.com/bosa-noga/featured", {
+        method: "GET"
+      })
+        .then(response => {
+          if (200 <= response.status && response.status < 300) {
+            return response;
+          }
+          throw new Error(response.statusText);
+        })
+        .then(response => response.json())
+        .then(data => {
+          resolve(data)
+        })
+        .catch(error => {
+          reject(error)
+        });
+    });
   };
 
   availableCategories() {
