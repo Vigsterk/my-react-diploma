@@ -265,7 +265,8 @@ class ProductCard extends Component {
                       <tr>
                         <td className='left-col'>Производитель:</td>
                         <td className='right-col'>
-                          <Link to='/'><span className='producer'>{productData.brand}</span></Link></td>
+                          <span className='producer'>{productData.brand}</span>
+                        </td>
                       </tr>
                       <tr>
                         <td className='left-col'>Цвет:</td>
