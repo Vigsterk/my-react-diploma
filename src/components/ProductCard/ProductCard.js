@@ -75,7 +75,11 @@ class ProductCard extends Component {
           sitepathParam: {
             id: id,
             title: data.data.title,
-          }
+          },
+          productCartActiveSize: {
+            idx: null,
+            size: null
+          },
         });
       })
       .catch(error => {
