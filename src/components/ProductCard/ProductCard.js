@@ -5,6 +5,7 @@ import SitePath from '../SitePath/SitePath';
 import FavoriteSlider from './FavoriteSlider';
 import OverlookedSlider from './OverlookedSlider';
 import SimilarSlider from './SimilarSlider';
+import ListItem from './ProductCardSizeListItem';
 import PropTypes from 'prop-types';
 
 class ProductCard extends Component {
@@ -321,15 +322,6 @@ class ProductCard extends Component {
         {overlookedData.length > 0 && <OverlookedSlider overlookedData={overlookedData} />}
         {productData && <SimilarSlider categories={productData} id={id} />}
       </div>
-    );
-  };
-};
-
-class ListItem extends Component {
-  handleClick = () => this.props.func(this.props.idx, this.props.size);
-  render() {
-    return (
-      <li className={this.props.isActive ? 'active' : 'not-active'} onClick={this.handleClick}>{this.props.size}</li>
     );
   };
 };

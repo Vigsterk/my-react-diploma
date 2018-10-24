@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import SideBarReasonListItem from './SideBarReasonListItem';
 
 class SideBarReason extends Component {
   constructor(props) {
@@ -36,7 +37,7 @@ class SideBarReason extends Component {
           <div className={this.props.hiddenFilters.includes('Reason') ? 'opener-up' : 'opener-down'} onClick={this.handleClick}></div>
           <ul className={this.props.hiddenFilters.includes('Reason') ? 'hidden' : 'sidebar-ul sidebar__ocassion-list-ul'}>
             {this.props.data.map((reason, index) =>
-              <ReasonSideBarListItem
+              <SideBarReasonListItem
                 key={reason}
                 data={reason}
                 idx={index}
@@ -48,17 +49,6 @@ class SideBarReason extends Component {
           </ul>
         </div>
       </div>
-    );
-  };
-};
-
-class ReasonSideBarListItem extends Component {
-  render() {
-    const { hiddenFilters, func, isActive, data, idx } = this.props;
-    return (
-      <li className={hiddenFilters.includes('Reason') ? 'hidden' : 'sidebar-ul-li sidebar__ocassion-list-ul-li'} >
-        <button className={isActive ? 'sidebar-button-active' : 'sidebar-button'} onClick={func({ name: 'reason', value: data }, idx)}>{data}</button>
-      </li>
     );
   };
 };

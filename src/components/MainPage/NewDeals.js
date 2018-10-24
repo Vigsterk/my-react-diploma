@@ -17,7 +17,7 @@ class NewDeals extends Component {
       data: PropTypes.array,
       info: PropTypes.object,
       categories: PropTypes.array.isRequired
-    }
+    };
   };
 
   loadProductInfo = (param) => {

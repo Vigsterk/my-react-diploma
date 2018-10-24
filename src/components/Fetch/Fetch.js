@@ -20,4 +20,4 @@ const dataLoader = (param) => {
   });
 };
 
-export default dataLoader
+export default dataLoader;

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { ProductFirst, ProductActive, ProductLast } from './SimilarSliderListItem';
 import PropTypes from 'prop-types';
 
 class SimilarSlider extends Component {
@@ -85,67 +85,6 @@ class SimilarSlider extends Component {
           <div className='similar-products-slider__arrow similar-products-slider__arrow_right arrow' onClick={this.moveRight}></div>
         </div>
       </section>
-    );
-  };
-};
-
-class ProductFirst extends Component {
-  render() {
-    const { data } = this.props;
-    return (
-      <div className='similar-products-slider__item-list__item-card item'>
-        <div className='similar-products-slider__item'>
-          <Link to={`/productCard/${data.id}`}>
-            <img src={data.images[0]} className={`similar-products-slider__item-pic`} alt='firstPic' />
-          </Link>
-        </div>
-        <ProductInfo data={this.props.data} />
-      </div>
-    );
-  };
-};
-
-class ProductActive extends Component {
-  render() {
-    const { data } = this.props;
-    return (
-      <div className='similar-products-slider__item-list__item-card item'>
-        <div className='similar-products-slider__item'>
-          <Link to={`/productCard/${data.id}`}>
-            <img src={data.images[0]} className={`similar-products-slider__item-pic`} alt='activePic' />
-          </Link>
-        </div>
-        <ProductInfo data={this.props.data} />
-      </div>
-    );
-  };
-};
-
-class ProductLast extends Component {
-  render() {
-    const { data } = this.props;
-    return (
-      <div className='similar-products-slider__item-list__item-card item'>
-        <div className='similar-products-slider__item'>
-          <Link to={`/productCard/${data.id}`}>
-            <img src={data.images[0]} className={`similar-products-slider__item-pic`} alt='lastPic' />
-          </Link>
-        </div>
-        <ProductInfo data={this.props.data} />
-      </div>
-    );
-  };
-};
-
-class ProductInfo extends Component {
-  render() {
-    const { data } = this.props;
-    return (
-      <div className='similar-products-slider__item-desc'>
-        <h4 className='similar-products-slider__item-name'>{data.title}</h4>
-        <p className='similar-products-slider__item-producer'>Производитель: <span className='producer'>{data.brand}</span></p>
-        <p className='similar-products-slider__item-price'>{data.price}</p>
-      </div>
     );
   };
 };

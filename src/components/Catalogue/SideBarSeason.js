@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import SideBarSeasonListItem from './SideBarSeasonListItem';
 
 class SideBarSeason extends Component {
   constructor(props) {
@@ -36,7 +37,7 @@ class SideBarSeason extends Component {
           <div className={this.props.hiddenFilters.includes('Season') ? 'opener-up' : 'opener-down'} onClick={this.handleClick}></div>
           <ul className={this.props.hiddenFilters.includes('Season') ? 'hidden' : 'sidebar-ul sidebar__season-list-ul'} >
             {this.props.data.map((season, index) =>
-              <SeasonSideBarListItem
+              <SideBarSeasonListItem
                 key={season}
                 data={season}
                 idx={index}
@@ -48,17 +49,6 @@ class SideBarSeason extends Component {
           </ul>
         </div>
       </div>
-    );
-  };
-};
-
-class SeasonSideBarListItem extends Component {
-  render() {
-    const { hiddenFilters, func, isActive, data, idx } = this.props;
-    return (
-      <li className={hiddenFilters.includes('Season') ? 'hidden' : 'sidebar-ul-li sidebar__season-list-ul-li'} >
-        <button className={isActive ? 'sidebar-button-active' : 'sidebar-button'} onClick={func({ name: 'season', value: data }, idx)}>{data}</button>
-      </li>
     );
   };
 };

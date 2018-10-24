@@ -40,7 +40,6 @@
 }
 .product-catalogue_favorite .item-pic .arrow_right {
   right: 0;
-  background-position: -30px 0;
 }
 .product-catalogue_favorite .product-catalogue__product_favorite {
   position: absolute;
@@ -102,4 +101,34 @@
   margin-left: 0;
   outline: none;
   border-top: none;
+}
+
+.sort-by {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  font-size: 18px;
+  text-align: left;
+  padding-right: 6px;
+  vertical-align: top;
+}
+
+ select {
+  width: 174px;
+  height: 21px;
+  border-radius: 5px;
+  padding-left: 9px;
+  font-size: 14px;
+  font-family: Roboto;
+  font-weight: 300;
+  line-height: normal;
+  text-align: center;
+  background: url(../img/catalogue-pics/product-catalogue__sort-by-drop-down-chevron.png) no-repeat;
+  background-position: 151px center;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 0.01px; 
+  text-overflow: '';
+  -ms-appearance: none;
+  appearance: none;
 }

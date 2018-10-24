@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './style-favorite.css';
 import SitePath from '../SitePath/SitePath';
-import { Link } from 'react-router-dom'
 import Pagination from '../Pagination/Pagination';
+import ListItem from '../Catalogue/CatalogueListItem';
 
 class Favorite extends Component {
   constructor(props) {
@@ -96,6 +96,7 @@ class Favorite extends Component {
   };
 
   render() {
+    const { favoriteData, sortParam, page, pages } = this.state;
     return (
       <div className="wrapper wrapper_favorite">
         <SitePath mainUrlparam={{ to: '/favorite', title: 'Избранное' }} />
@@ -103,12 +104,23 @@ class Favorite extends Component {
           <section className="product-catalogue__head product-catalogue__head_favorite">
             <div className="product-catalogue__section-title">
               <h2 className="section-name">В вашем избранном</h2>
-              <span className="amount amount_favorite">{this.state.favoriteData.length > 0 && this.state.favoriteData.length} {this.GetNoun(this.state.favoriteData.length, 'товар', 'товара', 'товаров', 'нет товаров')}</span>
+              <span className="amount amount_favorite">{favoriteData.length > 0 && favoriteData.length} {this.GetNoun(favoriteData.length, 'товар', 'товара', 'товаров', 'нет товаров')}</span>
             </div>
-            <SortBy param={this.state.sortParam} func={this.setSortByFilter} />
+            <div className="product-catalogue__sort-by">
+              <p className="sort-by">Сортировать</p>
+              <select
+                name="sortBy"
+                value={sortParam}
+                onChange={this.setSortByFilter}
+                id="sorting">
+                <option value="price">по цене</option>
+                <option value="brand">по производителю</option>
+                <option value="date">по дате добавления</option>
+              </select>
+            </div>
           </section>
           <section className="product-catalogue__item-list product-catalogue__item-list_favorite">
-            {this.state.favoriteData.length > 0 && this.state.favoriteData.slice((this.state.page - 1) * 12, this.state.page * 12).map(items =>
+            {favoriteData.length > 0 && favoriteData.slice((page - 1) * 12, page * 12).map(items =>
               <ListItem key={items.id}
                 id={items.id}
                 title={items.title}
@@ -119,52 +131,8 @@ class Favorite extends Component {
                 func={this.favoriteRemove}
               />)}
           </section>
+          {<Pagination page={page} pages={pages} pageClick={this.pageClick} arrowClick={this.arrowClick} />}
         </main>
-        {<Pagination page={this.state.page} pages={this.state.pages} pageClick={this.pageClick} arrowClick={this.arrowClick} />}
-      </div>
-    );
-  };
-};
-
-class ListItem extends Component {
-  handleClick = (event) => this.props.func(event, this.props.id);
-  render() {
-    return (
-      <Link key={this.props.id} className="item-list__item-card item" to={`productCard/${this.props.id}`}>
-        <div className="item-pic">
-          {this.props.images && this.props.images.map((item, index) =>
-            <img key={index} className="item-pic" src={item} alt={this.props.title} />)}
-          <div className="product-catalogue__product_favorite" onClick={this.handleClick}>
-            <p className="product-catalogue__product_favorite-icon"></p>
-          </div>
-          <div className="arrow arrow_left" ></div>
-          <div className="arrow arrow_right" ></div>
-        </div>
-        <div className="item-desc">
-          <h4 className="item-name">{this.props.title}</h4>
-          <p className="item-producer">Производитель: <span className="producer">{this.props.brand}</span></p>
-          <p className="item-price">{this.props.price}</p>
-          {this.props.oldPrice && <p className="item-price old-price"><s>{this.props.oldPrice}</s></p>}
-        </div>
-      </Link>
-    );
-  };
-};
-
-class SortBy extends Component {
-  render() {
-    return (
-      <div className="product-catalogue__sort-by">
-        <p className="sort-by">Сортировать</p>
-        <select
-          name="sortBy"
-          value={this.props.param}
-          onChange={this.props.func}
-          id="sorting">
-          <option value="price">по цене</option>
-          <option value="brand">по производителю</option>
-          <option value="date">по дате добавления</option>
-        </select>
       </div>
     );
   };

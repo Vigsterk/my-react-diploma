@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import SideBarCatalogueListItem from './SideBarCatalogueListItem';
 
 class SideBarCatalogueList extends Component {
   constructor(props) {
@@ -37,7 +38,7 @@ class SideBarCatalogueList extends Component {
         </div>
         <ul className={this.props.hiddenFilters.includes('CatalogueList') ? 'hidden' : 'sidebar-ul sidebar__catalogue-list-ul'}>
           {this.props.data.map((shoesType, index) =>
-            <ShoesTypeSideBarListItem
+            <SideBarCatalogueListItem
               key={shoesType}
               data={shoesType}
               idx={index}
@@ -48,17 +49,6 @@ class SideBarCatalogueList extends Component {
           )}
         </ul>
       </div>
-    );
-  };
-};
-
-class ShoesTypeSideBarListItem extends Component {
-  render() {
-    const { hiddenFilters, func, isActive, data, idx } = this.props;
-    return (
-      <li className={hiddenFilters.includes('CatalogueList') ? 'hidden' : 'sidebar-ul-li sidebar__catalogue-list-ul-li'} >
-        <button className={isActive ? 'sidebar-button-active' : 'sidebar-button'} onClick={func({ name: 'shoesType', value: `${data}` }, idx)}>{data}</button>
-      </li>
     );
   };
 };

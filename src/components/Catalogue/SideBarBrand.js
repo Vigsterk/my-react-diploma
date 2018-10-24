@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import BrandSideBarListItem from './SideBarBrandListItem';
 import PropTypes from 'prop-types';
 
 class SideBarBrand extends Component {
@@ -48,17 +49,6 @@ class SideBarBrand extends Component {
           </ul>
         </div>
       </div>
-    );
-  };
-};
-
-class BrandSideBarListItem extends Component {
-  render() {
-    const { hiddenFilters, func, isActive, data, idx } = this.props;
-    return (
-      <li className={hiddenFilters.includes('Brand') ? 'hidden' : 'sidebar-ul-li sidebar__brand-list-ul-li'} >
-        <button className={isActive ? 'sidebar-button-active' : 'sidebar-button'} onClick={func({ name: 'brand', value: data }, idx)}>{data}</button>
-      </li>
     );
   };
 };

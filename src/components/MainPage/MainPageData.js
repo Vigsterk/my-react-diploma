@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import slider from '../img/slider.jpg'
-import slider180deg from '../img/slider180deg.jpeg'
+import slider from '../img/slider.jpg';
+import slider180deg from '../img/slider180deg.jpeg';
 
 const Slider = () => {
   return (

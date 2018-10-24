@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ListItem from './NewDealsMenuListItem';
 import PropTypes from 'prop-types';
 
 class NewDealsMenu extends Component {
@@ -11,7 +12,7 @@ class NewDealsMenu extends Component {
   static get propTypes() {
     return {
       func: PropTypes.func.isRequired
-    }
+    };
   };
 
   handleClick = (index) => {
@@ -36,16 +37,6 @@ class NewDealsMenu extends Component {
         </ul>
       </div>
     );
-  };
-};
-
-class ListItem extends Component {
-  handleClick = () => this.props.func(this.props.idx);
-  render() {
-    return (
-      <li className={this.props.isActive ? 'new-deals__menu-item new-deals__menu-item_active' : 'new-deals__menu-item'}>
-        <button className={this.props.isActive ? 'new-deals__item-button new-deals__item-button_active' : 'new-deals__item-button'} onClick={this.handleClick}>{this.props.title}</button>
-      </li>)
   };
 };
 

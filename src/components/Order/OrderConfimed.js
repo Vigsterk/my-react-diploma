@@ -162,4 +162,4 @@ class OrderConfimed extends Component {
   };
 };
 
-export default OrderConfimed
+export default OrderConfimed;

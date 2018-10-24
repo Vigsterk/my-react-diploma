@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import SideBarHeelSizeListItem from './SideBarHeelSizeListItem';
 
 class SideBarHeelSize extends Component {
 
@@ -22,7 +23,7 @@ class SideBarHeelSize extends Component {
           <div className={this.props.hiddenFilters.includes('HeelSize') ? 'opener-up' : 'opener-down'} onClick={this.handleClick}></div>
           <ul className={this.props.hiddenFilters.includes('HeelSize') ? 'hidden' : 'sidebar-ul sidebar__heelSize-list-ul'}>
             {this.props.data.map((size, index) =>
-              <HeelSizeSideBarListItem
+              <SideBarHeelSizeListItem
                 key={size}
                 data={size}
                 idx={index}
@@ -33,26 +34,6 @@ class SideBarHeelSize extends Component {
           </ul>
         </div>
       </div>
-    );
-  };
-};
-
-class HeelSizeSideBarListItem extends Component {
-  render() {
-    const { data, hiddenFilters, setFilterArrayParam } = this.props;
-    return (
-      <li className={hiddenFilters.includes('HeelSize') ? 'hidden' : 'sidebar-ul-li sidebar__heelSize-list-ul-li'}>
-        <label>
-          <input type='checkbox'
-            onChange={setFilterArrayParam}
-            value={+data}
-            name='heelSizes'
-            className='checkbox'
-          />
-          <span className='checkbox-custom'></span>
-          <span className='label'>{data}</span>
-        </label>
-      </li>
     );
   };
 };

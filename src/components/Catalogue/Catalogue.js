@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import './style-catalogue.css';
-import '../css/normalize.css';
-import '../css/font-awesome.min.css';
-import '../css/style.css';
 import SitePath from '../SitePath/SitePath';
 import CatalogueProductList from './CatalogueProductList';
 import OverlookedSlider from '../ProductCard/OverlookedSlider';

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Subscribe from './Subscribe'
+import Subscribe from './Subscribe';
 
 class Footer extends Component {
   constructor(props) {
