@@ -2,7 +2,7 @@
   "name": "ra-bosa-noga",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://netology-code.github.io/ra-1-Vigsterk/",
+  "homepage": "https://netology-code.github.io/my-react-diploma/",
   "dependencies": {
     "gh-pages": "^1.2.0",
     "prop-types": "^15.6.2",
